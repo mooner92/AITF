@@ -1,0 +1,22 @@
+# 자격증명·신원정보 — 어떤 경우에도 커밋 금지
+.env
+.env.*
+*.key
+*.pem
+*credentials*
+*.csv
+accounts*
+roster*
+secrets*
+
+# AI CLI 세션/설정 (키·로그 포함 가능)
+.codex/
+.gemini/
+.claude/
+.claude.json
+
+# 로컬 작업물
+node_modules/
+*.log
+.DS_Store
+private/

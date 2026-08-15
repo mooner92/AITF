@@ -1,0 +1,43 @@
+#!/bin/bash
+# 민감정보 커밋 차단 훅 — SECURITY.md의 기술적 방어선 2번
+# 오탐 시: diff를 육안 확인한 뒤에만 git commit --no-verify
+set -uo pipefail
+
+fail=0
+say() { echo "🚫 [pre-commit] $1"; fail=1; }
+
+# 1) 금지 파일명 (경로 기준)
+banned_files='(^|/)(accounts.*|roster.*|\.env(\..*)?|.*\.key|.*\.pem|.*credentials.*|.*\.csv)$'
+while read -r f; do
+  [[ "$f" =~ $banned_files ]] && say "금지 파일명: $f"
+done < <(git diff --cached --name-only)
+
+# 2) 시크릿 패턴 (스테이징된 내용 기준)
+patterns=(
+  'sk-[A-Za-z0-9_-]{20}'            # OpenAI/Anthropic 계열 키
+  'AIza[0-9A-Za-z_-]{30}'           # Google API 키
+  'ghp_[A-Za-z0-9]{30}'             # GitHub PAT
+  'github_pat_[A-Za-z0-9_]{20}'
+  'AKIA[0-9A-Z]{16}'                # AWS
+  'BEGIN [A-Z ]*PRIVATE KEY'
+  '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'  # UUID (터널 ID 등)
+)
+for p in "${patterns[@]}"; do
+  hits=$(git diff --cached -U0 | grep -E '^\+' | grep -E "$p" | head -3)
+  [ -n "$hits" ] && say "시크릿 패턴 '$p' 감지:"$'\n'"$hits"
+done
+
+# 3) 공인 IP 유사 패턴 (루프백·0.0.0.0·링크로컬·사설대역·예시대역은 허용)
+ip_hits=$(git diff --cached -U0 | grep -E '^\+' \
+  | grep -oE '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b' \
+  | grep -vE '^(127\.|0\.0\.0\.0|169\.254\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.|255\.|203\.0\.113\.|198\.51\.100\.|192\.0\.2\.)' \
+  | sort -u | head -5)
+[ -n "$ip_hits" ] && say "공인 IP로 보이는 값 감지: $ip_hits"
+
+if [ "$fail" -eq 1 ]; then
+  echo ""
+  echo "커밋이 차단되었습니다. SECURITY.md 정책을 확인하세요."
+  echo "placeholder(<SERVER_IP>, <OPENAI_KEY> 등)로 바꾼 뒤 다시 커밋하세요."
+  exit 1
+fi
+exit 0
