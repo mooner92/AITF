@@ -5,9 +5,11 @@
 set -euo pipefail
 cd /opt/scripts
 
-# 학생 1인당 메모리 상한 — 인원 확정 후 산정 (예산: 총24G - 기존서비스~5G - 운영자~3G = 16G / 동시 인원)
-MEMORY_MAX="${MEMORY_MAX:-1300M}"
-MEMORY_HIGH="${MEMORY_HIGH:-1024M}"
+# 학생 1인당 메모리 상한. MemoryHigh는 쓰지 않는다 — 스로틀로 "한없이 느려짐"보다
+# 명확한 OOM-kill이 학생에게 이해하기 쉽다 (2026-08-16 실측으로 결정).
+# MemorySwapMax 필수: 한 학생의 폭주가 swap을 다 먹으면 서버 전체 I/O가 느려진다.
+MEMORY_MAX="${MEMORY_MAX:-1536M}"
+SWAP_MAX="${SWAP_MAX:-512M}"
 
 while IFS=, read -r u p; do
   [ -z "$u" ] && continue
@@ -22,7 +24,7 @@ while IFS=, read -r u p; do
   # 메모리·프로세스 상한 — 드롭인이라 로그인 전에도 적용되고 재부팅에도 유지됨
   uid=$(id -u "$u")
   mkdir -p "/etc/systemd/system/user-${uid}.slice.d"
-  printf '[Slice]\nMemoryMax=%s\nMemoryHigh=%s\nTasksMax=256\n' "$MEMORY_MAX" "$MEMORY_HIGH" \
+  printf '[Slice]\nMemoryMax=%s\nMemorySwapMax=%s\nTasksMax=256\n' "$MEMORY_MAX" "$SWAP_MAX" \
     > "/etc/systemd/system/user-${uid}.slice.d/limit.conf"
 done < accounts.csv
 
