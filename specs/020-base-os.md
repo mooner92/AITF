@@ -16,10 +16,11 @@
 
 - [ ] `sudo dnf -y install htop`
 - [ ] 전체 업데이트는 **보류** — 기존 서비스 재시작 위험. 백업(010) 후 보안 업데이트만: `sudo dnf -y update --security` → 직후 서비스 헬스 확인
-- [ ] tmux 마우스 모드 (수강생이 `Ctrl-b [` 스크롤을 못 넘는 문제 예방):
+- [ ] tmux 전역 설정 — **마우스 모드는 넣지 않는다** (키보드 사용법을 수업에서 직접 가르치기로 결정). 스크롤 버퍼만 넉넉히:
   ```bash
-  echo 'set -g mouse on' | sudo tee /etc/tmux.conf
+  echo 'set -g history-limit 10000' | sudo tee /etc/tmux.conf
   ```
+  → 대신 tmux 키보드 치트시트를 수업 자료로 준비 ([090](090-materials.md))
 - [ ] 디렉토리 골격 + 권한:
   ```bash
   sudo mkdir -p /opt/scripts /opt/harness /opt/template-home /srv/snapshots /srv/backup /var/lib/tokmon

@@ -1,6 +1,6 @@
 #!/bin/bash
 # 수업 후 반 단위 증분 스냅샷 + 진도 요약 — specs/080
-# 사용: snapshot-class.sh <반접두사> <주차>   예: snapshot-class.sh basic 03
+# 사용: snapshot-class.sh <반접두사> <주차>   예: snapshot-class.sh mid 03 (반접두사: mid=중등, high=고등)
 set -euo pipefail
 CLASS="$1"; WEEK="$2"; DATE=$(date +%F)
 SNAP="/srv/snapshots/${DATE}_${CLASS}_w${WEEK}"
