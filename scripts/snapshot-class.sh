@@ -32,7 +32,8 @@ done
     [ -z "$u" ] && continue
     C=$(sudo -u "$u" git -C "/home/$u/project" rev-list --count HEAD 2>/dev/null || echo 0)
     T=$(jq -r '.total_tokens // "-"' "$SNAP/tokens/$u.json" 2>/dev/null || echo "-")
-    L=$(find "/home/$u" -type f -newermt "-7 days" ! -path "*/node_modules/*" \
+    # 진도 지표이므로 학생 작업물만 본다 — 홈 전체를 보면 캐시·락 파일이 잡혀 의미가 없다
+    L=$(find "/home/$u/project" -type f ! -path "*/node_modules/*" ! -path "*/.git/*" \
         -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2- || echo "-")
     echo "| $u | $C | $T | $(basename "${L:--}") |"
   done
