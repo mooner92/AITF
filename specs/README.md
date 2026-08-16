@@ -9,14 +9,14 @@
 | [010](010-instance.md) | P0 | 인스턴스 보전·디스크 확장 | **Done** (백업만 잔여) | 백업(운영자 콘솔) |
 | [020](020-base-os.md) | P1 | OS 기본 세팅 | **Done** | — |
 | [030](030-access.md) | P2 | 접속 경로·보안 잠금 | Draft | 학원 고정 IP 확인, 도메인 결정 |
-| [040](040-accounts.md) | P3 | 학생 계정·템플릿 홈 (mid/high 반당 ~6명) | **In Progress** (test01 검증 통과) | 명단, 템플릿(주제 스켈레톤) |
-| [050](050-ai-layer.md) | P4 | AI CLI·API 키 | In Progress (CLI 3종 설치·검증) | API 키 발급(운영자) |
-| [055](055-harness.md) | P4-1 | 교육용 하네스 ★ | Approved | — (착수 가능) |
-| [060](060-git.md) | P5 | Gitea + 학생 git 흐름 | **In Progress** (Gitea 가동, E2E 통과) | 명단 |
-| [070](070-observability.md) | P6 | 토큰·리소스·진도 관측 | In Progress (수집+cron 가동) | 모니터링 웹 개발 |
-| [080](080-snapshot.md) | P7 | 스냅샷·복구 | Approved (스크립트 배치됨) | 검증 왕복 |
+| [040](040-accounts.md) | P3 | 학생 계정·템플릿 홈 (mid/high 반당 ~6명) | **Done** (템플릿·검증 완료) | 명단만 |
+| [050](050-ai-layer.md) | P4 | AI CLI·API 키 | In Progress (CLI 3종 설치·검증) | **API 키 발급(운영자)** |
+| [055](055-harness.md) | P4-1 | 교육용 하네스 ★ | **In Progress** (제작·배포·격리 검증) | 모델 ID 확정(050 대기) |
+| [060](060-git.md) | P5 | Gitea + 학생 git 흐름 | **Done** (E2E 통과) | 명단만 |
+| [070](070-observability.md) | P6 | 관측 (OpenObserve) | In Progress (수집·인제스트 가동) | 대시보드 구성(030 후) |
+| [080](080-snapshot.md) | P7 | 스냅샷·복구 | **Done** (왕복 검증) | — |
 | [090](090-materials.md) | P8 | 수업 자료·커리큘럼 | In Progress | — |
-| [100](100-rehearsal.md) | P9 | 리허설·완료 판정 | Draft | 전체 |
+| [100](100-rehearsal.md) | P9 | 리허설·완료 판정 | In Progress (부하·정리·복구 통과) | 실 CLI 재시험(키 대기) |
 
 **확정된 것**: 셰이프 4 OCPU/24GB 현행 유지, **8/18 = 세팅 완료 목표일** · 주제 "내 최애 전문가 AI" · 일요일 14–16 중등반 / 16–18 고등반 · 반당 ~6명 · tmux 키보드 교육
 
