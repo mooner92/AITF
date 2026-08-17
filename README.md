@@ -9,7 +9,7 @@
 docs/       # 구조 설명 문서 (architecture.html — 브라우저로 열어보는 해부도)
 specs/      # Spec-Driven Development — 단계별(P0~P9) 스펙과 진행 상태
 scripts/    # 서버 운영 스크립트 (공개 가능 버전 — 민감 값은 placeholder)
-curriculum/ # 수업 개요 (공개판)
+curriculum/ # 수업계획서(class-plan.md) + 개요(overview.md)
 classlog/   # 수업 기록 (주차별)
 SECURITY.md # 공개 저장소 정보 정책 — 무엇을 절대 올리지 않는가
 ```
