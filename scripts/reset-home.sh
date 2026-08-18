@@ -17,7 +17,13 @@ rsync -a --delete \
   --exclude '.gitconfig' \
   --exclude '.bashrc' \
   --exclude '.bash_history' \
+  --exclude '.codex/.tmp' \
+  --exclude 'project/public' \
   /opt/template-home/ "/home/$U/"
+
+# 작품관 심링크 복원 (rsync 제외 대상이지만 없으면 다시 건다)
+ln -sfn "/srv/pages/$U" "/home/$U/project/public"
+chown -h "$U": "/home/$U/project/public"
 
 chown -R "$U": "/home/$U"
 chmod 700 "/home/$U"

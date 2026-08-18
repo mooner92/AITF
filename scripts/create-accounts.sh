@@ -21,6 +21,13 @@ while IFS=, read -r u p; do
   grep -q 'tmux new' "/home/$u/.bashrc" || \
     echo '[ -z "$TMUX" ] && tmux new -A -s main' >> "/home/$u/.bashrc"
 
+  # 작품관 웹 디렉토리 — nginx가 읽는 곳. 홈(700)을 열지 않기 위해 /srv/pages에 두고
+  # 학생 홈의 ~/project/public 이 여기로 심링크된다 (specs/030 학생 페이지)
+  install -d -o "$u" -g "$u" -m 755 "/srv/pages/$u"
+  restorecon "/srv/pages/$u" 2>/dev/null || true
+  ln -sfn "/srv/pages/$u" "/home/$u/project/public" 2>/dev/null || true
+  chown -h "$u": "/home/$u/project/public" 2>/dev/null || true
+
   # 메모리·프로세스 상한 — 드롭인이라 로그인 전에도 적용되고 재부팅에도 유지됨
   uid=$(id -u "$u")
   mkdir -p "/etc/systemd/system/user-${uid}.slice.d"
