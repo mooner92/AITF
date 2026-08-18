@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표 제목</title>
+<style>
+  /* 색을 바꾸고 싶으면 아래 변수만 수정 */
+  :root { --bg:#FFFFFF; --ink:#1A1A1A; --accent:#1A56DB; --muted:#666; }
+  * { box-sizing:border-box; margin:0; }
+  html,body { height:100%; }
+  body { font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif; background:#DDD; }
+  .slide { display:none; width:100%; height:100%; padding:6vh 8vw;
+           background:var(--bg); color:var(--ink); flex-direction:column; justify-content:center; }
+  .slide.on { display:flex; }
+  .slide h1 { font-size:7vmin; line-height:1.25; margin-bottom:3vh; }
+  .slide h2 { font-size:5vmin; color:var(--accent); margin-bottom:3vh; }
+  .slide p, .slide li { font-size:3.2vmin; line-height:1.7; }
+  .slide ul { padding-left:1.2em; }
+  .slide li { margin-bottom:1.2vh; }
+  .slide img { max-width:80%; max-height:50vh; margin:2vh auto; display:block; }
+  .cover { text-align:center; }
+  .cover .who { margin-top:4vh; color:var(--muted); font-size:2.6vmin; }
+  #nav { position:fixed; bottom:2vh; right:3vw; color:var(--muted);
+         font-size:2.2vmin; user-select:none; }
+</style>
+</head>
+<body>
+
+<!-- ▼ 슬라이드 1장 = <section class="slide"> 하나. 내용만 바꾸세요 ▼ -->
+
+<section class="slide cover">
+  <h1>발표 제목</h1>
+  <p class="who">이름 · 날짜</p>
+</section>
+
+<section class="slide">
+  <h2>왜 이 주제인가</h2>
+  <ul>
+    <li>여기에 이유를 씁니다</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>핵심 내용 1</h2>
+  <ul>
+    <li>한 슬라이드에는 한 메시지만</li>
+    <li>본문은 6줄을 넘기지 않기</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>정리</h2>
+  <ul>
+    <li>오늘 말한 것 요약</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>출처</h2>
+  <ul>
+    <li>참고한 자료를 여기에</li>
+  </ul>
+</section>
+
+<!-- ▲ 여기까지 슬라이드 ▲ -->
+
+<div id="nav">1 / 1</div>
+<script>
+// 방향키·클릭으로 슬라이드 넘기기 — 이 부분은 수정하지 않아도 됩니다
+const S=[...document.querySelectorAll('.slide')]; let i=0;
+function go(n){ i=Math.max(0,Math.min(S.length-1,n));
+  S.forEach((s,k)=>s.classList.toggle('on',k===i));
+  document.getElementById('nav').textContent=(i+1)+' / '+S.length; }
+addEventListener('keydown',e=>{ if(['ArrowRight','ArrowDown',' '].includes(e.key))go(i+1);
+  if(['ArrowLeft','ArrowUp'].includes(e.key))go(i-1); });
+addEventListener('click',e=>go(e.clientX>innerWidth/2?i+1:i-1));
+go(0);
+</script>
+</body>
+</html>
