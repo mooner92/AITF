@@ -1,0 +1,767 @@
+<title>AI 특강 12주 상세 계획</title>
+<style>
+__FONT_FACES__
+
+/* 단일 테마(순흑) 확정 — 모든 색을 토큰으로 명시 */
+:root{
+  --canvas:#000000;
+  --card:#0a0a0c;
+  --elevated:#101012;
+  --sunken:#050507;
+  --ink:#fcfdff;
+  --body:rgba(252,253,255,.86);
+  --charcoal:rgba(252,253,255,.7);
+  --mute:#a1a4a5;
+  --ash:#888e90;
+  --faint:rgba(252,253,255,.42);
+  --hair:rgba(255,255,255,.06);
+  --hair-strong:rgba(255,255,255,.14);
+  --divider:rgba(255,255,255,.04);
+  --blue:#3b9eff;
+  --green:#11ff99;
+  --orange:#ff801f;
+  --violet:#a78bfa;
+  --yellow:#ffc53d;
+  --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --font:Paperlogy,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  background:var(--canvas);color:var(--body);
+  font-family:var(--font);font-weight:400;
+  font-size:15.5px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px 120px}
+
+/* ── hero ── */
+.hero{position:relative;padding:112px 0 68px;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;top:-280px;left:46%;transform:translateX(-50%);
+  width:1000px;height:560px;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(0,117,255,.28),rgba(0,117,255,0) 72%);
+}
+.eyebrow{
+  position:relative;font-size:12.5px;font-weight:600;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--blue);margin-bottom:20px;
+}
+h1{
+  position:relative;font-weight:200;font-size:clamp(40px,7.4vw,80px);
+  line-height:1.05;letter-spacing:-.035em;color:var(--ink);
+  margin-bottom:24px;text-wrap:balance;
+}
+h1 em{font-style:normal;font-weight:600}
+.lede{
+  position:relative;font-size:clamp(16.5px,2vw,20px);line-height:1.64;
+  color:var(--charcoal);max-width:52ch;
+}
+.notice{
+  position:relative;display:flex;gap:12px;align-items:flex-start;margin-top:34px;
+  background:var(--elevated);border:1px solid var(--hair-strong);
+  border-radius:var(--r-lg);padding:16px 20px;max-width:60ch;
+  font-size:14px;color:var(--charcoal);line-height:1.6;
+}
+.notice b{color:var(--yellow);font-weight:600}
+
+/* ── nav ── */
+.toc{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:34px;position:relative;
+}
+.toc a{
+  color:var(--body);text-decoration:none;font-size:13.5px;
+  background:var(--card);border:1px solid var(--hair-strong);
+  border-radius:var(--r-full);padding:6px 14px;
+}
+.toc a:hover,.toc a:focus-visible{background:var(--ink);color:#000;border-color:var(--ink)}
+a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ── sections ── */
+section{padding:72px 0;border-top:1px solid var(--divider);scroll-margin-top:24px}
+.slabel{
+  font-size:11.5px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--ash);margin-bottom:13px;
+}
+h2{
+  font-weight:200;font-size:clamp(27px,4.2vw,42px);line-height:1.18;
+  letter-spacing:-.03em;color:var(--ink);margin-bottom:20px;text-wrap:balance;
+}
+h2 b{font-weight:600}
+h3{font-weight:600;font-size:17.5px;line-height:1.42;color:var(--ink);margin-bottom:8px}
+h4{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:7px}
+p{margin-bottom:15px;max-width:74ch}
+p:last-child{margin-bottom:0}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:normal;color:var(--blue);font-weight:600}
+ul{margin:0 0 15px 0;padding-left:20px}
+li{margin-bottom:6px;color:var(--charcoal)}
+li::marker{color:var(--ash)}
+
+/* ── tables ── */
+.tw{overflow-x:auto;margin:20px 0;border:1px solid var(--hair-strong);border-radius:var(--r-lg)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.2px}
+th,td{padding:13px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--hair)}
+th{
+  font-weight:600;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ash);background:var(--sunken);white-space:nowrap;
+}
+tr:last-child td{border-bottom:none}
+td{color:var(--charcoal);line-height:1.58}
+td strong,th strong{color:var(--ink)}
+td:first-child{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:center;width:56px}
+
+/* ── figure ── */
+figure{margin:28px 0 0}
+figure svg{width:100%;height:auto;max-width:820px;display:block;color:var(--ink)}
+figcaption{margin-top:14px;font-size:13.5px;color:var(--mute);max-width:64ch;line-height:1.6}
+
+/* ── 주차 카드 ── */
+.weeks{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+.week{
+  position:relative;background:var(--card);border:1px solid var(--hair);
+  border-radius:var(--r-xl);padding:30px 30px 28px;overflow:hidden;
+}
+.week.key{border-color:var(--hair-strong)}
+.week.key::before{
+  content:"";position:absolute;top:-140px;right:-60px;width:420px;height:280px;
+  pointer-events:none;
+  background:radial-gradient(closest-side,rgba(59,158,255,.13),rgba(59,158,255,0) 70%);
+}
+.week-head{position:relative;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.wnum{
+  font-weight:200;font-size:44px;line-height:1;letter-spacing:-.04em;
+  color:var(--ink);font-variant-numeric:tabular-nums;
+}
+.wnum span{font-size:15px;font-weight:400;color:var(--ash);margin-left:3px}
+.wtitle{font-weight:600;font-size:21px;letter-spacing:-.015em;color:var(--ink)}
+.tag{
+  font-size:11px;font-weight:600;letter-spacing:.08em;padding:4px 10px;
+  border-radius:var(--r-full);border:1px solid;white-space:nowrap;
+}
+.tag.fixed{color:var(--orange);border-color:rgba(255,128,31,.4);background:rgba(255,128,31,.08)}
+.tag.buffer{color:var(--green);border-color:rgba(17,255,153,.3);background:rgba(17,255,153,.07)}
+
+.goals{
+  position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1px;background:var(--hair);border:1px solid var(--hair);
+  border-radius:var(--r-md);overflow:hidden;margin-bottom:20px;
+}
+.goal{background:var(--sunken);padding:15px 17px}
+.goal .k{font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ash);margin-bottom:6px}
+.goal .v{font-size:14.5px;line-height:1.5;color:var(--ink)}
+
+.week h4{position:relative;margin-top:4px}
+.week > p{position:relative;font-size:14.6px;line-height:1.68}
+
+/* 중등 / 고등 갈래 */
+.split{
+  position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;
+}
+.lane{
+  background:var(--sunken);border:1px solid var(--hair);border-radius:var(--r-md);
+  padding:18px 20px;
+}
+.lane .who{
+  display:inline-block;font-size:11px;font-weight:600;letter-spacing:.1em;
+  padding:3px 9px;border-radius:var(--r-full);margin-bottom:10px;
+}
+.lane.mid .who{color:var(--green);background:rgba(17,255,153,.09);border:1px solid rgba(17,255,153,.26)}
+.lane.high .who{color:var(--violet);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3)}
+.lane p{font-size:14px;line-height:1.62;color:var(--charcoal);margin:0;max-width:none}
+
+.point{
+  position:relative;margin-top:18px;padding:16px 18px;
+  background:var(--elevated);border:1px solid var(--hair-strong);border-radius:var(--r-md);
+}
+.point .k{font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:7px}
+.point p{font-size:14px;line-height:1.62;color:var(--charcoal);margin:0;max-width:none}
+.point.prep .k{color:var(--yellow)}
+
+/* ── 마무리 ── */
+.decide{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.d-item{
+  display:grid;grid-template-columns:34px 1fr;gap:18px;align-items:start;
+  background:var(--card);border:1px solid var(--hair);border-radius:var(--r-lg);padding:22px 24px;
+}
+.d-item .n{font-weight:200;font-size:26px;line-height:1;color:var(--blue);font-variant-numeric:tabular-nums}
+.d-item p{font-size:14.5px;color:var(--charcoal);margin:0}
+.d-item h3{font-size:16px;margin-bottom:5px}
+
+footer{
+  margin-top:76px;padding-top:26px;border-top:1px solid var(--divider);
+  font-size:13px;color:var(--ash);line-height:1.7;
+}
+
+@media(max-width:760px){
+  .split{grid-template-columns:1fr}
+  .week{padding:24px 20px}
+  section{padding:54px 0}
+  .hero{padding:80px 0 52px}
+  .wnum{font-size:36px}
+}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">내부 검토용 · 강사 · 원장 컨펌</p>
+  <h1>터미널에서 AI를<br><em>부리는 12주</em></h1>
+  <p class="lede">
+    겉으로 보이는 결과물은 그림·발표자료·이야기책·영상입니다. 진짜 커리큘럼은
+    <strong>터미널 환경에서 AI 에이전트를 부리는 개발 워크플로</strong>이고,
+    결과물은 그 역량을 익히게 만드는 재료입니다.
+  </p>
+  <div class="notice">
+    <span><b>배포 주의</b> — 10주차에 서프라이즈 구성이 있어 학생에게는 이 문서를 배포하지 않습니다.
+    학부모·학생 배포용은 별도 요약본을 사용합니다.</span>
+  </div>
+  <nav class="toc">
+    <a href="#identity">수업 정체성</a>
+    <a href="#env">수업 환경</a>
+    <a href="#roadmap">역량 로드맵</a>
+    <a href="#weeks">주차별 상세</a>
+    <a href="#measure">측정</a>
+    <a href="#risk">리스크</a>
+    <a href="#prep">강사 준비</a>
+    <a href="#decide">협의 사항</a>
+  </nav>
+</header>
+
+<section id="identity">
+  <p class="slabel">1 · 수업 정체성</p>
+  <h2>코딩학원 수업으로서<br>무엇이 <b>다른가</b></h2>
+  <p>
+    2026년 현재 개발 현장의 표준 작업 방식이 바로 이것입니다 — 터미널에서 AI 에이전트에게
+    일을 시키고, 결과를 검증하고, 버전 관리로 기록하는 흐름. 이 수업을 마친 학생은
+    <strong>실무 개발자가 매일 쓰는 것과 동일한 환경</strong>을 12주간 몸에 익힌 상태가 됩니다.
+  </p>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th></th><th>일반 AI 교양 수업</th><th>이 수업</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>환경</td><td>웹 챗봇 (ChatGPT 웹사이트 등)</td><td><strong>리눅스 서버 + 터미널 + CLI 에이전트</strong></td></tr>
+        <tr><td>AI의 역할</td><td>질문에 답해주는 상대</td><td><strong>파일을 만들고 코드를 짜는 작업 도구</strong></td></tr>
+        <tr><td>결과물</td><td>대화 기록</td><td>웹페이지·슬라이드·영상 등 <strong>실제 파일</strong>, git 이력</td></tr>
+        <tr><td>배우는 것</td><td>프롬프트 요령</td><td>프롬프트 + <strong>파일 시스템, 버전 관리, 프로젝트 구조, 도구 설정</strong></td></tr>
+        <tr><td>남는 것</td><td>경험</td><td><strong>포트폴리오 웹페이지 + 12주 커밋 이력 + 개발 환경 적응력</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:36px">매주 두 겹으로 진행됩니다</h3>
+  <p>
+    모든 주차는 <strong>[만들기 목표]와 [개발 역량 목표]를 동시에</strong> 가집니다.
+    학생에게는 만들기 목표만 보이고, 개발 역량은 그 과정에서 자연스럽게 쌓이도록 설계했습니다.
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 820 300" role="img" aria-label="5주차 발표 슬라이드 만들기 과정에서 학생이 보는 만들기 목표 뒤로 마크다운 문법, HTML 구조 읽기, 폴더 정리, 파일 검증이라는 개발 역량이 함께 쌓이는 구조">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+        <marker id="arb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#3b9eff"/>
+        </marker>
+      </defs>
+
+      <text x="0" y="16" font-size="12" font-weight="600" fill="#888e90" letter-spacing="1.6">학생에게 보이는 층</text>
+      <rect x="0" y="30" width="820" height="76" rx="10" fill="none" stroke="currentColor" stroke-opacity=".18"/>
+      <text x="26" y="62" font-size="14" font-weight="600" fill="currentColor">5주차 · 발표 슬라이드 만들기</text>
+      <text x="26" y="86" font-size="12.5" fill="currentColor" fill-opacity=".62">주제 정하기 → 개요 쓰기 → 슬라이드 생성 → 넘겨보며 다듬기 → 전시</text>
+
+      <line x1="140" y1="106" x2="140" y2="168" stroke="#3b9eff" stroke-width="1.4" marker-end="url(#arb)"/>
+      <line x1="345" y1="106" x2="345" y2="168" stroke="#3b9eff" stroke-width="1.4" marker-end="url(#arb)"/>
+      <line x1="550" y1="106" x2="550" y2="168" stroke="#3b9eff" stroke-width="1.4" marker-end="url(#arb)"/>
+      <line x1="740" y1="106" x2="740" y2="168" stroke="#3b9eff" stroke-width="1.4" marker-end="url(#arb)"/>
+      <text x="152" y="143" font-size="11.5" fill="#3b9eff">쌓인다</text>
+
+      <text x="0" y="196" font-size="12" font-weight="600" fill="#888e90" letter-spacing="1.6">실제로 쌓이는 층 — 개발 역량</text>
+      <rect x="0" y="208" width="196" height="62" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+      <text x="18" y="234" font-size="13" font-weight="600" fill="currentColor">마크다운 문법</text>
+      <text x="18" y="254" font-size="11.5" fill="currentColor" fill-opacity=".55">개요를 텍스트로 설계</text>
+
+      <rect x="208" y="208" width="196" height="62" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+      <text x="226" y="234" font-size="13" font-weight="600" fill="currentColor">HTML 구조 읽기</text>
+      <text x="226" y="254" font-size="11.5" fill="currentColor" fill-opacity=".55">태그·계층 감각</text>
+
+      <rect x="416" y="208" width="196" height="62" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+      <text x="434" y="234" font-size="13" font-weight="600" fill="currentColor">프로젝트 폴더 정리</text>
+      <text x="434" y="254" font-size="11.5" fill="currentColor" fill-opacity=".55">파일이 어디에 놓이나</text>
+
+      <rect x="624" y="208" width="196" height="62" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+      <text x="642" y="234" font-size="13" font-weight="600" fill="currentColor">결과물 검증</text>
+      <text x="642" y="254" font-size="11.5" fill="currentColor" fill-opacity=".55">미리보기로 확인</text>
+    </svg>
+    <figcaption>
+      5주차 예시. 학생이 인식하는 활동은 위 한 줄뿐이지만, 그 과정을 통과하면서
+      아래 네 가지 개발 역량이 함께 남습니다. 12주 내내 이 구조가 반복됩니다.
+    </figcaption>
+  </figure>
+</section>
+
+<section id="env">
+  <p class="slabel">2 · 수업 환경</p>
+  <h2>학생은 브라우저만 열면<br><b>바로 터미널</b>입니다</h2>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>구성 요소</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>접속</strong></td><td>학원 노트북 브라우저 → 전용 주소 → 바로 터미널. 설치·가입 없음</td></tr>
+        <tr><td><strong>서버</strong></td><td>학원 전용 리눅스 서버. 학생별 독립 계정 (서로 파일 접근 불가, 관리 권한 없음)</td></tr>
+        <tr><td><strong>AI 에이전트</strong></td><td>터미널에서 동작하는 CLI 에이전트. 대화로 파일 생성·수정·이미지 생성까지 수행</td></tr>
+        <tr><td><strong>작품 확인</strong></td><td>학생별 작품관 웹페이지 — 만든 것을 브라우저로 즉시 확인, 링크 공유 가능</td></tr>
+        <tr><td><strong>버전 관리</strong></td><td>학원 내부 git 서버. 매주 작업 이력이 기록됨</td></tr>
+        <tr><td><strong>사용량 관리</strong></td><td>강사 대시보드에서 학생별 AI 사용량·서버 자원·진도 실시간 확인</td></tr>
+        <tr><td><strong>비용 통제</strong></td><td>학생 계정별 AI 사용 상한 설정. 이미지 생성은 주당 장수 제한</td></tr>
+        <tr><td><strong>백업</strong></td><td>매 수업 후 전원 스냅샷. 실수로 지워도 복구 가능</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="point">
+    <div class="k">안전 — 3중 격리</div>
+    <p>
+      ① 리눅스 계정 격리 ② 에이전트가 작업 폴더 밖에 쓰기 불가 ③ 위험 명령은 학생 승인 후 실행.
+      한 학생의 실수나 폭주가 다른 학생이나 서버에 영향을 줄 수 없는 구조입니다.
+    </p>
+  </div>
+
+  <h3 style="margin-top:40px">공통 시간 골격 (2시간)</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>시간</th><th>블록</th></tr></thead>
+      <tbody>
+        <tr><td>0:00–0:10</td><td>주간 워밍업 (효율 미션)</td></tr>
+        <tr><td>0:10–0:25</td><td>이번 주 스킬 소개 + 강사 시연</td></tr>
+        <tr><td>0:25–1:00</td><td>만들기 1</td></tr>
+        <tr><td>1:00–1:10</td><td>휴식</td></tr>
+        <tr><td>1:10–1:45</td><td>만들기 2 + 다듬기</td></tr>
+        <tr><td>1:45–2:00</td><td>작품관 전시 + 커밋(6주~) + 다음 주 예고</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <strong>중등반(14:00–16:00)</strong>은 만들기 블록을 15~20분 단위로 한 번 더 쪼개 전환점을 만듭니다.
+    <strong>고등반(16:00–18:00)</strong>은 블록을 유지하고 다듬기 시간을 길게 씁니다.
+  </p>
+</section>
+
+<section id="roadmap">
+  <p class="slabel">3 · 개발 역량 로드맵</p>
+  <h2>12주 동안 <b>누적</b>되는 것</h2>
+  <p>각 주차에 새로 등장하는 터미널·개발 역량입니다. 앞 주차 역량은 계속 반복 사용됩니다.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th class="num">주</th><th>새로 익히는 개발 역량</th><th>도구 · 개념</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>터미널 첫 경험 — 화면 구성, 세션, 기본 탐색</td><td>tmux, ls / cd / cat, 프롬프트 입력</td></tr>
+        <tr><td class="num">2</td><td>파일과 폴더 구조, 파일 → 브라우저 연결 이해</td><td>디렉토리 트리, HTML 파일, 웹페이지가 파일이라는 감각</td></tr>
+        <tr><td class="num">3</td><td>실험과 비교 — 입력을 바꾸면 출력이 바뀐다</td><td>명령 히스토리, 결과 비교, 기록 습관</td></tr>
+        <tr><td class="num">4</td><td>바이너리 파일 다루기</td><td>이미지 파일·확장자·용량, 생성 파일 검증</td></tr>
+        <tr><td class="num">5</td><td>문서 마크업</td><td>마크다운 문법, HTML 구조 읽기, 폴더 정리</td></tr>
+        <tr><td class="num">6</td><td><strong>버전 관리 시작</strong></td><td>git add / commit / push, status·log 읽기</td></tr>
+        <tr><td class="num">7</td><td>프로그램 실행과 파이프라인</td><td>명령행 도구 실행, 입력 → 처리 → 출력 개념</td></tr>
+        <tr><td class="num">8</td><td>문서화 + <strong>에이전트 관리 도구</strong></td><td>README, 커밋 정리 + 멀티 에이전트 지휘 도구 개념</td></tr>
+        <tr><td class="num">9</td><td>프로젝트 설계와 착수</td><td>작업 분해 — AI에게 맡길 일 vs 사람이 할 일</td></tr>
+        <tr><td class="num">10</td><td><strong>설정 파일 읽기 + 위임 개시</strong></td><td>설정(TOML)·규칙(MD) 문법 + 비동기 작업 위임</td></tr>
+        <tr><td class="num">11</td><td><strong>위임 · 검수 + 설정 수정</strong></td><td>걸어둔 작업 검수, 설정 변경 → 효과 확인</td></tr>
+        <tr><td class="num">12</td><td>종합 — 스프린트 + 프로젝트 완성</td><td>효율 측정, 위임 회고, 커밋 이력 회고</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="point">
+    <div class="k">전환점</div>
+    <p>
+      <strong>6주차 git 도입이 이 수업의 "코딩학원다움"을 가르는 지점입니다.</strong>
+      이후 모든 주차의 마무리가 커밋이 되고, 12주차에 학생은 자기 커밋 이력을 보며
+      "이게 실무에서 쓰는 방식"임을 확인합니다.
+    </p>
+  </div>
+</section>
+
+<section id="weeks">
+  <p class="slabel">4 · 주차별 상세</p>
+  <h2>12주 <b>전체 진행</b></h2>
+  <p>
+    각 주차는 만들기 목표 · 개발 역량 · 사용 기술로 구성되고, 아래에 중등반과 고등반의
+    진행 차이를 나눠 적었습니다.
+  </p>
+
+  <div class="weeks">
+
+    <article class="week">
+      <div class="week-head"><span class="wnum">1<span>주</span></span><span class="wtitle">AI를 부려본다</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">AI가 만든 나만의 터미널 명함 (아스키아트 + 한 줄 소개)</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">터미널 첫 경험: tmux 화면, 키보드 조작, 기본 명령 3개</div></div>
+        <div class="goal"><div class="k">사용 기술</div><div class="v">브라우저 터미널, CLI 에이전트 첫 대화</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        완성 예시 시연("12주 뒤 여러분의 작품관") → 접속 5단계 실습 → tmux 키보드 기초
+        (치트시트 배포: 스크롤·중단·창) → 용어 3개만(프롬프트 / 에이전트 / 토큰) →
+        첫 프롬프트로 명함 만들기 → 사용량 그래프 첫 공개("여러분이 쓴 만큼 여기 찍힙니다") →
+        수준 확인 10분(짝 편성용).
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>키보드 조작에 시간을 더 씁니다. 명함 내용은 자유 — 좋아하는 것, 별명, 아스키아트 취향 위주로 진입 장벽을 낮춥니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>명함에 관심 분야·목표를 담게 해 이후 포트폴리오의 첫 줄로 삼습니다. 토큰 개념을 조금 더 구체적으로 짚습니다.</p></div>
+      </div>
+      <div class="point"><div class="k">측정 기준점</div><p>이 주의 과제 기록(사용량·소요 시간)이 12주차 개선률 비교의 1차 기준이 됩니다. 반드시 보존합니다.</p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>완성 예시 명함·작품관 데모, tmux 치트시트 인쇄, 계정 카드 배부.</p></div>
+    </article>
+
+    <article class="week">
+      <div class="week-head"><span class="wnum">2<span>주</span></span><span class="wtitle">내 작품관 개관</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">내 소개 웹페이지 — 브라우저로 실제 열어본다 (첫 시각적 성취)</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">폴더 구조, "웹페이지 = 파일" 이해, 수정 요청 반복 루프</div></div>
+        <div class="goal"><div class="k">사용 기술</div><div class="v">에이전트의 파일 생성·수정, 작품관 주소로 확인</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        "채팅 AI와 뭐가 다른가" — 에이전트가 파일을 직접 만드는 것을 시연 → 각자 소개 페이지 생성 →
+        <strong>브라우저 새로고침으로 즉시 확인</strong> → 수정 요청 반복(색·글꼴·내용) →
+        "고쳐줘"보다 "○○를 ○○로 바꿔줘"가 잘 먹히는 경험 → 작품관 구조 안내
+        ("매주 여기에 전시합니다").
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>수정 요청을 게임처럼 진행합니다 — "10번 안에 원하는 화면 만들기". 눈에 보이는 변화가 큰 항목(색·크기·배경)부터 다룹니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>생성된 HTML 파일을 직접 열어 구조를 훑습니다. 요청 문장과 바뀐 코드 줄을 대응시켜 "내 말이 어디를 바꿨는지" 확인합니다.</p></div>
+      </div>
+      <div class="point"><div class="k">교육 포인트</div><p>수정 요청 루프가 이 수업 전체의 기본 동작입니다. 여기서 "구체적으로 시키면 구체적으로 나온다"를 몸에 새깁니다.</p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>작품관 템플릿(전 학생 동일 뼈대), 페이지 서빙 경로 사전 구축.</p></div>
+    </article>
+
+    <article class="week">
+      <div class="week-head"><span class="wnum">3<span>주</span></span><span class="wtitle">지시문의 기술</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">같은 요청·다른 지시문 실험 리포트 (작품관 게시)</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">통제 변인 실험, 히스토리 활용, 결과 기록 습관</div></div>
+        <div class="goal"><div class="k">사용 기술</div><div class="v">프롬프트 구성 요소(역할·맥락·형식·예시), 결과 비교</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        같은 목표("내 소개 페이지에 취미 섹션 추가")를 5가지 지시문으로 → 결과를 나란히 비교 →
+        무엇이 결과를 갈랐나 토론 → 좋은 지시문의 4요소 정리 → 실험 리포트를 페이지로 작성.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>지시문 5개는 강사가 미리 준비한 카드에서 고릅니다. 비교는 "어느 쪽이 더 마음에 드는가"로 시작해 이유를 말로 풀게 합니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>지시문을 직접 설계하고 변인을 하나씩만 바꿉니다. 사용량 그래프에서 입력/출력을 구분해 읽고 <strong>"긴 지시문은 비싸다, 그러나 재시도 3번보다 싸다"</strong>는 트레이드오프를 다룹니다.</p></div>
+      </div>
+      <div class="point"><div class="k">교육 포인트</div><p>4주부터의 스킬 위크가 전부 이 지시문 역량 위에서 돌아갑니다. 여기서 잡히지 않으면 스킬 위크가 "버튼 누르기"가 됩니다.</p></div>
+    </article>
+
+    <article class="week">
+      <div class="week-head"><span class="wnum">4<span>주</span></span><span class="wtitle">스킬 위크 ① 그림</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">AI로 만든 내 포스터 또는 캐릭터 (작품관 전시)</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">이미지 파일 다루기 (확장자·용량·저장 위치), 생성물 검증</div></div>
+        <div class="goal"><div class="k">사용 기술</div><div class="v">이미지 생성 기능 (에이전트 내장) — 주당 20장 제한</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        "스킬" 개념 첫 등장 — "매주 새 장비를 하나씩 드립니다" → 이미지 생성 시연 →
+        장수 제한 안내("20장 안에서 원하는 그림을 뽑는 게임입니다") → 각자 제작: 프롬프트 구체화 →
+        생성 → 평가 → 수정 반복 → 베스트컷을 작품관에 전시 + 어떤 지시문으로 뽑았는지 함께 기록.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>캐릭터·포스터 등 취향 중심 주제. 스타일 어휘 카드(수채화·픽셀·네온 등)를 보고 고르는 방식으로 프롬프트를 구성합니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>실제 쓰임이 있는 이미지(보고서 표지, 동아리 포스터 등)를 만듭니다. 구도·조명·비율 어휘를 직접 조합하고, 장당 비용을 계산해 상한 안에서 배분합니다.</p></div>
+      </div>
+      <div class="point"><div class="k">교육 포인트</div><p>장수 제한은 비용 통제이자 핵심 교육 장치입니다 — 3주차의 지시문 역량이 좋을수록 적은 장수로 원하는 그림이 나옵니다. <strong>"AI는 공짜가 아니다 + 잘 시키면 싸다"</strong>를 숫자로 처음 체감하는 주.</p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>장당 비용 실측 → 상한 확정, 프롬프트 예시 카드(스타일·구도·조명 어휘).</p></div>
+    </article>
+
+    <article class="week key">
+      <div class="week-head"><span class="wnum">5<span>주</span></span><span class="wtitle">스킬 위크 ② 발표자료</span><span class="tag fixed">실용 정점 · 불가침</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">5~7장 발표 슬라이드 — 실제 학교 발표에 쓸 수 있는 수준</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">마크다운 문법, HTML 문서 구조 읽기, 내용 → 구조 → 디자인 순서</div></div>
+        <div class="goal"><div class="k">사용 기술</div><div class="v">슬라이드 생성 스킬 (강사 제작·서버 설치)</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        좋은 슬라이드 vs 나쁜 슬라이드 3분 → 주제 선정 → 개요를 마크다운으로 먼저(내용 설계) →
+        스킬로 슬라이드 생성 → 브라우저에서 넘겨보며 다듬기 → 작품관 전시.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>제공 주제 목록에서 고릅니다(환경·역사 인물·과학 원리 등). 슬라이드 장수를 5장으로 고정해 완성을 보장하고, 발표 대본은 다루지 않습니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p><strong>실제 수행평가 주제를 강력 권장</strong>합니다. 발표 대본 생성까지 진행하고 출처 표기를 함께 지도합니다. AI 활용 사실을 명시하는 방법도 다룹니다.</p></div>
+      </div>
+      <div class="point"><div class="k">교육 포인트</div><p>"내용을 먼저 설계하고 형식은 도구에 맡긴다" — 실무 문서 작업의 핵심 순서. <strong>"학원에서 만든 걸 학교에서 그대로 썼다"가 나오면 이 과정 최고의 성과이자 홍보입니다.</strong></p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>슬라이드 스킬 제작·테스트(HTML 기반, 외부 서비스 불필요), 주제 목록 10개.</p></div>
+    </article>
+
+    <article class="week">
+      <div class="week-head"><span class="wnum">6<span>주</span></span><span class="wtitle">스킬 위크 ③ 이야기책 + git 시작</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">글+그림 이야기책 (웹에서 넘겨보는 형태, 작품관 전시)</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">git 3동작 (add / commit / push), status·log 읽기</div></div>
+        <div class="goal"><div class="k">사용 기술</div><div class="v">스토리북 스킬 (강사 제작) + 이미지 생성 (4주 역량 재사용)</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        줄거리 5장면 설계 → 장면별 삽화 생성(4주차 프롬프트 역량 재사용 — 스타일 통일이 이번 주 도전) →
+        스킬로 책 형태 조립 → <strong>git 도입</strong>: "작품이 쌓이니 이제 기록합니다" —
+        사물함(저장소)·세이브(commit)·업로드(push) 비유, 3줄 실습 → 이야기책이 첫 공식 커밋이 됨.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>창작 이야기 중심. git은 비유와 3줄 실습까지만 — status·log는 강사 화면으로 함께 읽고 넘어갑니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>git status·log를 직접 읽고 커밋 메시지를 스스로 씁니다. <strong>자작 스킬 과제 시작</strong> — "네가 반복하는 작업을 도구로 만들어라" (8주까지).</p></div>
+      </div>
+      <div class="point"><div class="k">교육 포인트</div><p>git을 "배워야 할 것"이 아니라 "내 작품을 지키는 도구"로 도입합니다. 이후 매주 마무리 = 커밋. 계정·저장소·연결은 전부 사전 세팅되어 학생은 3줄만 칩니다.</p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>스토리북 스킬 제작·테스트, git 비유 슬라이드.</p></div>
+    </article>
+
+    <article class="week">
+      <div class="week-head"><span class="wnum">7<span>주</span></span><span class="wtitle">스킬 위크 ④ 움직이는 작품</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">내 작품이 움직이는 짧은 영상 (30초 내외, 작품관 전시)</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">명령행 프로그램 실행, 입력 → 처리 → 출력 파이프라인 개념</div></div>
+        <div class="goal"><div class="k">사용 기술</div><div class="v">이미지 시퀀스 + 자막 + 영상 변환 도구 (서버 설치)</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        4·6주의 이미지 자산 재사용 + 필요분 추가 생성 → 장면 순서·자막 설계 →
+        에이전트에게 변환 명령을 시키고 <strong>무슨 명령이 실행되는지 같이 읽기</strong> →
+        영상 확인·수정 → 전시·커밋.
+        <strong>+ 스킬 해부 15분</strong>: 이번 주 쓴 스킬 파일을 다 같이 열어 읽기 —
+        "스킬 = 지시가 적힌 텍스트 파일"을 확인합니다.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>장면 수를 줄이고(3~4장) 자막은 짧게. 변환 명령은 "무엇이 들어가서 무엇이 나오는지"만 짚고 넘어갑니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>변환 명령의 옵션을 실제로 읽습니다 — 해상도·프레임·코덱이 무엇을 결정하는지. 스킬 파일 해부에서 자기 자작 스킬과 비교합니다.</p></div>
+      </div>
+      <div class="point"><div class="k">교육 포인트</div><p>"AI가 마법을 부리는 게 아니라, 도구를 순서대로 실행한다"를 눈으로 봅니다.</p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>영상 변환 도구 설치·테스트, 처리 시간 실측(6명 동시 변환 부하 확인). AI 영상 생성은 비용 확인 후 시연용으로만 쓸지 결정 (학생 실습은 변환 방식으로 확정).</p></div>
+    </article>
+
+    <article class="week key">
+      <div class="week-head"><span class="wnum">8<span>주</span></span><span class="wtitle">작품관 완성 + 지휘소 개설</span><span class="tag buffer">전체 버퍼 주간</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">개인 작품관 완성 + 공유 링크 + 에이전트 지휘 도구 첫 가동</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">README·커밋 정리 + 멀티 에이전트 관리 도구 개념(데몬·클라이언트 구조)</div></div>
+        <div class="goal"><div class="k">사용 기술</div><div class="v">오픈소스 에이전트 오케스트레이션 도구 (서버 사전 설치)</div></div>
+      </div>
+      <h4>진행 · 전반 60분</h4>
+      <p>
+        작품관 첫 화면 디자인 → 작품별 제목·설명 → README 작성 → 밀린 주차 보충(버퍼) →
+        공유 링크 확인 — <strong>이번 주부터 가족·친구에게 보여줄 수 있습니다.</strong>
+      </p>
+      <h4>진행 · 후반 40분</h4>
+      <p>
+        지휘소 개설 — "지금까지는 터미널 앞에 앉아 시켰습니다. 이제 에이전트를 <strong>관리</strong>합니다."
+        관리 도구 접속 → 자기 에이전트 세션 확인 → 첫 원격 지시 → (희망자) 폰 페어링.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>작품관 꾸미기에 시간을 더 씁니다. 지휘 도구는 "여러 명의 AI를 한 화면에서 본다"는 개념 확인과 첫 지시까지.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p><strong>자작 스킬 완성·시연.</strong> 지휘 도구의 데몬·클라이언트 구조를 짚고, 세션을 여러 개 띄워 병렬 작업을 시험합니다.</p></div>
+      </div>
+      <div class="point"><div class="k">운영 포인트</div><p>폰 페어링은 <strong>선택</strong>입니다(개인 기기 사용 동의 필요 — 안내문에 포함). 수업 자체는 서버 웹 화면만으로 성립합니다.</p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>지휘 도구 사전 검증 필수 — 계정별 메모리, 동시 6명 부하, 상시 구동 설정, 모바일 페어링 절차.</p></div>
+    </article>
+
+    <article class="week key">
+      <div class="week-head"><span class="wnum">9<span>주</span></span><span class="wtitle">프로젝트 착수</span><span class="tag fixed">불가침</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">팀 프로젝트 설계서 (주제·역할·작업 분해표) + 첫 작업 착수</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">작업 분해 — "AI에게 맡길 일 vs 사람이 할 일" 나누기</div></div>
+        <div class="goal"><div class="k">결과물 형태</div><div class="v">작품관에 전시되는 웹 콘텐츠로 고정 (관리 가능성 유지)</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        서로의 작품관 둘러보기 10분(가볍게 — 발표 없음) → 마무리 프로젝트 안내 →
+        팀 편성(2~3인 권장, 개인 가능) → 주제 선정 — 제공 목록(작품관 미니게임, 나만의 위키,
+        인터랙티브 스토리 등) 또는 자유 제안(강사 승인) → <strong>설계서 작성</strong>:
+        주제, 역할, "AI에게 맡길 일 / 사람이 할 일" 분해표 → 남는 시간부터 바로 첫 작업 착수.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>제공 주제 목록에서 고르는 것을 기본으로 합니다. 분해표는 강사가 양식을 채워가며 함께 작성 — 항목 수를 5~6개로 제한합니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>자유 주제를 권장합니다. 분해표를 스스로 작성하고 팀 내 역할과 의존 관계(누가 끝나야 다음이 시작되는가)까지 적습니다.</p></div>
+      </div>
+      <div class="point"><div class="k">운영 포인트</div><p>작업 분해표가 이 프로젝트의 핵심 학습입니다 — 위임의 질은 분해의 질에서 나옵니다. 발표·행사 없이 설계와 착수에 시간을 전부 씁니다. 프로젝트 기간이 사실상 9~12주 4주로 늘어 결과물 완성도에 여유가 생깁니다.</p></div>
+    </article>
+
+    <article class="week key">
+      <div class="week-head"><span class="wnum">10<span>주</span></span><span class="wtitle">도구의 정체 → 지휘 개시</span><span class="tag fixed">순서 조정 불가</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">내 9주 사용 데이터 분석 + 프로젝트 첫 작업 위임</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">설정 파일(TOML)·규칙 파일 읽기 + 비동기 작업 위임</div></div>
+      </div>
+      <h4>진행 · 전반 80분</h4>
+      <p>
+        9주 누적 사용 데이터 오픈 → 각자 "이상한 점" 찾기 →
+        <strong>지금까지 쓴 에이전트에 강사가 미리 넣어둔 설정이 있었음을 공개</strong> —
+        설정·규칙 파일을 라인별로 함께 읽으며 해설 → 작동원리 미니 강의(토큰 → 컨텍스트 → 모델) →
+        결론: <strong>"전부 텍스트 파일이다. AI를 다루는 것은 결국 글쓰기다."</strong>
+      </p>
+      <h4>진행 · 후반 20분</h4>
+      <p>
+        "원리를 알았으니 이제 지휘하십시오" — 9주차 분해표의 첫 작업을 지휘 도구로
+        에이전트에게 걸어두고 하교. 원격 등록 학생은 주중에 폰으로 확인 가능
+        (선택 — 확인하지 않아도 다음 주 진행에 지장 없음).
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>설정 파일은 "규칙이 한글로 적혀 있다"는 것을 확인하는 수준까지. 자기 데이터에서 이상한 점을 찾아내는 활동에 시간을 더 씁니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>설정 <strong>트레이드오프 토론</strong>을 추가합니다 — 왜 이 규칙을 넣었는가, 뺐다면 무엇이 달라지는가. 모델 선택과 비용의 관계까지 다룹니다.</p></div>
+      </div>
+      <div class="point"><div class="k">운영 포인트</div><p>9주치 데이터가 전제라 순서 조정 불가. 공개 세부 진행은 별도 강사 문서로 관리합니다. 공개 직후 위임을 개시하는 배치는 의도된 것입니다 — "원리 이해 → 지휘"의 서사.</p></div>
+    </article>
+
+    <article class="week">
+      <div class="week-head"><span class="wnum">11<span>주</span></span><span class="wtitle">위임과 검수 (프로젝트 집중일)</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">프로젝트 중간 결과 + 개선 체크리스트 (12주에서 그대로 사용)</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">위임 → 자리 비움 → 검수 사이클, 설정 수정 → 효과 확인</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        ① 지난주 걸어둔 작업 검수 — 잘된 것 / 틀어진 것 팀별 확인, 지시 보강 후 재위임 →
+        ② <strong>자리 비우기 실습</strong>: 다음 작업을 걸어두고 그 사이에 별도 블록 진행 —
+        "자료를 아는 AI" 미니 체험 20분(문서 3개만 아는 AI — 검색 증강 압축 체험) +
+        개선 레버 3종(지시문 / 설정 / 스킬화) 정리 → ③ 돌아와서 검수 —
+        <strong>"위임의 질 = 지시의 질"을 비동기 상황에서 재확인</strong> → 개선 체크리스트 작성.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>설정 수정은 <strong>강사 데모</strong>로 봅니다 — 한 줄을 바꾸면 답이 어떻게 달라지는지 화면으로 확인. 학생은 지시문 개선 레버에 집중합니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p>10주에 본 설정을 <strong>직접 수정</strong>하고 전후를 비교합니다. 검색 증강 체험은 프로젝트에 바로 적용할 팀이 실제로 붙여봅니다.</p></div>
+      </div>
+      <div class="point"><div class="k">운영 포인트</div><p>신기술 투어는 별도 시간이 아니라 지휘 도구 자체 + 검색 증강 체험으로 갈음합니다(추가 데모는 화제 기술 1개 5분 이내). 이 주의 리듬 자체가 실무의 비동기 AI 협업 리듬입니다.</p></div>
+    </article>
+
+    <article class="week key">
+      <div class="week-head"><span class="wnum">12<span>주</span></span><span class="wtitle">숫자로 증명한다</span><span class="tag fixed">조정 불가</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">1주차 과제 재도전 → 개선률 산출 + 수료</div></div>
+        <div class="goal"><div class="k">개발 역량</div><div class="v">제한 시간 스프린트, 자기 작업의 정량 평가, 커밋 이력 회고</div></div>
+      </div>
+      <h4>진행</h4>
+      <p>
+        이번 주는 워밍업 생략(스프린트가 그 최종형) → 0:00 1주차 유사 과제 공개 →
+        <strong>2차 스프린트 40분</strong>(체크리스트 적용) → 0:40 1차 vs 2차 개선률 각자 확인
+        (15분 — 결과 지표, 행사 아님) → 0:55 휴식 → 1:05 <strong>프로젝트 마무리 45분</strong> —
+        완성, 작품관 최종 전시, 위임 회고를 <strong>서면 한 장</strong>으로 →
+        1:50 마무리 10분 — 커밋 이력 회고("이게 실무 개발자의 기록 방식") →
+        집에서 이어가는 법(무료 도구 목록) → 수료, 작품관 링크는 가족에게 각자 공유.
+      </p>
+      <div class="split">
+        <div class="lane mid"><span class="who">중등반</span><p>개선률은 "사용량이 얼마나 줄었나" 한 지표로만 봅니다. 위임 회고는 세 문장 양식으로 간소화합니다.</p></div>
+        <div class="lane high"><span class="who">고등반</span><p><strong>프로젝트 요약 1장</strong>을 추가로 작성합니다 — 생활기록부·자기소개서에 활용 가능한 형태. 위임 회고와 통합할 수 있습니다.</p></div>
+      </div>
+      <div class="point"><div class="k">목표 문장</div><p>"같은 결과물, 절반의 사용량."</p></div>
+    </article>
+
+  </div>
+</section>
+
+<section id="measure">
+  <p class="slabel">5 · 측정 시스템</p>
+  <h2>순위표 없이 <b>자기 기록</b>만</h2>
+  <p>
+    <strong>행사성 요소(발표회·시상·순위 공개·포인트제)는 두지 않습니다.</strong>
+    측정은 학습 지표로만 씁니다. 동기는 결과물 자체에서 나옵니다 — 매주 작품관에 쌓이는 것,
+    가족에게 보여줄 수 있는 링크.
+  </p>
+
+  <h3 style="margin-top:32px">주간 워밍업 (매주 0:00–0:10)</h3>
+  <p>
+    전원 동일한 미니 목표를 달성하며 지난주 감각을 되살립니다. 목표는 그 주 배울 내용의
+    예고편으로 설계합니다 (예: 4주차는 이미지 관련).
+  </p>
+  <ul>
+    <li>확인: 사용량 대시보드에서 각자 자기 기록 확인</li>
+    <li>순위·보드 없음 — 비교 대상은 <strong>지난주의 자기 기록</strong>뿐</li>
+  </ul>
+
+  <h3 style="margin-top:28px">12주차 개선률 측정</h3>
+  <ul>
+    <li>1주차 과제 기록(사용량·소요 시간)을 기준점으로 보존</li>
+    <li>12주차 유사 과제 재도전 → <strong>본인 대비 개선률</strong>로 측정 (학생 간 비교 아님)</li>
+  </ul>
+</section>
+
+<section id="risk">
+  <p class="slabel">6 · 리스크와 대응</p>
+  <h2>예상되는 문제와 <b>대응</b></h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>리스크</th><th>대응</th></tr></thead>
+      <tbody>
+        <tr><td>진도 밀림</td><td>8주가 전체 버퍼. 그 외 주차도 "만들기 2" 블록을 자르는 방식으로 흡수. 불가침 주차(5·9·10·12)는 유지</td></tr>
+        <tr><td>결석</td><td>주간 완결 구조라 다음 주 지장 없음. 놓친 결과물은 8주 버퍼에서. 따라잡기 카드(핵심 3줄) 제공</td></tr>
+        <tr><td>흥미를 잃는 학생</td><td>주차마다 결과물 형태가 바뀌므로 "이번 주는 내 취향"이 돌아옴. 작품관에 쌓이는 결과물과 공유 링크가 동기의 축</td></tr>
+        <tr><td>학생 간 속도 차</td><td>전원 동일 스킬 + 내용만 각자 → 빠른 학생은 다듬기 심화, 느린 학생은 기본 완성. 짝 배치(1주 수준 확인 기반)</td></tr>
+        <tr><td>AI 사용 비용 초과</td><td>계정별 하드 상한 + 이미지 주당 장수 제한 + 강사 대시보드 실시간 감시</td></tr>
+        <tr><td>서버 장애</td><td>매주 스냅샷 백업, 학생 단위 복구 스크립트, 수업 전 점검 루틴. 전원 동시 부하 사전 테스트 완료</td></tr>
+        <tr><td>부적절 생성물</td><td>에이전트 규칙 파일에 연령 적합성 지시 + 작품관 전시는 강사 확인 후</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="prep">
+  <p class="slabel">7 · 강사 사전 준비</p>
+  <h2>주차별 <b>준비 체크리스트</b></h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>시점</th><th>준비 항목</th></tr></thead>
+      <tbody>
+        <tr><td>개강 전</td><td>계정·저장소 일괄 생성, 1주 완성 예시(명함+작품관 데모), tmux 치트시트 인쇄, 전 과정 리허설</td></tr>
+        <tr><td>2주 전</td><td>작품관 템플릿 배포, 학생 페이지 웹 경로 가동 확인</td></tr>
+        <tr><td>4주 전</td><td>이미지 생성 실동작·장당 비용 실측 → 주당 상한 확정, 프롬프트 어휘 카드</td></tr>
+        <tr><td>5주 전</td><td>슬라이드 스킬 제작·테스트, 발표 주제 목록 10개</td></tr>
+        <tr><td>6주 전</td><td>스토리북 스킬 제작·테스트, git 사전 세팅 전 계정 확인</td></tr>
+        <tr><td>7주 전</td><td>영상 변환 도구 설치, 6명 동시 변환 부하 테스트, AI 영상 시연 여부 결정</td></tr>
+        <tr><td>8주 전</td><td>지휘 도구 검증: 계정별 메모리 실측, 동시 6명 부하, 상시 구동 설정, 모바일 페어링 절차, 개인 기기 동의 문구</td></tr>
+        <tr><td>9주 전</td><td>프로젝트 주제 목록 확정, 작업 분해표 양식</td></tr>
+        <tr><td>10주 전</td><td>공개용 해설 자료 준비(별도 강사 문서), 9주치 데이터 리포트 추출</td></tr>
+        <tr><td>11주 전</td><td>신기술 데모 1~2개 선정·리허설, "자료를 아는 AI" 체험 자료 3종</td></tr>
+        <tr><td>12주 전</td><td>1주차 기록 정리, 2차 스프린트 과제 확정, 수료증</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="decide">
+  <p class="slabel">8 · 협의 사항</p>
+  <h2>원장님 <b>확정이 필요한 것</b></h2>
+  <div class="decide">
+    <div class="d-item">
+      <span class="n">1</span>
+      <div><h3>정원</h3><p>현재 "반당 6명 내외" 가정. 확정 인원에 따라 서버 상한·비용 상한을 재계산합니다.</p></div>
+    </div>
+    <div class="d-item">
+      <span class="n">2</span>
+      <div><h3>모집 문구</h3><p>1절의 포지셔닝("실무 개발 환경에서 배우는 AI") 사용 여부.</p></div>
+    </div>
+    <div class="d-item">
+      <span class="n">3</span>
+      <div><h3>작품관 공개 범위</h3><p>링크 소유자만 보기(기본) vs 학원 홍보 활용 — 후자라면 학부모 동의 절차가 필요합니다.</p></div>
+    </div>
+    <div class="d-item">
+      <span class="n">4</span>
+      <div><h3>수료 기준</h3><p>출석 기준 및 수료증 발급 여부.</p></div>
+    </div>
+    <div class="d-item">
+      <span class="n">5</span>
+      <div><h3>고등반 발표자료의 학교 제출물 활용</h3><p>학원 차원에서 권장할지 여부. 표절 규정은 학교별로 다르므로 "AI 활용 명시" 지도 방침을 함께 두시길 권합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  AI 기초와 활용 · 12주 상세 운영 계획 · 내부 검토용<br>
+  중등반 일요일 14:00–16:00 · 고등반 일요일 16:00–18:00
+</footer>
+
+</div>
