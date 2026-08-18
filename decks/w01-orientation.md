@@ -1,4 +1,4 @@
-<!-- class: cover g-none -->
+<!-- class: cover -->
 ^ 1주차
 # AI를 <em>부려본다</em>
 
@@ -12,16 +12,38 @@
 
 ---
 
-<!-- class: g-none -->
+## 12주 동안 <b>이렇게 갑니다</b>
+
+<div class="flow">
+<span>터미널 명함</span><i>→</i>
+<span>내 웹페이지</span><i>→</i>
+<span>그림·포스터</span><i>→</i>
+<span class="hi">발표 슬라이드</span><i>→</i>
+<span>이야기책</span><i>→</i>
+<span>영상</span><i>→</i>
+<span class="hi">나만의 작품관</span>
+</div>
+
+^^^
+> 오늘 만드는 명함이 이 줄의 첫 칸입니다. 매주 한 칸씩 채웁니다.
+
+??? 흰 칸 두 개(발표 슬라이드·작품관)가 이 과정의 두 정점. 5주차와 8주차.
+
+---
+
 ## 오늘 끝나면 <b>이게 생깁니다</b>
 
 ^^^
 나만의 터미널 명함. 아스키아트 하나와 소개 한 줄.
 
 ^^^
-> 지금은 별거 아닌 것처럼 보입니다. 12주 뒤에 다시 만들어 보면, 오늘 걸린 시간의 절반도 안 걸립니다. 그 차이를 숫자로 보여드릴 겁니다.
+<div class="grid c3">
+<div class="card"><div class="k">오늘 배울 명령</div><div class="v" data-count="3" data-suffix="개"></div><p>ls · cd · cat — 이게 전부입니다</p></div>
+<div class="card"><div class="k">외울 용어</div><div class="v" data-count="3" data-suffix="개"></div><p>프롬프트 · 에이전트 · 토큰</p></div>
+<div class="card strong"><div class="k">숙제</div><div class="v" data-count="0"></div><p>12주 내내 이 숫자는 안 변합니다</p></div>
+</div>
 
-??? 완성 예시를 미리 띄워두고 보여준다. "12주 뒤 여러분의 작품관"도 함께.
+??? 완성 예시를 미리 띄워두고 보여준다. "12주 뒤 여러분의 작품관"도 함께. 카드 세 장으로 부담을 덜어주는 게 목적.
 
 ---
 
@@ -127,13 +149,21 @@ AI는 한 번에 맞히는 도구가 아니라, **고쳐가며 쓰는 도구**�
 방금 명함을 만들면서 쓴 토큰이 그래프에 올라왔습니다.
 
 ^^^
+같은 명함을 12주차에 다시 만들면, 보통 이렇게 달라집니다.
+
+<div class="bars">
+<div class="bar"><span class="t">오늘</span><span class="track"><i style="--w:100%"></i></span><span class="n">기준</span></div>
+<div class="bar green"><span class="t">12주 뒤</span><span class="track"><i style="--w:45%"></i></span><span class="n">절반 이하</span></div>
+</div>
+
+^^^
 > 이 숫자를 줄이는 게 앞으로의 목표입니다. 같은 결과를 더 적게 쓰고 만들면, 그만큼 잘 시킨 겁니다.
 
-??? 대시보드를 실제로 띄운다. 순위는 보여주지 않는다 — 각자 자기 것만. 이 기록이 12주차 비교 기준점이 되므로 반드시 보존.
+??? 대시보드를 실제로 띄운다. 순위는 보여주지 않는다 — 각자 자기 것만. 이 기록이 12주차 비교 기준점이 되므로 반드시 보존. 막대의 45%는 예시 수치임을 말해줄 것.
 
 ---
 
-<!-- class: cover g-none -->
+<!-- class: cover -->
 ## 다음 주에는
 
 ^^^

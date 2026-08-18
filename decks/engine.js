@@ -34,7 +34,37 @@
     bar.style.width = ((i + 1) / total * 100) + '%';
     num.textContent = (i + 1) + ' / ' + total;
     if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+
+    // 글로우 — 진행도만큼 오른쪽으로. 색은 현재 슬라이드의 g-* class에서 읽는다
+    const root = document.documentElement;
+    root.style.setProperty('--gx', total > 1 ? (i / (total - 1)).toFixed(4) : '0.5');
+    const g = ['green', 'violet', 'orange', 'none'].find(c => slides[i].classList.contains('g-' + c));
+    if (g) root.dataset.glow = g; else delete root.dataset.glow;
+
+    countUp();
     pushNotes();
+  }
+
+  /* 수치 카운트업 — data-count 요소가 화면에 들어올 때 0부터 차오른다.
+     한 번 오른 요소는 다시 세지 않는다 (뒤로 갔다 와도 숫자가 요동하지 않게). */
+  function countUp() {
+    slides[i].querySelectorAll('[data-count]:not([data-done])').forEach(el => {
+      // fragment 안에 있으면 그 fragment가 켜졌을 때만
+      const fr = el.closest('.fragment');
+      if (fr && !fr.classList.contains('on')) return;
+      el.dataset.done = '1';
+      const target = parseFloat(el.dataset.count);
+      const pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
+      const dec = (el.dataset.count.split('.')[1] || '').length;
+      const fmt = v => pre + v.toLocaleString('ko-KR', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf;
+      if (reduced) { el.textContent = fmt(target); return; }
+      const t0 = performance.now(), dur = 900;
+      (function tick(t) {
+        const p = Math.min(1, (t - t0) / dur);
+        el.textContent = fmt(target * (1 - Math.pow(1 - p, 3)));   // ease-out
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    });
   }
 
   /* 전환 애니메이션을 감싸는 얇은 래퍼.

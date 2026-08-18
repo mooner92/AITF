@@ -81,6 +81,11 @@ def substitute(text, cfg):
 # ── 마크다운 (필요한 만큼만) ──────────────────────────────────────
 def inline(s):
     s = html.escape(s, quote=False)
+    # 원고에 직접 쓴 인라인 태그는 살린다 — <b> <em> <span class="..."> 등.
+    # 이걸 빼먹으면 제목의 <b>가 화면에 글자 그대로 나온다.
+    s = re.sub(r"&lt;(/?(?:b|i|u|em|strong|small|code|br)|"
+               r"span(?:\s+[\w-]+=&quot;[^&]*&quot;|\s+[\w-]+=\"[^\"]*\")*|/span)&gt;",
+               r"<\1>", s)
     s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
     s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
     s = re.sub(r"(?<!\w)_([^_]+)_(?!\w)", r"<em>\1</em>", s)
@@ -227,6 +232,7 @@ SHELL = """<!doctype html>
 </style>
 </head>
 <body>
+<div id="glow"></div>
 <div id="bar"></div>
 <div id="stage">
 {slides}
@@ -257,7 +263,7 @@ def build(src_path, out_path, cfg_path):
 
     # 첫 h1을 제목으로
     m = re.search(r"^#\s+(.+)$", raw, flags=re.M)
-    title = re.sub(r"[*`]", "", m.group(1)).strip() if m else Path(src_path).stem
+    title = re.sub(r"<[^>]+>|[*`]", "", m.group(1)).strip() if m else Path(src_path).stem
 
     blocks = [b for b in re.split(r"^---\s*$", raw, flags=re.M) if b.strip()]
     slides = "\n".join(render_slide(b) for b in blocks)

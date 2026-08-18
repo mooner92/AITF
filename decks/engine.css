@@ -29,18 +29,21 @@ body{
 }
 .slide.on{display:flex;view-transition-name:slide}
 
-/* 글로우 — 슬라이드당 1개, 내용 뒤에 깔린다 */
-.slide::before{
-  content:"";position:absolute;pointer-events:none;
-  top:-30vmin;left:50%;transform:translateX(-50%);
-  width:110vmin;height:60vmin;
-  background:radial-gradient(closest-side,rgba(0,117,255,.18),rgba(0,117,255,0) 72%);
+/* 글로우 — 덱 전체에 하나. 진행도에 따라 왼쪽→오른쪽으로 이동한다.
+   첫 장에서 화면 왼쪽, 마지막 장에서 오른쪽. 위치는 engine.js가 --gx(0~1)로 준다 */
+#glow{
+  position:fixed;top:-34vmin;height:86vmin;width:130vmin;
+  left:calc(14vw + var(--gx,0) * 72vw);transform:translateX(-50%);
+  pointer-events:none;z-index:0;
+  background:radial-gradient(closest-side,var(--glow-c,rgba(0,117,255,.34)),transparent 72%);
+  transition:left .8s cubic-bezier(.4,0,.2,1),background .5s ease,opacity .5s ease;
 }
-.slide.g-green::before{background:radial-gradient(closest-side,rgba(17,255,153,.14),rgba(17,255,153,0) 72%)}
-.slide.g-violet::before{background:radial-gradient(closest-side,rgba(167,139,250,.16),rgba(167,139,250,0) 72%)}
-.slide.g-orange::before{background:radial-gradient(closest-side,rgba(255,128,31,.14),rgba(255,128,31,0) 72%)}
-.slide.g-none::before{display:none}
-.slide > *{position:relative}
+/* 슬라이드 class가 색을 정한다 — engine.js가 현재 슬라이드에서 읽어 적용 */
+html[data-glow="green"] #glow{--glow-c:rgba(17,255,153,.24)}
+html[data-glow="violet"] #glow{--glow-c:rgba(167,139,250,.28)}
+html[data-glow="orange"] #glow{--glow-c:rgba(255,128,31,.26)}
+html[data-glow="none"] #glow{opacity:0}
+.slide > *{position:relative;z-index:1}
 
 /* ── 타이포 ── */
 .eyebrow{
@@ -117,6 +120,41 @@ td:first-child{color:var(--ink)}
 .lane.mid .who{color:var(--green);background:rgba(17,255,153,.09);border:1px solid rgba(17,255,153,.26)}
 .lane.high .who{color:var(--violet);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3)}
 .lane p{font-size:2.4vmin;line-height:1.5;color:var(--charcoal);max-width:none}
+
+/* ── 흐름 (화살표 칩) ──
+   단계·여정을 보여줄 때. <div class="flow"><span>A</span><i>→</i><span class="hi">B</span></div> */
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:1.6vmin;margin-top:2.8vmin}
+.flow span{
+  background:var(--card);border:1px solid var(--hair-strong);border-radius:var(--r-md);
+  padding:1.4vmin 2.4vmin;font-size:2.6vmin;color:var(--body);white-space:nowrap;
+}
+.flow span.hi{background:var(--ink);color:#000;border-color:var(--ink);font-weight:600}
+.flow i{color:var(--ash);font-style:normal;font-size:2.4vmin}
+
+/* ── 수치 강조 ──
+   .card 안의 .v에 data-count="숫자" 를 주면 슬라이드에 들어올 때 0부터 차오른다.
+   접두·접미는 data-prefix / data-suffix ("$", "%", "장") */
+.card .v[data-count]{font-variant-numeric:tabular-nums}
+
+/* ── 가로 막대 ──
+   비교 수치용. --w 로 폭을 준다. 슬라이드에 들어올 때 왼쪽에서 자라난다.
+   <div class="bars"><div class="bar"><span class="t">이름</span>
+     <span class="track"><i style="--w:62%"></i></span><span class="n">62%</span></div></div> */
+.bars{display:flex;flex-direction:column;gap:2vmin;margin-top:2.8vmin;width:100%;max-width:110vmin}
+.bar{display:grid;grid-template-columns:minmax(14vmin,auto) 1fr minmax(8vmin,auto);
+     gap:2.4vmin;align-items:center;font-size:2.4vmin}
+.bar .t{color:var(--charcoal);white-space:nowrap}
+.bar .track{height:1.8vmin;background:var(--elevated);border:1px solid var(--hair);
+            border-radius:var(--r-full);overflow:hidden}
+.bar .track i{display:block;height:100%;width:var(--w,0%);background:var(--blue);
+              border-radius:inherit;transform-origin:left}
+.bar.green .track i{background:var(--green)}
+.bar.violet .track i{background:var(--violet)}
+.bar.orange .track i{background:var(--orange)}
+.bar .n{color:var(--ink);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+@keyframes grow{from{transform:scaleX(0)}}
+.slide.on .bar .track i{animation:grow .9s cubic-bezier(.4,0,.2,1) both .15s}
+.slide.on .fragment:not(.on) .bar .track i{animation:none;transform:scaleX(0)}
 
 /* ── 알약 · 태그 ── */
 .pills{display:flex;flex-wrap:wrap;gap:1.2vmin;margin-top:2.4vmin}
@@ -200,14 +238,15 @@ html[data-dir="back"]::view-transition-new(slide){animation-name:vt-in-back}
 @media(prefers-reduced-motion:reduce){
   ::view-transition-old(slide),::view-transition-new(slide){animation:none}
   .fragment{transition:none}
-  #bar{transition:none}
+  #bar,#glow{transition:none}
+  .slide.on .bar .track i{animation:none;transform:none}
 }
 
 /* ── 인쇄 / PDF ── */
 @media print{
   html,body{height:auto;overflow:visible}
-  #bar,#num,#seek,#overview,#help,#black{display:none!important}
+  #bar,#num,#seek,#overview,#help,#black,#glow{display:none!important}
   .slide{display:flex!important;page-break-after:always;height:100vh}
   .fragment{opacity:1!important;transform:none!important}
-  .slide::before{display:none}
+  .slide.on .bar .track i,.bar .track i{animation:none!important;transform:none!important}
 }

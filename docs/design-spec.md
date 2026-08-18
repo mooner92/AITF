@@ -276,11 +276,12 @@ a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
 ### 5-3. 모션
 
-**두 층으로 나눕니다.**
+**세 층으로 나눕니다.**
 
 1. **슬라이드 전환** — 같은 문서 안 View Transition API. Chrome·Edge·Safari 18·Firefox 144에서 동작하고,
    미지원 브라우저는 전환 없이 즉시 교체되어 아무 문제가 없습니다 (점진적 향상).
 2. **fragment 등장** — 슬라이드 안에서 항목이 하나씩 나타나는 것. CSS `transition`만 씁니다.
+3. **수치 모션** — 카운트업·막대 성장. 슬라이드(또는 fragment)에 들어올 때 한 번만 재생합니다.
 
 ```css
 /* 전환: 방향에 따라 밀어내기 */
@@ -293,8 +294,72 @@ a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .fragment.on{opacity:1;transform:none}
 ```
 
-**금지**: 튀거나 회전하는 전환, 0.4초를 넘는 전환, 슬라이드마다 다른 전환 효과.
+**금지**: 튀거나 회전하는 전환, 0.4초를 넘는 전환, 슬라이드마다 다른 전환 효과,
+같은 수치 모션의 반복 재생 (뒤로 갔다 와도 숫자가 다시 오르지 않습니다).
 모션은 "다음으로 넘어갔다"를 알리는 용도이지 볼거리가 아닙니다.
+
+### 5-3-1. 글로우 — 덱 전체에 하나, 진행과 함께 이동
+
+문서의 글로우는 섹션마다 고정이지만, **발표자료의 글로우는 덱 전체에 하나**입니다.
+첫 장에서 화면 왼쪽에 있다가 장이 넘어갈수록 오른쪽으로 옮겨 가서, 마지막 장에서
+오른쪽 끝에 도착합니다. 청중은 의식하지 못해도 "얼마나 왔는지"가 빛의 위치로 전달됩니다.
+
+```css
+#glow{
+  position:fixed;top:-34vmin;height:86vmin;width:130vmin;
+  left:calc(14vw + var(--gx,0) * 72vw);transform:translateX(-50%);
+  background:radial-gradient(closest-side,var(--glow-c,rgba(0,117,255,.34)),transparent 72%);
+  transition:left .8s cubic-bezier(.4,0,.2,1),background .5s ease;
+}
+```
+
+- `--gx` = 현재 장 / (전체 장 − 1). 엔진이 계산합니다.
+- 이동 범위는 14vw~86vw — 빛의 중심이 화면 밖으로 나가지 않습니다.
+- 불투명도는 문서(.28)보다 진한 **.34** — 발표장 프로젝터는 명암비가 낮아 옅으면 사라집니다.
+- 색은 슬라이드 class로 바꿉니다: `g-green`(.24) `g-violet`(.28) `g-orange`(.26) `g-none`(끔).
+  기본은 파랑이며, 색 변경도 이동과 같은 easing으로 부드럽게 넘어갑니다.
+
+### 5-3-2. 수치 컴포넌트
+
+수치를 보여줄 때는 문장이 아니라 전용 컴포넌트를 씁니다. 외부 라이브러리는 쓰지 않습니다 —
+shadcn/ui 같은 시스템의 **디자인 언어(절제된 무채색 + 한 곳의 강조, 헤어라인, 순수 CSS 모션)는
+가져오되, npm 패키지는 가져오지 않습니다.** 발표자료는 자립 실행 파일이라 React 런타임이
+들어갈 자리가 없고, CSP가 외부 요청을 차단합니다. 필요한 요소는 아래처럼 CSS/SVG로 직접 만듭니다.
+
+**카운트업** — 큰 수 하나를 각인시킬 때:
+
+```html
+<div class="card"><div class="k">12주 전체 예상</div>
+  <div class="v" data-count="250" data-prefix="$"></div></div>
+```
+
+슬라이드에 들어올 때 0부터 ease-out으로 차오릅니다(0.9초). 소수점 자릿수는
+`data-count` 값의 표기를 따르고, `data-prefix`/`data-suffix`로 단위를 붙입니다.
+
+**가로 막대** — 두세 값을 비교할 때:
+
+```html
+<div class="bars">
+  <div class="bar"><span class="t">1주차</span>
+    <span class="track"><i style="--w:100%"></i></span><span class="n">45분</span></div>
+  <div class="bar green"><span class="t">12주차</span>
+    <span class="track"><i style="--w:38%"></i></span><span class="n">17분</span></div>
+</div>
+```
+
+왼쪽에서 자라나며(0.9초), fragment 안에 넣으면 그 단계에서 재생됩니다.
+
+**흐름** — 단계·여정을 보여줄 때:
+
+```html
+<div class="flow"><span>웹페이지</span><i>→</i><span>그림</span><i>→</i>
+  <span class="hi">발표 슬라이드</span><i>→</i><span>작품관</span></div>
+```
+
+강조할 한 칸만 `hi`(흰 배경 반전). 두 칸 이상 반전하면 강조가 아닙니다.
+
+**쓰지 않는 것**: 원형 차트(각도 비교는 눈이 못 합니다), 3D, 그라디언트 채움,
+축이 잘린 막대. 수치가 4개를 넘으면 슬라이드가 아니라 표로 갑니다.
 
 ### 5-4. 모션 접근성 (필수)
 
