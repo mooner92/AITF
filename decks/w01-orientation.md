@@ -153,7 +153,7 @@ AI는 한 번에 맞히는 도구가 아니라, **고쳐가며 쓰는 도구**�
 
 <div class="bars">
 <div class="bar"><span class="t">오늘</span><span class="track"><i style="--w:100%"></i></span><span class="n">기준</span></div>
-<div class="bar green"><span class="t">12주 뒤</span><span class="track"><i style="--w:45%"></i></span><span class="n">절반 이하</span></div>
+<div class="bar c2"><span class="t">12주 뒤</span><span class="track"><i style="--w:45%"></i></span><span class="n">절반 이하</span></div>
 </div>
 
 ^^^

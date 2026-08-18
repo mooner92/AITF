@@ -79,6 +79,8 @@
     const next = Math.max(0, Math.min(slides.length - 1, n));
     if (next === i) return;
     const d = dir || (next > i ? 'fwd' : 'back');
+    // 떠나는 슬라이드의 카운터를 초기화한다 — 다시 들어오면 모션이 다시 재생된다
+    slides[i].querySelectorAll('[data-count]').forEach(el => { delete el.dataset.done; el.textContent = ''; });
     transition(d, () => {
       i = next;
       // 뒤로 갈 때는 그 슬라이드의 fragment를 모두 펼친 상태로 들어간다
