@@ -26,3 +26,7 @@ private/
 
 # Paperlogy TTF 원본 — 배포 zip에서 직접 풀어 쓴다 (약 6MB)
 curriculum/fonts/
+
+# 발표자료 — 원고와 엔진만 커밋하고 산출물은 빌드한다
+decks/class-config.json
+decks/*.html

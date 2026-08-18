@@ -1,0 +1,213 @@
+/* AITF 발표자료 엔진 — 스타일
+   docs/design-spec.md 5절 구현. 토큰은 문서와 동일하고 단위만 vmin으로 바뀐다.
+   이 파일은 build-deck.py가 슬라이드 HTML 안에 인라인으로 넣는다. */
+
+:root{
+  --canvas:#000000; --sunken:#050507; --card:#0a0a0c; --elevated:#101012;
+  --ink:#fcfdff; --body:rgba(252,253,255,.86); --charcoal:rgba(252,253,255,.7);
+  --mute:#a1a4a5; --ash:#888e90; --faint:rgba(252,253,255,.42);
+  --hair:rgba(255,255,255,.06); --hair-strong:rgba(255,255,255,.14);
+  --divider:rgba(255,255,255,.04);
+  --blue:#3b9eff; --green:#11ff99; --violet:#a78bfa; --orange:#ff801f; --yellow:#ffc53d;
+  --r-sm:6px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --font:Paperlogy,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  background:var(--canvas);color:var(--body);font-family:var(--font);font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── 무대 ───────────────────────────────────────────────
+   16:9를 유지하며 화면에 맞춰 축소된다. vmin 기준이라 어떤 해상도에서도 비율이 같다 */
+#stage{position:fixed;inset:0;display:grid;place-items:center}
+.slide{
+  display:none;position:relative;
+  width:100vw;height:100vh;padding:7vmin 9vmin;
+  flex-direction:column;justify-content:center;overflow:hidden;
+}
+.slide.on{display:flex;view-transition-name:slide}
+
+/* 글로우 — 슬라이드당 1개, 내용 뒤에 깔린다 */
+.slide::before{
+  content:"";position:absolute;pointer-events:none;
+  top:-30vmin;left:50%;transform:translateX(-50%);
+  width:110vmin;height:60vmin;
+  background:radial-gradient(closest-side,rgba(0,117,255,.18),rgba(0,117,255,0) 72%);
+}
+.slide.g-green::before{background:radial-gradient(closest-side,rgba(17,255,153,.14),rgba(17,255,153,0) 72%)}
+.slide.g-violet::before{background:radial-gradient(closest-side,rgba(167,139,250,.16),rgba(167,139,250,0) 72%)}
+.slide.g-orange::before{background:radial-gradient(closest-side,rgba(255,128,31,.14),rgba(255,128,31,0) 72%)}
+.slide.g-none::before{display:none}
+.slide > *{position:relative}
+
+/* ── 타이포 ── */
+.eyebrow{
+  font-size:1.9vmin;font-weight:600;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:2.4vmin;
+}
+.slide h1{font-weight:200;font-size:9vmin;line-height:1.06;letter-spacing:-.035em;
+          color:var(--ink);text-wrap:balance}
+.slide h2{font-weight:200;font-size:6.4vmin;line-height:1.14;letter-spacing:-.03em;
+          color:var(--ink);margin-bottom:3.2vmin;text-wrap:balance}
+.slide h3{font-weight:600;font-size:3.6vmin;line-height:1.34;color:var(--ink);margin-bottom:1.2vmin}
+.slide h1 b,.slide h2 b{font-weight:600}
+.slide h1 em,.slide h2 em{font-style:normal;font-weight:600;color:var(--blue)}
+.slide p{font-size:3vmin;line-height:1.62;color:var(--body);max-width:60ch}
+.slide p + p{margin-top:1.6vmin}
+.lead{font-size:3.4vmin;line-height:1.56;color:var(--charcoal);max-width:44ch}
+.small{font-size:2.3vmin;color:var(--mute);line-height:1.5}
+.foot{position:absolute;left:9vmin;bottom:5vmin;font-size:1.7vmin;color:var(--ash)}
+strong{font-weight:600;color:var(--ink)}
+
+/* ── 목록 ── */
+.slide ul{list-style:none;display:flex;flex-direction:column;gap:1.8vmin;margin-top:1vmin}
+.slide li{position:relative;padding-left:3.4vmin;font-size:3vmin;line-height:1.5;color:var(--body)}
+.slide li::before{
+  content:"";position:absolute;left:0;top:1.5vmin;
+  width:1vmin;height:1vmin;border-radius:var(--r-full);background:var(--blue);
+}
+.slide li b{font-weight:600;color:var(--ink)}
+
+/* ── 카드 격자 ── */
+.grid{display:grid;gap:2vmin;margin-top:1vmin}
+.grid.c2{grid-template-columns:repeat(2,1fr)}
+.grid.c3{grid-template-columns:repeat(3,1fr)}
+.grid.c4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:var(--card);border:1px solid var(--hair);border-radius:var(--r-lg);
+  padding:3vmin 2.8vmin;
+}
+.card.strong{border-color:var(--hair-strong)}
+.card .k{font-size:1.7vmin;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+         color:var(--ash);margin-bottom:1.4vmin}
+.card .v{font-weight:200;font-size:5.6vmin;line-height:1.05;letter-spacing:-.02em;color:var(--ink)}
+.card p{font-size:2.4vmin;line-height:1.5;color:var(--charcoal);margin-top:1.2vmin;max-width:none}
+.card h3{font-size:2.9vmin}
+
+/* ── 표 ── */
+.tw{overflow:auto;border:1px solid var(--hair-strong);border-radius:var(--r-lg);margin-top:1vmin}
+table{border-collapse:collapse;width:100%;font-size:2.3vmin}
+th,td{padding:1.8vmin 2.2vmin;text-align:left;vertical-align:top;border-bottom:1px solid var(--hair)}
+th{font-size:1.6vmin;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+   color:var(--ash);background:var(--sunken);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td{color:var(--charcoal);line-height:1.45}
+td:first-child{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums;text-align:center;white-space:nowrap}
+
+/* ── 콜아웃 ── */
+.point{
+  background:var(--elevated);border:1px solid var(--hair-strong);border-radius:var(--r-md);
+  padding:2.4vmin 2.6vmin;margin-top:2.4vmin;
+}
+.point .k{font-size:1.6vmin;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+          color:var(--blue);margin-bottom:1vmin}
+.point.warn .k{color:var(--yellow)}
+.point p{font-size:2.5vmin;line-height:1.5;color:var(--charcoal);max-width:none}
+
+/* ── 중등 / 고등 갈래 ── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2vmin;margin-top:1vmin}
+.lane{background:var(--sunken);border:1px solid var(--hair);border-radius:var(--r-md);padding:2.6vmin 2.8vmin}
+.lane .who{
+  display:inline-block;font-size:1.7vmin;font-weight:600;letter-spacing:.1em;
+  padding:.5vmin 1.4vmin;border-radius:var(--r-full);margin-bottom:1.6vmin;
+}
+.lane.mid .who{color:var(--green);background:rgba(17,255,153,.09);border:1px solid rgba(17,255,153,.26)}
+.lane.high .who{color:var(--violet);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3)}
+.lane p{font-size:2.4vmin;line-height:1.5;color:var(--charcoal);max-width:none}
+
+/* ── 알약 · 태그 ── */
+.pills{display:flex;flex-wrap:wrap;gap:1.2vmin;margin-top:2.4vmin}
+.pill{background:var(--elevated);border:1px solid var(--hair-strong);border-radius:var(--r-full);
+      padding:1vmin 2vmin;font-size:2.1vmin;color:var(--body)}
+.pill b{font-weight:600;color:var(--ink)}
+.tag{font-size:1.6vmin;font-weight:600;letter-spacing:.08em;padding:.5vmin 1.4vmin;
+     border-radius:var(--r-full);border:1px solid}
+.tag.fixed{color:var(--orange);border-color:rgba(255,128,31,.4);background:rgba(255,128,31,.08)}
+.tag.buffer{color:var(--green);border-color:rgba(17,255,153,.3);background:rgba(17,255,153,.07)}
+
+/* ── 코드 ── */
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:2.3vmin;
+     background:var(--elevated);border:1px solid var(--hair-strong);border-radius:var(--r-sm);
+     padding:.3vmin 1vmin;color:var(--ink)}
+pre{background:var(--sunken);border:1px solid var(--hair-strong);border-radius:var(--r-md);
+    padding:2.4vmin 2.8vmin;margin-top:2vmin;overflow-x:auto}
+pre code{background:none;border:none;padding:0;font-size:2.4vmin;line-height:1.6;display:block}
+
+/* ── 표지 · 간지 ── */
+.cover{justify-content:center;align-items:flex-start}
+.cover .meta{display:flex;gap:2vmin;flex-wrap:wrap;margin-top:4vmin}
+.chapter{justify-content:center;align-items:center;text-align:center}
+.chapter .n{font-weight:200;font-size:16vmin;line-height:1;color:var(--blue);
+            letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.chapter h2{margin-top:2vmin;margin-bottom:0}
+
+/* ── fragment (단계 노출) ── */
+.fragment{opacity:0;transform:translateY(6px);
+          transition:opacity .32s ease,transform .32s ease}
+.fragment.on{opacity:1;transform:none}
+
+/* ── 슬라이드 전환 ── */
+@keyframes vt-out-fwd{to{opacity:0;transform:translateX(-3vmin)}}
+@keyframes vt-in-fwd{from{opacity:0;transform:translateX(3vmin)}}
+@keyframes vt-out-back{to{opacity:0;transform:translateX(3vmin)}}
+@keyframes vt-in-back{from{opacity:0;transform:translateX(-3vmin)}}
+::view-transition-old(slide){animation:vt-out-fwd .28s cubic-bezier(.4,0,.2,1) both}
+::view-transition-new(slide){animation:vt-in-fwd .28s cubic-bezier(.4,0,.2,1) both}
+html[data-dir="back"]::view-transition-old(slide){animation-name:vt-out-back}
+html[data-dir="back"]::view-transition-new(slide){animation-name:vt-in-back}
+
+/* ── 크롬 (진행 표시 · 개요 · 도움말) ── */
+#bar{position:fixed;left:0;top:0;height:2px;background:var(--blue);
+     transition:width .28s ease;z-index:10}
+#num{position:fixed;right:3vmin;bottom:2.6vmin;font-size:1.8vmin;color:var(--ash);
+     font-variant-numeric:tabular-nums;user-select:none;z-index:10}
+#seek{position:fixed;left:3vmin;bottom:2.6vmin;font-size:1.8vmin;color:var(--blue);z-index:10}
+
+#overview{
+  position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:20;
+  display:none;grid-template-columns:repeat(auto-fill,minmax(24vmin,1fr));
+  gap:2vmin;padding:4vmin;overflow-y:auto;align-content:start;
+}
+#overview.on{display:grid}
+#overview button{
+  all:unset;cursor:pointer;background:var(--card);border:1px solid var(--hair);
+  border-radius:var(--r-md);padding:2vmin;min-height:12vmin;
+  display:flex;flex-direction:column;gap:1vmin;color:var(--charcoal);
+}
+#overview button:hover,#overview button:focus-visible{border-color:var(--blue);color:var(--ink)}
+#overview .i{font-size:1.6vmin;color:var(--ash);font-variant-numeric:tabular-nums}
+#overview .t{font-size:2.2vmin;line-height:1.35}
+
+#help{
+  position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:30;display:none;
+  place-items:center;
+}
+#help.on{display:grid}
+#help div{background:var(--card);border:1px solid var(--hair-strong);border-radius:var(--r-lg);
+          padding:4vmin 5vmin;font-size:2.2vmin;line-height:2}
+#help kbd{background:var(--elevated);border:1px solid var(--hair-strong);border-radius:var(--r-sm);
+          padding:.3vmin 1.2vmin;font-family:inherit;font-size:2vmin;color:var(--ink);margin-right:1vmin}
+
+#black{position:fixed;inset:0;background:#000;z-index:40;display:none}
+#black.on{display:block}
+
+.notes{display:none}
+
+/* ── 모션 저감 (필수) ── */
+@media(prefers-reduced-motion:reduce){
+  ::view-transition-old(slide),::view-transition-new(slide){animation:none}
+  .fragment{transition:none}
+  #bar{transition:none}
+}
+
+/* ── 인쇄 / PDF ── */
+@media print{
+  html,body{height:auto;overflow:visible}
+  #bar,#num,#seek,#overview,#help,#black{display:none!important}
+  .slide{display:flex!important;page-break-after:always;height:100vh}
+  .fragment{opacity:1!important;transform:none!important}
+  .slide::before{display:none}
+}

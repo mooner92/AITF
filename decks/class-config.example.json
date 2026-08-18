@@ -1,0 +1,35 @@
+{
+  "_읽어주세요": [
+    "이 파일을 class-config.json 으로 복사한 뒤 값을 채우세요.",
+    "class-config.json 은 .gitignore 에 있어 커밋되지 않습니다.",
+    "API 키는 여기에 넣지 않습니다 — 슬라이드는 학생에게 투사되는 화면입니다.",
+    "키는 서버의 계정 생성 절차에서만 다룹니다 (scripts/create-accounts.sh)."
+  ],
+
+  "access": {
+    "url": "<수업 접속 주소 — 예: https://aitf.example.uk>",
+    "academy_ip": "<학원 고정 IP — ifconfig.me 로 확인한 값>",
+    "ip_policy": "<고정 IP 확인됨 → '학원에서는 로그인 없이 바로 접속' / 미확인 → '접속 시 인증 1회'>"
+  },
+
+  "class": {
+    "term": "2026년 가을",
+    "start_date": "<개강일 — 예: 2026-09-06>",
+    "mid_time": "일요일 14:00–16:00",
+    "high_time": "일요일 16:00–18:00",
+    "instructor": "<강사명>"
+  },
+
+  "students": {
+    "mid": ["mid01", "mid02", "mid03", "mid04", "mid05", "mid06"],
+    "high": ["high01", "high02", "high03", "high04", "high05", "high06"]
+  },
+
+  "ai": {
+    "provider": "OpenAI Platform",
+    "model_base": "gpt-5.6-luna",
+    "model_deep": "gpt-5.6-terra",
+    "cap_per_student": "$30",
+    "key_location": "서버 전용 — /opt/harness/codex-config.toml (학생별 600 권한). 이 파일에 키를 쓰지 않습니다."
+  }
+}
