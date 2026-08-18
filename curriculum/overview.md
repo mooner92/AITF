@@ -1,6 +1,6 @@
 # 커리큘럼 개요 (공개판)
 
-> 학원 제출용 수업계획서: [`class-plan.md`](class-plan.md) · 주차별 상세 운영 계획(내부 검토용): [`detailed-plan.md`](detailed-plan.md)
+> 학원 제출용 수업계획서: [`class-plan.md`](class-plan.md) · 주차별 상세 운영 계획: [`detailed-plan.md`](detailed-plan.md) · 후속 과정 구상: [`season2-concept.md`](season2-concept.md)
 
 > 수업 진행의 세부 설계는 각 주차가 끝난 뒤 `classlog/`에 순차 공개됩니다.
 > (수업의 재미 절반이 서프라이즈에 걸려 있어서, 미리 다 적어두지 않습니다 🙂)
