@@ -233,15 +233,17 @@ footer{
 <div class="wrap">
 
 <header class="hero">
-  <p class="eyebrow">v8 · 내부 검토용 · 강사 · 원장 컨펌</p>
+  <p class="eyebrow">v8.1 · 내부 검토용 · 강사 · 원장 컨펌</p>
   <h1>매주 한 겹씩<br><em>깊이 다룬다</em></h1>
   <p class="lede">
     12주 동안 만드는 것은 그림·발표자료·영상이지만, 매주 실제로 늘어나는 것은
     <strong>AI 도구를 다루는 깊이</strong>입니다. 결과물은 그 깊이를 확인하는 자리입니다.
   </p>
   <div class="notice">
-    <span><b>v8 변경 요지</b> — 결과물 중심에서 도구 이해 중심으로. 2주차부터 AI 본론에 들어가고,
-    남의 스킬을 쓰는 데서 내 스킬을 만드는 데까지 갑니다. 학생 활동은 매주 자동으로 위키에 쌓입니다.</span>
+    <span><b>v8.1 변경 요지</b> — 결과물 중심에서 도구 이해 중심으로. 2주차부터 AI 본론에 들어가고,
+    남의 스킬을 쓰는 데서 내 스킬을 만드는 데까지 갑니다. 학생 활동은 매주 자동으로 위키에 쌓여
+    Notion으로 발행됩니다. 소통은 Slack, 준비물은 구글 계정 1개, 9주차부터 자기 웹서비스를 띄우고
+    10주차부터 집에서도 접속합니다 (specs/110·120).</span>
   </div>
   <nav class="toc">
     <a href="#identity">수업 정체성</a>
@@ -411,8 +413,14 @@ footer{
     <span>수업 종료 18:00</span><i>→</i>
     <span>20:00 자동 수집</span><i>→</i>
     <span>학생별 · 행위별 md 생성</span><i>→</i>
-    <span class="hi">위키 그래프 갱신</span>
+    <span class="hi">위키 그래프 갱신</span><i>→</i>
+    <span>Notion 주간 페이지 발행</span><i>→</i>
+    <span>Slack #위키 알림</span>
   </div>
+  <p>
+    정본은 서버 위키(Gitea)이고, <strong>Notion은 읽기 좋은 발행본</strong>입니다 — 학생·학부모가
+    링크 하나로 그 주 수업 내용을 복습합니다. 복습 자료를 강사가 따로 만들지 않습니다.
+  </p>
 
   <h3 style="margin-top:36px">무엇을 모아서 무엇을 만드나</h3>
   <div class="tw">
@@ -509,12 +517,17 @@ footer{
     <table>
       <thead><tr><th>구성 요소</th><th>설명</th></tr></thead>
       <tbody>
-        <tr><td><strong>접속</strong></td><td>학원 노트북 브라우저 → 전용 주소 → 바로 터미널. 설치·가입 없음</td></tr>
+        <tr><td><strong>준비물</strong></td><td>학생당 <strong>구글 계정 1개</strong> (개강 전 가정에서 준비, 만 14세 미만은 보호자 동의). 그 외 설치·가입 없음</td></tr>
+        <tr><td><strong>접속</strong></td><td>학원 노트북 브라우저 → 전용 주소 → 바로 터미널</td></tr>
         <tr><td><strong>서버</strong></td><td>학원 전용 리눅스 서버. 학생별 독립 계정 (서로 파일 접근 불가, 관리 권한 없음)</td></tr>
         <tr><td><strong>AI 에이전트</strong></td><td>터미널에서 동작하는 CLI 에이전트. 대화로 파일 생성·수정·이미지 생성까지 수행</td></tr>
         <tr><td><strong>학생 페이지</strong></td><td><code>~/project/public/</code> 에 넣으면 <code>&lt;주소&gt;/pages/&lt;계정&gt;/</code> 에서 즉시 열림</td></tr>
         <tr><td><strong>버전 관리</strong></td><td>학원 내부 git 서버. 매주 작업 이력이 기록됨</td></tr>
-        <tr><td><strong>위키</strong></td><td>내부 git 위키. 학생 기록 + 매주 자동 생성분</td></tr>
+        <tr><td><strong>위키</strong></td><td>내부 git 위키. 학생 기록 + 매주 자동 생성분 → Notion 주간 발행</td></tr>
+        <tr><td><strong>소통</strong></td><td>Slack (학생 gmail로 초대) — #질문·#작품·#모델비교·#위키. 학부모는 기존 학원 채널</td></tr>
+        <tr><td><strong>모델 비교 봇</strong></td><td>Slack /compare — 같은 질문을 로컬 모델(qwen·gemma)과 GPT에 팬아웃, 답·속도·비용 병기</td></tr>
+        <tr><td><strong>학생 웹서비스</strong></td><td>9주차부터. 계정별 포트 100개 대역, 주소는 <code>mid01.&lt;도메인&gt;</code> 서브도메인 (specs/110)</td></tr>
+        <tr><td><strong>외부 접속</strong></td><td>10주차 개방 — 이메일 일회용 코드 인증(24h 세션). 그 전에는 학원에서만</td></tr>
         <tr><td><strong>사용량 관리</strong></td><td>강사 대시보드에서 학생별 AI 사용량·서버 자원·진도 실시간 확인</td></tr>
         <tr><td><strong>비용 통제</strong></td><td>학생 계정별 AI 사용 상한. 이미지 생성은 주당 장수 제한</td></tr>
         <tr><td><strong>백업</strong></td><td>매 수업 후 전원 스냅샷. 실수로 지워도 복구 가능</td></tr>
@@ -702,9 +715,18 @@ footer{
       <p>
         모델이 여러 개인 이유 → <strong>같은 문제를 작은 모델과 큰 모델에 각각 던진다</strong> →
         결과와 비용을 나란히 비교 → 사용량 그래프에서 방금 쓴 양 확인 →
-        Claude 계열은 강사 시연으로 비교 → <strong>판단 기준을 스스로 문장으로 만들기</strong>
-        ("이럴 땐 작은 모델, 이럴 땐 큰 모델") → 위키에 비교표 작성.
+        <strong>모델 비교 봇 데뷔</strong>: Slack에서 <code>/compare</code> 한 번으로 로컬 모델
+        (qwen·gemma)과 GPT의 답·응답 시간·비용이 나란히 → Claude 계열은 강사 시연 →
+        <strong>판단 기준을 스스로 문장으로 만들기</strong> → 위키에 비교표 작성.
       </p>
+      <div class="point">
+        <div class="k">비교 봇은 이후 상시</div>
+        <p>
+          이 주 이후로도 궁금할 때마다 <code>/compare</code>를 씁니다. "이 일엔 어느 모델이 맞나"를
+          매번 스스로 판단하는 습관이 이 봇의 목적입니다. 학생은 회사 서버에 직접 닿지 않습니다 —
+          봇만 서비스 토큰을 갖습니다.
+        </p>
+      </div>
       <div class="split">
         <div class="lane mid"><span class="who">중등반</span><p>비교 항목을 강사가 정해줍니다(속도·길이·마음에 드는 정도). 표는 3열로 고정해 완성을 보장합니다.</p></div>
         <div class="lane high"><span class="who">고등반</span><p>비교 항목을 직접 설계하고 <strong>컨텍스트 길이가 비용에 미치는 영향</strong>까지 다룹니다. "긴 지시문은 비싸지만 재시도 3번보다 싸다"는 트레이드오프.</p></div>
@@ -747,7 +769,13 @@ footer{
         <div class="goal"><div class="k">만들기 목표</div><div class="v">포스터/이미지 + 발표 슬라이드</div></div>
         <div class="goal"><div class="k">위키</div><div class="v">써본 스킬 평가</div></div>
       </div>
-      <h4>진행</h4>
+      <h4>진행 · 도입 — 단체 디자인 세션</h4>
+      <p>
+        프로젝터에 강사 계정을 띄우고 <strong>반 전체가 지시문을 함께 만들어</strong> 디자인을 뽑습니다.
+        문장을 제안 → 입력 → 결과 평가 → 수정. "지시문이 디자인을 바꾼다"를 전원이 동시에
+        목격한 뒤, 같은 주제를 각자 Codex로 재현합니다.
+      </p>
+      <h4>진행 · 본 내용</h4>
       <p>
         <strong>스킬 파일을 열어 읽는 것부터</strong> 시작합니다 — "이게 전부입니다, 텍스트 파일 하나".
         → 스킬 마켓·GitHub 둘러보기 → 이미지 생성 스킬 설치·사용(주당 장수 제한 안내) →
@@ -804,9 +832,19 @@ footer{
       <h4>진행 · 본 내용</h4>
       <p>
         그 자동화가 바로 오늘의 주제입니다. AI가 "글을 쓰는 것"에서 <strong>"일을 하는 것"</strong>으로
-        넘어갑니다 → Playwright로 브라우저 열기·스크린샷·정보 수집 →
+        넘어갑니다 → <strong>각자 Gemini 무료 API 키 발급</strong> — "API 키가 무엇인가, 왜 비밀인가"
+        (공개 폴더·git에 넣지 않는다는 규칙과 함께) → Playwright로 브라우저 열기·스크린샷·정보 수집 →
         모은 자료를 페이지로 정리 → <strong>위험한 명령은 왜 승인을 받아야 하는가</strong> 토론.
       </p>
+      <div class="point">
+        <div class="k">재료 후보 — n8n</div>
+        <p>
+          이 주의 재료는 Playwright가 기본이지만, n8n(서버 셀프호스트, 무료)으로 교체·병행할 수
+          있습니다. 예시 워크플로 "아침 브리핑 봇": 매일 9시 → 날씨 → Gemini 한 줄 브리핑 +
+          날씨 그림 → Slack 전송. 수업이 끝나도 매일 아침 결과가 도착합니다 — "내가 만든 게
+          계속 돌아간다"가 남습니다.
+        </p>
+      </div>
       <div class="point">
         <div class="k">공개를 7주차에 두는 이유</div>
         <p>
@@ -851,8 +889,19 @@ footer{
       <p>
         서로의 작품관·위키 둘러보기 10분(가볍게, 발표 없음) → 팀 편성(2~3인 권장, 개인 가능) →
         주제 선정 — 제공 목록 또는 자유 제안(강사 승인) → <strong>작업 분해표 작성</strong> →
-        남는 시간부터 바로 착수. 결과물 형태는 <strong>작품관에 전시되는 웹 콘텐츠</strong>로 고정합니다.
+        남는 시간부터 바로 착수. 결과물은 정적 페이지(작품관 전시) 또는
+        <strong>자기 포트에 띄우는 웹서비스</strong> 중 선택합니다.
       </p>
+      <div class="point">
+        <div class="k">이 주부터 내 서버가 생깁니다</div>
+        <p>
+          계정마다 포트 100개 대역과 전용 주소(<code>mid01.&lt;도메인&gt;</code>)가 배정됩니다.
+          내 번호와 주소는 홈의 <code>MY-SERVER.md</code>에 적혀 있고, 규칙은
+          <code>SERVER-RULES.md</code>가 안내합니다 — AI 에이전트도 이 파일을 읽고 대역 밖 포트를
+          쓰려 하면 먼저 알려줍니다. 서버를 안 켰을 때는 502 대신 "아직 서버를 켜지 않았어요"
+          안내 페이지가 뜹니다.
+        </p>
+      </div>
       <div class="split">
         <div class="lane mid"><span class="who">중등반</span><p>제공 주제에서 고르는 것을 기본으로. 분해표는 강사와 함께 작성하며 항목을 5~6개로 제한합니다.</p></div>
         <div class="lane high"><span class="who">고등반</span><p>자유 주제 권장. 분해표를 스스로 작성하고 팀 내 역할과 의존 관계까지 적습니다.</p></div>
@@ -872,6 +921,15 @@ footer{
         Paseo 접속 → 자기 에이전트 세션 확인 → 9주차 분해표의 첫 작업을 걸어두고 하교 →
         (희망자) 폰 페어링으로 주중 확인.
       </p>
+      <div class="point">
+        <div class="k">이 주부터 집에서도 접속됩니다</div>
+        <p>
+          외부 접속이 열립니다 — 자기 gmail로 일회용 코드를 받아 하루 한 번만 인증하면
+          터미널·작품관·내 웹서비스 전부에 닿습니다. 학원에서는 지금처럼 인증 없이 바로.
+          걸어둔 위임 작업을 주중에 집에서 확인·보강할 수 있어 마지막 3주의 밀도가 달라집니다.
+          (숙제가 아닙니다 — 확인하지 않아도 다음 주 진행에 지장 없음)
+        </p>
+      </div>
       <div class="split">
         <div class="lane mid"><span class="who">중등반</span><p>"여러 개의 AI를 한 화면에서 본다"는 개념 확인과 첫 지시까지.</p></div>
         <div class="lane high"><span class="who">고등반</span><p>데몬·클라이언트 구조를 짚고 세션을 여러 개 띄워 병렬 작업을 시험합니다.</p></div>
@@ -948,6 +1006,8 @@ footer{
         <tr><td>서버 장애</td><td>매주 스냅샷, 학생 단위 복구 스크립트, 수업 전 점검 루틴</td></tr>
         <tr><td>부적절 생성물</td><td>에이전트 규칙 파일에 연령 적합성 지시 + 작품관 전시는 강사 확인 후</td></tr>
         <tr><td>자동 위키 오류</td><td>생성 실패해도 수업에 지장 없음(학생 수기 기록이 별도로 존재). 실패 시 알림만</td></tr>
+        <tr><td>구글 계정 미준비 학생</td><td>개강일 학원 발급 예비 계정으로 진행, 이후 본인 계정으로 교체. 만 14세 미만은 보호자 동의 안내를 개강 안내문에 명시</td></tr>
+        <tr><td>회사 서버(로컬 모델) 승인 지연</td><td>비교 봇은 GPT 단독으로도 동작(강등 경로). 승인 후 로컬 모델 추가</td></tr>
       </tbody>
     </table>
   </div>
@@ -960,15 +1020,15 @@ footer{
     <table>
       <thead><tr><th>시점</th><th>준비 항목</th></tr></thead>
       <tbody>
-        <tr><td>개강 전</td><td>계정·저장소·위키 일괄 생성, 1주 완성 예시, tmux 치트시트 인쇄, 전 과정 리허설, <strong>자동 위키 생성 스크립트 구축·시험 가동</strong></td></tr>
+        <tr><td>개강 전</td><td>계정·저장소·위키 일괄 생성, 1주 완성 예시, tmux 치트시트 인쇄, 전 과정 리허설, <strong>자동 위키 생성 스크립트 구축·시험 가동</strong>, Slack 워크스페이스 개설 + 학생 gmail 취합·초대, Notion 통합·발행 시험, gmail 미준비 대비 예비 계정</td></tr>
         <tr><td>2주 전</td><td>작품관 템플릿, 학생 페이지 경로 가동 확인, ChatGPT 웹 비교 시연 준비</td></tr>
-        <tr><td>3주 전</td><td><strong>모델별 응답 실측 자료 확보</strong> (수업 중 즉석 비교 금지)</td></tr>
+        <tr><td>3주 전</td><td><strong>모델별 응답 실측 자료 확보</strong> (수업 중 즉석 비교 금지), <strong>모델 비교 봇 가동</strong> (회사 승인 협의 — 미승인 시 GPT 단독)</td></tr>
         <tr><td>5주 전</td><td>스킬 사전 설치·테스트, 장당 비용 실측 → 상한 확정, <strong>마켓·GitHub 접근 가능 여부 확인</strong></td></tr>
         <tr><td>6주 전</td><td>SKILL.md 뼈대 양식(중등용), 스킬 상호 교환 절차</td></tr>
-        <tr><td>7주 전</td><td><strong>Playwright 6명 동시 부하 테스트</strong>, 금지 사이트 목록, 위키 공개 화면 정리</td></tr>
+        <tr><td>7주 전</td><td><strong>Playwright 6명 동시 부하 테스트</strong>, 금지 사이트 목록, 위키 공개 화면 정리, Gemini 키 발급 절차 시연 준비, (채택 시) n8n 셀프호스트 + 브리핑 봇 워크플로</td></tr>
         <tr><td>8주 전</td><td>영상 변환 도구 설치, 6명 동시 변환 부하 테스트</td></tr>
-        <tr><td>9주 전</td><td>프로젝트 주제 목록 확정, 작업 분해표 양식</td></tr>
-        <tr><td>10주 전</td><td><strong>Paseo 검증</strong>: 학원 IP 등록, 메모리 실측, 동시 6명, 상시 구동, 모바일 페어링, 동의 문구</td></tr>
+        <tr><td>9주 전</td><td>프로젝트 주제 목록 확정, 작업 분해표 양식, <strong>포트 배정·nginx 블록·MY-SERVER.md 배포</strong> (alloc-ports.sh --deploy), 오프라인 안내 페이지 가동</td></tr>
+        <tr><td>10주 전</td><td><strong>Paseo 검증</strong>: 학원 IP 등록, 메모리 실측, 동시 6명, 상시 구동, 모바일 페어링, 동의 문구. <strong>외부 접속 개방</strong>: DNS 레코드·Access 정책(OTP 24h)·검증 기준 7항(specs/110)</td></tr>
         <tr><td>11주 전</td><td>위키 기반 체험 자료 구성</td></tr>
         <tr><td>12주 전</td><td>1주차 기록 정리, 2차 스프린트 과제 확정, 수료증</td></tr>
       </tbody>
@@ -999,6 +1059,10 @@ footer{
     <div class="d-item">
       <span class="n">5</span>
       <div><h3>개인 기기 사용 (10주~)</h3><p>Paseo 모바일 확인은 선택 사항입니다. 희망 학생만 진행하며 동의 절차가 필요합니다.</p></div>
+    </div>
+    <div class="d-item">
+      <span class="n">6</span>
+      <div><h3>구글 계정 안내문</h3><p>준비물이 "구글 계정 1개"가 되었습니다. 개강 안내문에 "가정에서 준비, 만 14세 미만은 보호자 동의 필요"와 용도 한정·수료 후 삭제를 함께 넣어 발송해 주세요.</p></div>
     </div>
   </div>
 </section>
