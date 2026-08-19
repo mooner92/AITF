@@ -1,0 +1,222 @@
+<title>강사용 Codex 온보딩</title>
+<style>
+__FONT_FACES__
+
+:root{
+  --canvas:#000000;
+  --card:#0a0a0c;
+  --elevated:#101012;
+  --sunken:#050507;
+  --ink:#fcfdff;
+  --body:rgba(252,253,255,.86);
+  --charcoal:rgba(252,253,255,.7);
+  --mute:#a1a4a5;
+  --ash:#888e90;
+  --hair:rgba(255,255,255,.06);
+  --hair-strong:rgba(255,255,255,.14);
+  --divider:rgba(255,255,255,.04);
+  --blue:#3b9eff;
+  --green:#11ff99;
+  --yellow:#ffc53d;
+  --orange:#ff801f;
+  --r-sm:6px; --r-md:8px; --r-lg:12px; --r-full:9999px;
+  --font:Paperlogy,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--canvas);color:var(--body);
+  font-family:var(--font);font-weight:400;
+  font-size:15.5px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:880px;margin:0 auto;padding:0 24px 110px}
+
+header{padding:80px 0 40px}
+.eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;
+         color:var(--blue);margin-bottom:16px}
+h1{font-weight:200;font-size:clamp(32px,5.6vw,54px);line-height:1.12;
+   letter-spacing:-.03em;color:var(--ink);margin-bottom:18px;text-wrap:balance}
+h1 b{font-weight:600}
+.lede{font-size:16.5px;line-height:1.62;color:var(--charcoal);max-width:56ch}
+
+section{padding:48px 0;border-top:1px solid var(--divider)}
+.step{
+  display:grid;grid-template-columns:44px 1fr;gap:20px;align-items:baseline;margin-bottom:14px;
+}
+.step .n{font-weight:200;font-size:34px;line-height:1;color:var(--blue);
+         font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+h2{font-weight:200;font-size:clamp(22px,3.4vw,32px);line-height:1.2;
+   letter-spacing:-.025em;color:var(--ink);text-wrap:balance}
+h2 b{font-weight:600}
+.dur{font-size:12.5px;font-weight:600;color:var(--ash);margin-left:10px;letter-spacing:.06em}
+h3{font-weight:600;font-size:16px;color:var(--ink);margin:24px 0 8px}
+p{margin-bottom:13px;max-width:70ch}
+p:last-child{margin-bottom:0}
+strong{font-weight:600;color:var(--ink)}
+ul,ol{margin:0 0 13px 0;padding-left:20px}
+li{margin-bottom:7px;color:var(--charcoal)}
+li::marker{color:var(--ash)}
+
+pre{
+  background:var(--sunken);border:1px solid var(--hair-strong);border-radius:var(--r-md);
+  padding:16px 20px;margin:14px 0;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;line-height:1.7;color:var(--ink);
+}
+pre .c{color:var(--ash)}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;
+  background:var(--elevated);border:1px solid var(--hair-strong);border-radius:5px;
+  padding:2px 7px;color:var(--ink);
+}
+pre code{background:none;border:none;padding:0}
+
+.tw{overflow-x:auto;margin:16px 0;border:1px solid var(--hair-strong);border-radius:var(--r-lg)}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:14px}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--hair)}
+th{font-weight:600;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
+   color:var(--ash);background:var(--sunken);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td{color:var(--charcoal);line-height:1.55}
+td:first-child{color:var(--ink)}
+td code{white-space:nowrap}
+
+.note{
+  background:var(--elevated);border:1px solid var(--hair-strong);border-radius:var(--r-md);
+  padding:15px 19px;margin:16px 0;
+}
+.note .k{font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+         color:var(--yellow);margin-bottom:6px}
+.note.info .k{color:var(--blue)}
+.note p{font-size:14px;color:var(--charcoal);margin:0;max-width:none;line-height:1.6}
+
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--divider);
+       font-size:13px;color:var(--ash);line-height:1.7}
+@media(max-width:600px){
+  .step{grid-template-columns:34px 1fr;gap:14px}
+  .step .n{font-size:26px}
+  section{padding:38px 0}
+}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">강사용 · 내부</p>
+  <h1>Codex 계정 받은 날, <b>이 순서대로</b></h1>
+  <p class="lede">
+    API 키가 나오는 순간부터 따라가면 그날 안에 세팅과 첫 실습이 끝납니다.
+    목적은 두 가지 — 학생 환경을 실제로 굴려보기, 수업에서 시연할 것들을 미리 손에 익히기.
+  </p>
+</header>
+
+<section style="border-top:none;padding-top:0">
+  <div class="step"><span class="n">1</span><h2>키 배치 <b></b><span class="dur">5분</span></h2></div>
+  <pre><code><span class="c"># 운영자 계정에서 검증용으로. .bashrc에는 아직 넣지 않는다</span>
+export OPENAI_API_KEY="sk-..."
+
+<span class="c"># CLI 전역 설치 확인 (이미 완료 — specs/050)</span>
+which codex     <span class="c"># /usr/bin 또는 /usr/local/bin 이어야 정상</span>
+codex --version</code></pre>
+  <div class="note">
+    <div class="k">과금 함정</div>
+    <p>
+      <code>codex login</code>으로 ChatGPT 계정 로그인을 하면 <strong>구독 크레딧 과금</strong>으로
+      들어갑니다. 우리는 API 키 방식입니다 — 환경변수만 있으면 로그인 절차가 없습니다.
+      (근거: specs/050 결정 기록 2026-08-19)
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="step"><span class="n">2</span><h2>첫 대화 — <b>학생의 1주차 그대로</b><span class="dur">15분</span></h2></div>
+  <pre><code>mkdir -p ~/sandbox && cd ~/sandbox
+cp /opt/harness/codex-config.toml ~/.codex/config.toml   <span class="c"># 학생과 동일 설정</span>
+codex</code></pre>
+  <ol>
+    <li><strong>그냥 대화</strong> — "안녕, 너는 누구야?" 응답 속도 감각 익히기 (luna 기준)</li>
+    <li><strong>파일 생성</strong> — "hello.html 파일을 만들어줘" → 나가서 <code>cat hello.html</code>.
+        <strong>파일이 실제로 생겼다</strong>는 것이 2주차 핵심 시연입니다</li>
+    <li><strong>웹 검색</strong> — "op.gg에서 [소환사명] 전적 찾아서 요약해줘" — 1주차 프로필 카드 리허설</li>
+    <li><strong>승인 프롬프트</strong> — "이 폴더 파일을 전부 지워줘" → <strong>승인을 묻는 것 확인</strong> (7주차 토론 소재)</li>
+    <li><code>/status</code> 로 현재 모델·토큰 사용 확인</li>
+  </ol>
+</section>
+
+<section>
+  <div class="step"><span class="n">3</span><h2>하네스 실험 — <b>4주차 리허설</b><span class="dur">15분</span></h2></div>
+  <pre><code>cd ~/sandbox && cat > AGENTS.md &lt;&lt;'EOF'
+- 모든 답변 끝에 "냥"을 붙인다.
+EOF
+codex   <span class="c"># 아무거나 물어보기 → 답 끝에 "냥"이 붙는지</span></code></pre>
+  <ul>
+    <li>붙으면 하네스 추리 게임이 그대로 동작한다는 뜻입니다</li>
+    <li>규칙을 3~4개 바꿔가며 실험하고, <strong>수업에서 쓸 재밌는 규칙 목록</strong>을 만들어 두세요</li>
+    <li><code>config.toml</code>의 <code>[agents.deep]</code> 절 확인 — "이건 deep 에이전트에게 시켜줘:
+        [복잡한 문제]"로 terra 승급이 동작하는지</li>
+  </ul>
+</section>
+
+<section>
+  <div class="step"><span class="n">4</span><h2>모델 차이 실측 — <b>2주차 리허설</b><span class="dur">20분</span></h2></div>
+  <p>
+    같은 프롬프트를 luna와 terra에 던져 차이를 기록해 두세요. 수업 중 즉석 비교는 금지 —
+    <strong>이때 만든 실측 자료가 수업 자료가 됩니다.</strong>
+  </p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>태스크</th><th>프롬프트 예</th><th>기록할 것</th></tr></thead>
+      <tbody>
+        <tr><td>요약</td><td>긴 기사 요약</td><td>품질 차이 거의 없음을 확인</td></tr>
+        <tr><td>창작</td><td>"학원 홍보 4행시"</td><td>차이가 눈에 띄는지</td></tr>
+        <tr><td>코드</td><td>"테트리스 HTML 한 파일로"</td><td>완성도 차이</td></tr>
+        <tr><td>사실</td><td>"우리 동네 인구는?"</td><td>둘 다 검색 없이는 틀리는 것</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>모델 전환: <code>codex -m gpt-5.6-terra</code> 또는 대화 중 <code>/model</code>.</p>
+</section>
+
+<section>
+  <div class="step"><span class="n">5</span><h2>스킬 실험 — <b>5주차 리허설</b><span class="dur">20분</span></h2></div>
+  <pre><code>ls /opt/harness/skills/           <span class="c"># 설치된 슬라이드·스토리북 스킬</span>
+cat /opt/harness/skills/slides/SKILL.md</code></pre>
+  <ul>
+    <li>슬라이드 스킬을 실제로 한 번 돌려 발표자료가 나오는지 확인</li>
+    <li><strong>해부용 well-made 하네스</strong>: oh-my-codex 계열 저장소를 clone해 SKILL.md들을 읽으세요.
+        볼 것 — 발동 조건(트리거 문구) · 지시 내용 구조 · 모델 전환 지점.
+        5주차 해부 수업의 대본이 됩니다</li>
+  </ul>
+</section>
+
+<section>
+  <div class="step"><span class="n">6</span><h2>비용 확인 <b></b><span class="dur">5분</span></h2></div>
+  <ul>
+    <li>Platform 대시보드에서 오늘 쓴 금액 확인 — 위 실습 전체가 <strong>$1 미만</strong>이어야 정상</li>
+    <li>학생 키 cap이 실제로 걸려 있는지 대시보드에서 재확인</li>
+  </ul>
+</section>
+
+<section>
+  <div class="step"><span class="n">7</span><h2>이후 <b>주차별 리허설 순서</b></h2></div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>시점</th><th>미리 해볼 것</th></tr></thead>
+      <tbody>
+        <tr><td>개강 전</td><td>위 1~6 전부 + 1주차 완성 예시(프로필 카드) 제작</td></tr>
+        <tr><td>2주 전</td><td>모델 실측 자료를 수업 슬라이드로 정리, <code>/compare</code> 봇 시험</td></tr>
+        <tr><td>5주 전</td><td>해부용 하네스 분석 노트 완성</td></tr>
+        <tr><td>6주 전</td><td>봇 뼈대(웹훅)로 버스 알림 봇 1개 직접 완성</td></tr>
+        <tr><td>7주 전</td><td>Playwright MCP 설치 → "네이버 날씨 스크린샷 찍어줘" 동작 확인</td></tr>
+        <tr><td>10주 전</td><td>Paseo에서 작업 하나 걸어두고 다음 날 결과 확인</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  막히면 — 키·모델은 <code>specs/050</code>, 주차별 배경은 <code>curriculum/detailed-plan.md</code>,
+  포트 규칙은 <code>materials/server-rules.md</code>.
+</footer>
+
+</div>
