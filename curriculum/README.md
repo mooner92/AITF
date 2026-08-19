@@ -7,6 +7,7 @@
 |---|---|---|
 | [`detailed-plan.md`](detailed-plan.md) | **강사·원장 (내부)** — 주차별 상세, 중등/고등 갈래 분리 | [`detailed-plan.html`](detailed-plan.html) |
 | [`parent-guide.md`](parent-guide.md) | **학부모** — 배포용 요약 | [`parent-guide.html`](parent-guide.html) |
+| — | **학생** — 12주 지도 (스택·스포일러 없음) | [`student-guide.html`](student-guide.html) |
 | [`academy-request.md`](academy-request.md) | **원장** — 개강 전 협조 요청 (계정·IP·명단) | [`academy-request.html`](academy-request.html) |
 | [`class-plan.md`](class-plan.md) | 학원 제출용 요약 계획서 | — |
 | [`overview.md`](overview.md) | 공개용 과정 개요 | — |

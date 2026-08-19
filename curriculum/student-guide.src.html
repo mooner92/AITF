@@ -1,0 +1,216 @@
+<title>AI 특강 12주 지도</title>
+<style>
+__FONT_FACES__
+
+:root{
+  --canvas:#000000;
+  --card:#0a0a0c;
+  --elevated:#101012;
+  --sunken:#050507;
+  --ink:#fcfdff;
+  --body:rgba(252,253,255,.86);
+  --charcoal:rgba(252,253,255,.7);
+  --mute:#a1a4a5;
+  --ash:#888e90;
+  --hair:rgba(255,255,255,.06);
+  --hair-strong:rgba(255,255,255,.14);
+  --divider:rgba(255,255,255,.04);
+  --blue:#3b9eff;
+  --green:#11ff99;
+  --violet:#a78bfa;
+  --yellow:#ffc53d;
+  --r-md:8px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --font:Paperlogy,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--canvas);color:var(--body);
+  font-family:var(--font);font-weight:400;
+  font-size:16px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:820px;margin:0 auto;padding:0 24px 110px}
+
+.hero{position:relative;padding:104px 0 60px;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;top:-240px;left:50%;transform:translateX(-50%);
+  width:860px;height:500px;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(0,117,255,.3),rgba(0,117,255,0) 72%);
+}
+.eyebrow{position:relative;font-size:13px;font-weight:600;letter-spacing:.16em;
+         text-transform:uppercase;color:var(--blue);margin-bottom:20px}
+h1{position:relative;font-weight:200;font-size:clamp(38px,7.6vw,74px);
+   line-height:1.06;letter-spacing:-.035em;color:var(--ink);margin-bottom:22px;text-wrap:balance}
+h1 em{font-style:normal;font-weight:600}
+.lede{position:relative;font-size:clamp(16.5px,2.1vw,20px);line-height:1.6;
+      color:var(--charcoal);max-width:40ch}
+.meta{position:relative;display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.pill{background:var(--elevated);border:1px solid var(--hair-strong);border-radius:var(--r-full);
+      padding:7px 15px;font-size:13.5px;color:var(--body);white-space:nowrap}
+.pill b{font-weight:600;color:var(--ink)}
+
+section{padding:64px 0;border-top:1px solid var(--divider)}
+.slabel{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+        color:var(--ash);margin-bottom:13px}
+h2{font-weight:200;font-size:clamp(26px,4.2vw,40px);line-height:1.18;
+   letter-spacing:-.03em;color:var(--ink);margin-bottom:18px;text-wrap:balance}
+h2 b{font-weight:600}
+p{margin-bottom:14px;max-width:62ch}
+p:last-child{margin-bottom:0}
+strong{font-weight:600;color:var(--ink)}
+
+/* 12주 지도 */
+.map{display:flex;flex-direction:column;gap:0;margin-top:6px}
+.wk{
+  display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:baseline;
+  padding:17px 0;border-bottom:1px solid var(--hair);
+}
+.wk:last-child{border-bottom:none}
+.wk .n{
+  font-weight:200;font-size:26px;line-height:1;color:var(--ink);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.wk .n i{font-style:normal;font-size:13px;color:var(--ash);margin-left:2px}
+.wk .t{font-weight:600;font-size:16.5px;color:var(--ink)}
+.wk .d{font-size:14px;color:var(--charcoal);margin-top:3px;line-height:1.55}
+.wk.secret .t::after{
+  content:"그날 공개";
+  font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--violet);
+  border:1px solid rgba(167,139,250,.35);background:rgba(167,139,250,.08);
+  border-radius:var(--r-full);padding:3px 10px;margin-left:10px;vertical-align:2px;
+}
+.wk.key .t{color:var(--blue)}
+
+/* 약속 */
+.rules{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.rule{
+  display:grid;grid-template-columns:34px 1fr;gap:16px;align-items:start;
+  background:var(--card);border:1px solid var(--hair-strong);border-radius:var(--r-lg);
+  padding:20px 22px;
+}
+.rule .i{font-weight:200;font-size:26px;line-height:1.1;color:var(--blue);font-variant-numeric:tabular-nums}
+.rule h3{font-weight:600;font-size:16.5px;color:var(--ink);margin-bottom:4px}
+.rule p{font-size:14px;color:var(--charcoal);margin:0;max-width:none}
+
+/* 정보 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px}
+.card{background:var(--card);border:1px solid var(--hair);border-radius:var(--r-lg);padding:22px}
+.card .k{font-size:12px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+         color:var(--ash);margin-bottom:9px}
+.card p{font-size:14.5px;color:var(--charcoal);margin:0;max-width:none;line-height:1.6}
+.card p b{color:var(--ink)}
+
+.closing{
+  position:relative;background:var(--card);border:1px solid var(--hair-strong);
+  border-radius:var(--r-xl);padding:38px 36px;margin-top:14px;overflow:hidden;
+}
+.closing::before{
+  content:"";position:absolute;top:-150px;right:-70px;width:480px;height:320px;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(17,255,153,.15),rgba(17,255,153,0) 70%);
+}
+.closing h2{position:relative;font-size:clamp(22px,3.2vw,32px);margin-bottom:12px}
+.closing p{position:relative;color:var(--charcoal);max-width:none}
+
+footer{margin-top:72px;padding-top:26px;border-top:1px solid var(--divider);
+       font-size:13px;color:var(--ash)}
+@media(max-width:560px){
+  section{padding:48px 0}
+  .hero{padding:80px 0 48px}
+  .wk{grid-template-columns:48px 1fr;gap:14px}
+}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">수강생 안내</p>
+  <h1>12주 뒤, 너의<br><em>작품 12개</em>가 남는다</h1>
+  <p class="lede">
+    진짜 개발자들이 쓰는 환경에서 AI에게 일을 시켜서, 매주 하나씩 실제로 쓸 것을 만든다.
+  </p>
+  <div class="meta">
+    <span class="pill"><b>12주</b> · 매주 일요일</span>
+    <span class="pill">중등반 <b>14:00–16:00</b></span>
+    <span class="pill">고등반 <b>16:00–18:00</b></span>
+    <span class="pill">숙제 <b>없음</b></span>
+  </div>
+</header>
+
+<section>
+  <p class="slabel">준비물</p>
+  <h2>구글 계정 <b>하나</b>, 끝</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="k">가져올 것</div>
+      <p><b>구글 계정(gmail) 1개.</b> 개강 전에 만들어 오면 된다.
+         만 14세 미만이면 보호자 동의가 필요할 수 있는데, 안 되면 말해 — 학원에서 하나 빌려준다.</p>
+    </div>
+    <div class="card">
+      <div class="k">안 가져와도 되는 것</div>
+      <p>노트북, 프로그램 설치, 코딩 지식 <b>전부 필요 없다.</b>
+         학원 노트북 브라우저에서 다 된다.</p>
+    </div>
+    <div class="card">
+      <div class="k">2주차까지 하나 더</div>
+      <p><b>최근에 학교에서 발표했던 주제</b> 하나만 기억해 와.
+         숙제 아니고, 기억 안 나면 준비된 목록에서 골라도 된다.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="slabel">12주 지도</p>
+  <h2>매주 <b>하나씩 완성</b>한다</h2>
+  <div class="map">
+    <div class="wk"><span class="n">1<i>주</i></span><div><div class="t">내 프로필 카드</div><div class="d">AI가 인터넷에서 내 게임 전적·최애를 찾아와 카드를 만든다.</div></div></div>
+    <div class="wk"><span class="n">2<i>주</i></span><div><div class="t">AI 답 맞히기 대결</div><div class="d">어느 답이 어느 AI인지 블라인드로 맞혀본다. 이기는 AI가 매번 다르다.</div></div></div>
+    <div class="wk key"><span class="n">3<i>주</i></span><div><div class="t">학교 발표자료를 다시 만든다</div><div class="d">내가 발표했던 그 주제로. 완성되면 인터넷에 실제로 올라간다 — 학교에 그대로 내도 되는 수준으로.</div></div></div>
+    <div class="wk"><span class="n">4<i>주</i></span><div><div class="t">AI 길들이기</div><div class="d">내 규칙대로 움직이게 만든다. 짝의 AI에 몰래 장난도 좀 치고.</div></div></div>
+    <div class="wk"><span class="n">5<i>주</i></span><div><div class="t">필살기 장착</div><div class="d">고수들이 만들어 둔 도구를 가져다 쓴다. 지난주 30분 걸린 게 3분이 된다.</div></div></div>
+    <div class="wk"><span class="n">6<i>주</i></span><div><div class="t">내 봇 만들기</div><div class="d">버스 도착, 급식, 날씨… 내가 정한 알림을 우리 채팅방에 쏘는 봇. 수업 끝나도 계속 돌아간다.</div></div></div>
+    <div class="wk secret"><span class="n">7<i>주</i></span><div><div class="t">AI에게 손발이 생긴다</div><div class="d">이날 보여줄 게 하나 있다. 기대해도 좋다.</div></div></div>
+    <div class="wk"><span class="n">8<i>주</i></span><div><div class="t">작품관 오픈</div><div class="d">7주간 만든 걸 한 페이지에 모은다. 이 링크를 가족·친구한테 보내는 날.</div></div></div>
+    <div class="wk key"><span class="n">9<i>주</i></span><div><div class="t">웹 프로젝트 시작</div><div class="d">내가 만들고 싶은 웹 서비스를 설계하고 만들기 시작한다. 내 전용 주소가 생긴다.</div></div></div>
+    <div class="wk secret"><span class="n">10<i>주</i></span><div><div class="t">AI에게 맡기고 하교한다</div><div class="d">새 장비를 하나 준다. 이것도 그날 공개.</div></div></div>
+    <div class="wk"><span class="n">11<i>주</i></span><div><div class="t">다듬기</div><div class="d">한 주간 굴러간 프로젝트를 확인하고 고친다.</div></div></div>
+    <div class="wk key"><span class="n">12<i>주</i></span><div><div class="t">완성 · 발표 · 수료</div><div class="d">1주차에 만든 걸 다시 만들어 본다 — 얼마나 늘었는지 숫자로 나온다. 프로젝트 발표하고 수료.</div></div></div>
+  </div>
+</section>
+
+<section>
+  <p class="slabel">우리 약속</p>
+  <h2>딱 <b>세 가지</b></h2>
+  <div class="rules">
+    <div class="rule"><span class="i">1</span><div><h3>막히면 3분 안에 손을 든다</h3><p>혼자 끙끙대는 시간이 제일 아깝다. 3분 지났으면 드는 게 맞다.</p></div></div>
+    <div class="rule"><span class="i">2</span><div><h3>옆 친구가 막히면 알려준다</h3><p>설명해 보면 자기가 제일 많이 배운다.</p></div></div>
+    <div class="rule"><span class="i">3</span><div><h3>AI가 한 말을 그대로 믿지 않는다</h3><p>이게 12주 동안 제일 중요한 습관이다. 첫날 왜 그런지 보여준다.</p></div></div>
+  </div>
+</section>
+
+<section>
+  <p class="slabel">알아둘 것</p>
+  <h2>궁금할 만한 <b>몇 가지</b></h2>
+  <div class="cards">
+    <div class="card"><div class="k">결석하면?</div><p>매주 그 주 안에 끝나는 구조라 안 밀린다. 작업은 서버에 그대로 있고, 놓친 건 8주차에 만들 수 있다.</p></div>
+    <div class="card"><div class="k">인터넷에 올라간다며?</div><p>맞다, 그래서 규칙이 있다 — <b>실명·학교·연락처·얼굴은 올리지 않는다.</b> 2주차에 자세히 얘기한다.</p></div>
+    <div class="card"><div class="k">질문은 어디서?</div><p>수업 채팅방(Slack)이 생긴다. 계정은 첫날 카드로 나눠준다.</p></div>
+    <div class="card"><div class="k">끝나면 뭐가 남지?</div><p>작품 12개가 담긴 <b>내 작품관 링크</b>, 그리고 계속 혼자 만들어 갈 수 있는 방법까지.</p></div>
+  </div>
+</section>
+
+<section style="border-top:none;padding-bottom:0">
+  <div class="closing">
+    <h2>마지막 날, 1주차의 나와 <b>시합한다</b></h2>
+    <p>
+      첫날 만든 것을 12주차에 다시 만든다. 시간과 사용량이 숫자로 비교된다 —
+      순위표는 없다. 이기는 상대는 딱 하나, <strong>1주차의 나</strong>다.
+    </p>
+  </div>
+</section>
+
+<footer>
+  AI 특강 · 매주 일요일 · 중등반 14:00–16:00 · 고등반 16:00–18:00
+</footer>
+
+</div>
