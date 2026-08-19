@@ -233,14 +233,14 @@ footer{
 <div class="wrap">
 
 <header class="hero">
-  <p class="eyebrow">v8.3 · 내부 검토용 · 강사 · 원장 컨펌</p>
+  <p class="eyebrow">v8.4 · 내부 검토용 · 강사 · 원장 컨펌</p>
   <h1>매주 한 겹씩<br><em>깊이 다룬다</em></h1>
   <p class="lede">
     12주 동안 만드는 것은 그림·발표자료·영상이지만, 매주 실제로 늘어나는 것은
     <strong>AI 도구를 다루는 깊이</strong>입니다. 결과물은 그 깊이를 확인하는 자리입니다.
   </p>
   <div class="notice">
-    <span><b>v8.3 변경 요지</b> — 결과물 중심에서 도구 이해 중심으로. 2주차부터 AI 본론에 들어가고,
+    <span><b>v8.4 변경 요지</b> — 결과물 중심에서 도구 이해 중심으로. 2주차부터 AI 본론에 들어가고,
     남의 스킬을 쓰는 데서 내 스킬을 만드는 데까지 갑니다. 학생 활동은 매주 자동으로 위키에 쌓여
     Notion으로 발행됩니다. 소통은 Slack, 준비물은 구글 계정 1개, 9주차부터 자기 웹서비스를 띄우고
     10주차부터 집에서도 접속합니다 (specs/110·120).</span>
@@ -618,13 +618,13 @@ footer{
       <thead><tr><th class="num">주</th><th>새로 익히는 것</th><th>도구 · 개념</th></tr></thead>
       <tbody>
         <tr><td class="num">1</td><td>터미널 완주</td><td>tmux 3키, 세션 지속, CLI 에이전트 첫 대화</td></tr>
-        <tr><td class="num">2</td><td><strong>CLI 에이전트의 구조</strong></td><td>웹 챗봇과의 차이, 파일 시스템 접근, AGENTS.md 읽기, 웹 게시</td></tr>
-        <tr><td class="num">3</td><td><strong>모델 선택과 비용</strong></td><td>모델별 성능·가격, 토큰 → 비용, 판단 기준 세우기</td></tr>
+        <tr><td class="num">2</td><td><strong>CLI 구조 + 모델 선택</strong></td><td>웹 챗봇과의 차이, 블라인드 테스트, 토큰 → 비용, 위키 개설</td></tr>
+        <tr><td class="num">3</td><td><strong>첫 응용 — 문서 제작</strong></td><td>design.md 적용, 내용 → 구조 → 디자인, 웹 게시, AI 활용 표기</td></tr>
         <tr><td class="num">4</td><td>지시문 설계 + <strong>설정 수정</strong> + 버전 관리</td><td>프롬프트 4요소, AGENTS.md 직접 수정, git add/commit/push</td></tr>
-        <tr><td class="num">5</td><td><strong>남의 스킬 설치·사용</strong></td><td>스킬 = 텍스트 파일, 마켓 탐색, 설치, 마크다운</td></tr>
+        <tr><td class="num">5</td><td><strong>남의 스킬 설치·사용</strong></td><td>수동 vs 스킬 대비, well-made 하네스 해부, 마켓 탐색</td></tr>
         <tr><td class="num">6</td><td><strong>스킬 제작</strong></td><td>SKILL.md 작성, 테스트, 배포, 상호 검증</td></tr>
         <tr><td class="num">7</td><td><strong>에이전틱 — 도구를 쓰는 AI</strong></td><td>Playwright, 브라우저 자동화, 승인 경계</td></tr>
-        <tr><td class="num">8</td><td>미디어 파이프라인 + 문서화</td><td>이미지 시퀀스 → 영상, README, 작품관 정리</td></tr>
+        <tr><td class="num">8</td><td>정리 + 프리플라이트</td><td>README, 서버 시운전, 아이디어 카드</td></tr>
         <tr><td class="num">9</td><td>작업 분해</td><td>AI에게 맡길 일 vs 사람이 할 일, 설계서</td></tr>
         <tr><td class="num">10</td><td><strong>멀티 에이전트 지휘</strong></td><td>Paseo 데몬·클라이언트, 비동기 위임</td></tr>
         <tr><td class="num">11</td><td>위임 · 검수 사이클</td><td>걸어둔 작업 검수, 지시 보강, 재위임</td></tr>
@@ -686,13 +686,13 @@ footer{
     </article>
 
     <article class="week key">
-      <div class="week-head"><span class="wnum">2<span>주</span></span><span class="wtitle">Codex는 챗봇이 아니다</span><span class="tag fixed">v8 신규</span></div>
+      <div class="week-head"><span class="wnum">2<span>주</span></span><span class="wtitle">Codex는 챗봇이 아니다 + 모델을 고른다</span><span class="tag fixed">기초 완결</span></div>
       <div class="goals">
-        <div class="goal"><div class="k">도구 목표</div><div class="v">CLI 에이전트의 구조. 웹 챗봇과 무엇이 다른가</div></div>
-        <div class="goal"><div class="k">만들기 목표</div><div class="v">내 웹페이지 — 인터넷에 실제로 뜬다</div></div>
-        <div class="goal"><div class="k">위키</div><div class="v">개설. "Codex와 ChatGPT의 차이"</div></div>
+        <div class="goal"><div class="k">도구 목표</div><div class="v">CLI 에이전트의 구조 + 모델별 차이·비용 감각</div></div>
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">우리 반 모델 가이드 (위키 개설 겸 첫 문서)</div></div>
+        <div class="goal"><div class="k">위키</div><div class="v">개설 + 모델 가이드</div></div>
       </div>
-      <h4>핵심 실습 — 같은 요청을 둘에 던진다</h4>
+      <h4>진행 ① — 같은 요청을 둘에 던진다 (30분)</h4>
       <div class="tw">
         <table>
           <thead><tr><th></th><th>ChatGPT 웹</th><th>Codex CLI</th></tr></thead>
@@ -703,56 +703,52 @@ footer{
           </tbody>
         </table>
       </div>
+      <h4>진행 ② — 블라인드 테스트 (40분)</h4>
       <p>
-        말로 설명하지 않고 <strong>나란히 놓고 직접 해보게 합니다.</strong>
-        "왜 굳이 까만 화면에서 하나"에 대한 답이 여기서 나옵니다.
-      </p>
-      <h4>학생 페이지 첫 공개</h4>
-      <p>
-        만든 <code>index.html</code> 이 <strong>30초 안에 인터넷에 뜨는 것</strong>을 확인합니다.
-        이 주의 정점입니다. 이어서 <code>AGENTS.md</code> 를 함께 읽습니다 —
-        "AI에게 매번 말하지 않아도 되게 미리 적어두는 지시서". 읽기만 하고, 고치는 것은 4주차입니다.
-      </p>
-      <div class="point"><div class="k">교육 포인트</div><p>이 주가 v7과 v8을 가르는 지점입니다. 2주차에 도구의 정체를 알아야 3주차 모델 선택, 4주차 설정 수정이 성립합니다.</p></div>
-      <div class="point prep"><div class="k">강사 준비</div><p>ChatGPT 웹 계정(비교 시연용), 작품관 템플릿, 위키 초기 구조.</p></div>
-    </article>
-
-    <article class="week key">
-      <div class="week-head"><span class="wnum">3<span>주</span></span><span class="wtitle">모델을 고른다</span><span class="tag fixed">v8 신규</span></div>
-      <div class="goals">
-        <div class="goal"><div class="k">도구 목표</div><div class="v">모델별 차이 · 비용 구조 · 언제 큰 모델을 쓰나</div></div>
-        <div class="goal"><div class="k">만들기 목표</div><div class="v">우리 반 모델 가이드 — 블라인드 테스트 결과로 만든 위키 문서</div></div>
-        <div class="goal"><div class="k">위키</div><div class="v">학생이 직접 만든 비교표</div></div>
-      </div>
-      <h4>진행 ① — 블라인드 테스트 (30분)</h4>
-      <p>
-        <code>/compare</code>가 모델 이름을 가린 채 답 셋을 보여줍니다. <strong>어느 답이 어느
-        모델인지 맞히는 게임</strong>을 5라운드 — 요약 · 창작 · 코드 · 아이디어 · 사실 확인.
-        라운드마다 정답 공개 때 응답 시간과 비용이 함께 뜹니다.
-      </p>
-      <h4>진행 ② — 태스크별 승자표 (30분)</h4>
-      <p>
-        라운드 결과를 표로 모읍니다. 발견하게 되는 것: <strong>승자가 태스크마다 다릅니다.</strong>
-        짧은 요약은 로컬 모델이 충분하고(무료·즉답), 창작·코드는 큰 모델이 낫고, 사실 확인은
-        어느 쪽도 검색 없이는 위험합니다. "로컬은 구리다"가 아니라
-        <strong>"일마다 적임자가 다르다"</strong>가 이 주의 결론입니다.
+        <code>/compare</code>가 모델명을 가린 답 셋을 보여줍니다. 어느 답이 어느 모델인지 맞히기
+        3라운드(요약 · 창작 · 코드) → 정답 공개 때 속도·비용 병기 → <strong>태스크별 승자표</strong> —
+        승자가 태스크마다 다릅니다. "로컬은 구리다"가 아니라 <strong>"일마다 적임자가 다르다"</strong>가
+        결론입니다 (종합 승부면 큰 모델이 이기고 배우는 게 없어, 로컬이 이기는 라운드가 나오게
+        태스크를 쪼갭니다).
       </p>
       <h4>진행 ③ — 정리 (20분)</h4>
       <p>
-        로컬 모델이 존재하는 이유(무료 · 데이터가 밖으로 안 나감 · 오프라인) →
-        판단 기준을 각자 문장으로 → 위키에 <strong>"우리 반 모델 가이드"</strong> 작성 →
-        예고: "다음 주에 이 판단을 <strong>설정 파일에 박습니다</strong> — 기본 모델을 네가 정한다."
+        위키 개설 → <strong>"우리 반 모델 가이드"</strong> 작성 → <strong>인터넷에 올리면 안 되는 것
+        5분</strong>: 실명·학교·연락처·얼굴 — 다음 주부터 만든 것이 실제 인터넷에 공개되기 전에
+        한 번 못박습니다 → 예고: "다음 주엔 학교 발표자료를 다시 만듭니다.
+        <strong>최근에 발표했던 주제 하나 기억해 오세요</strong> (숙제 아님 — 없으면 목록에서 골라도 됩니다)."
       </p>
-      <div class="point">
-        <div class="k">"그래서 로컬은 쓰레기네"로 끝나지 않게</div>
-        <p>
-          종합 승부면 큰 모델이 이기고 배우는 게 없습니다. 태스크를 쪼개면 로컬이 이기는
-          라운드(짧은 요약·속도·비용)가 반드시 나오고, 그때 모델 선택이 <strong>판단의 문제</strong>가
-          됩니다. 봇은 이후 상시 사용 — 학생은 회사 서버에 직접 닿지 않습니다(봇만 서비스 토큰).
-        </p>
+      <div class="point"><div class="k">교육 포인트</div><p>기초(도구의 정체 + 모델 감각)를 이 주에 완결하고, 3주차부터 응용으로 넘어갑니다. 비교 봇은 이후 상시 사용 — 학생은 회사 서버에 직접 닿지 않습니다(봇만 서비스 토큰).</p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>ChatGPT 웹 계정(비교 시연), 비교 봇 가동(미승인 시 GPT 단독), 모델별 응답 실측 자료, 위키 초기 구조.</p></div>
+    </article>
+
+    <article class="week key">
+      <div class="week-head"><span class="wnum">3<span>주</span></span><span class="wtitle">첫 응용 — 내 발표자료를 다시 만든다</span><span class="tag fixed">실용 정점</span></div>
+      <div class="goals">
+        <div class="goal"><div class="k">도구 목표</div><div class="v">design.md로 결과물 다듬기 · 내용 → 구조 → 디자인 순서</div></div>
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">학교에서 실제 발표했던 주제의 HTML 발표자료 — 인터넷에 공개</div></div>
+        <div class="goal"><div class="k">위키</div><div class="v">발표자료 링크 + 만든 과정 기록</div></div>
       </div>
-      <div class="point"><div class="k">교육 포인트</div><p>"좋은 모델"이 아니라 <strong>"이 일에 맞는 모델"</strong>이라는 감각. 4주차 이후 모든 실습에서 학생이 스스로 선택하게 됩니다.</p></div>
-      <div class="point prep"><div class="k">강사 준비</div><p><strong>모델별 응답 실측 자료를 미리 확보</strong>해 둘 것. 수업 중 즉석 비교는 결과가 흔들려 수업이 흐트러집니다.</p></div>
+      <h4>진행 ① — 단체 디자인 세션 (20분)</h4>
+      <p>
+        프로젝터에 강사 계정(Claude)을 띄우고 <strong>반 전체가 지시문을 함께 만들어 우리 반
+        로고를 뽑습니다.</strong> 문장 제안 → 입력 → 평가 → 수정 — "지시문이 디자인을 바꾼다"를
+        전원이 동시에 목격합니다.
+      </p>
+      <h4>진행 ② — 내 발표자료 (60분)</h4>
+      <p>
+        각자 최근 학교 발표 주제를 Codex로 HTML 발표자료로 재제작합니다. 개요(내용)를 먼저 →
+        생성 → <strong>design.md를 받아서 적용</strong> — "이 파일을 주면 디자인이 확 달라진다"를
+        경험만 하고, 왜 그런지는 다음 주에 뜯어봅니다 → 다듬기.
+      </p>
+      <h4>진행 ③ — 인터넷에 공개 (20분)</h4>
+      <p>
+        <code>public/</code>에 넣는 순간 <strong>30초 안에 내 발표자료가 인터넷에 뜹니다</strong> —
+        이 주의 정점 → 학교에 낼 때는 <strong>AI 활용 사실을 표기</strong>하도록 함께 지도 →
+        위키에 링크와 과정 기록.
+      </p>
+      <div class="point"><div class="k">왜 발표자료가 3주차인가</div><p>이미 발표해 본 주제라 내용 고민이 없고, 전원이 각자 다른 결과물을 갖게 되며, "학원에서 만든 걸 학교에서 그대로 썼다"가 나올 수 있는 가장 이른 지점입니다. 기초 직후의 첫 응용으로 몰입이 가장 큰 배치입니다.</p></div>
+      <div class="point prep"><div class="k">강사 준비</div><p>design.md 2~3종(스타일 다른 것), 주제 제공 목록(발표 기억 안 나는 학생용), 작품관 템플릿, 페이지 경로 가동 확인.</p></div>
     </article>
 
     <article class="week">
@@ -764,10 +760,12 @@ footer{
       </div>
       <h4>진행</h4>
       <p>
-        같은 목표를 여러 지시문으로 → 좋은 지시문 4요소 → <strong>AGENTS.md 직접 수정</strong> —
-        한 줄 바꾸고 결과가 달라지는 것을 확인 → <strong>하네스 추리 게임</strong> →
+        <strong>지난주 design.md를 뜯어봅니다</strong> — "디자인이 확 달라졌던 그 파일, 열어 보면
+        그냥 한국어 지시문입니다." md 지시 파일 개념이 낯익은 물건에서 출발합니다 →
+        "그럼 AI 자체에도 이런 파일이 있을까?" → <strong>AGENTS.md 공개·직접 수정</strong> —
+        한 줄 바꾸고 결과가 달라지는 것 확인 → 좋은 지시문 4요소 → <strong>하네스 추리 게임</strong> →
         망가뜨려 보기 → <strong>git으로 되돌리기</strong>(3줄 실습) →
-        "방금 너희가 만진 게 <strong>하네스</strong>다" — 원리 정리 → 예고: "다음 주엔 이 지시서를
+        "방금 만진 게 <strong>하네스</strong>다" — 원리 정리 → 예고: "다음 주엔 이 지시서를
         통째로 갈아끼우는 물건(스킬)을 배운다."
       </p>
       <div class="point">
@@ -796,18 +794,18 @@ footer{
         <div class="goal"><div class="k">만들기 목표</div><div class="v">포스터/이미지 + 발표 슬라이드</div></div>
         <div class="goal"><div class="k">위키</div><div class="v">써본 스킬 평가</div></div>
       </div>
-      <h4>진행 · 도입 — 단체 디자인 세션</h4>
+      <h4>진행 · 도입 — 3주차와의 대결 (15분)</h4>
       <p>
-        프로젝터에 강사 계정을 띄우고 <strong>반 전체가 지시문을 함께 만들어</strong> 디자인을 뽑습니다.
-        문장을 제안 → 입력 → 결과 평가 → 수정. "지시문이 디자인을 바꾼다"를 전원이 동시에
-        목격한 뒤, 같은 주제를 각자 Codex로 재현합니다.
+        3주차에 design.md를 들고 손으로 30분 걸려 만든 발표자료를, <strong>슬라이드 스킬은 3분에
+        만듭니다.</strong> 같은 주제로 직접 재현해 보는 이 대비가 "스킬이 왜 존재하는가"에 대한
+        가장 짧은 답입니다.
       </p>
       <h4>진행 · 본 내용</h4>
       <p>
         <strong>잘 만든 하네스를 해부합니다</strong> — oh-my-codex 계열의 well-made 스킬 하네스를
         GitHub에서 clone해 md 파일을 직접 열어 봅니다: 언제 발동하게 해뒀나(트리거), 무슨 지시가
         적혀 있나, 작업에 따라 모델을 바꾸나. "지난주 우리가 한 줄 고친 것의 완성형이 이것" →
-        이미지 생성 스킬 설치·사용(주당 장수 제한) → 슬라이드 스킬로 발표자료 제작 →
+        이미지 생성 스킬 설치·사용(주당 장수 제한) — 포스터·삽화 제작 →
         <strong>스킬은 어디서 찾나</strong>: GeekNews · Claude Skill Market · GitHub 탐색법 —
         이 시점부터 자발적 탐색이 시작되고 수업 템포가 빨라집니다 → 전시 → 위키에 평가.
       </p>
@@ -889,17 +887,25 @@ footer{
     </article>
 
     <article class="week">
-      <div class="week-head"><span class="wnum">8<span>주</span></span><span class="wtitle">작품관 완성 + 자유 심화</span><span class="tag buffer">전체 버퍼</span></div>
+      <div class="week-head"><span class="wnum">8<span>주</span></span><span class="wtitle">작품관 완성 + 프로젝트 프리플라이트</span><span class="tag buffer">전체 버퍼</span></div>
       <div class="goals">
         <div class="goal"><div class="k">도구 목표</div><div class="v">명령행 도구 실행 · 입력 → 처리 → 출력 파이프라인 · 문서화</div></div>
-        <div class="goal"><div class="k">만들기 목표</div><div class="v">개인 작품관 완성 + 자유 심화 한 조각 + 공유 링크</div></div>
+        <div class="goal"><div class="k">만들기 목표</div><div class="v">작품관 완성 + 내 첫 웹서버 시운전 + 프로젝트 아이디어 카드 3장</div></div>
       </div>
-      <h4>진행</h4>
+      <h4>진행 · 전반 60분 — 마무리와 심화</h4>
       <p>
-        작품관 첫 화면 정리 + README → <strong>밀린 주차 보충(버퍼)</strong> →
-        <strong>자유 심화</strong>: 지금까지 배운 것 중 하나를 골라 한 단계 올립니다 —
-        내 봇에 기능 추가 / 스킬 개선 / MCP로 새 도구 연결 / 이미지 시퀀스를 ffmpeg로 영상화(선택
-        재료). 각자 다른 걸 하는 첫 주라, 9주 프로젝트의 리허설이 됩니다 → 공유 링크 확인.
+        작품관 첫 화면 정리 + README → <strong>밀린 주차 보충(버퍼)</strong> → 남는 학생은
+        자유 심화: 봇 기능 추가 / 스킬 개선 / MCP 새 도구 연결 / ffmpeg 영상화(선택 재료) →
+        공유 링크 확인.
+      </p>
+      <h4>진행 · 후반 50분 — 프로젝트 프리플라이트</h4>
+      <p>
+        다음 주 설계에 바로 뛰어들 수 있게 장비와 머리를 미리 점검합니다:
+        ① <strong>내 서버 시운전</strong> — MY-SERVER.md의 내 포트에 hello 페이지를 띄우고
+        <code>mid01.&lt;도메인&gt;</code> 주소로 열어본다 (9주에 인프라로 시간을 잃지 않기 위해)
+        ② <strong>Playwright 리허설</strong> — 방금 띄운 내 페이지를 스크린샷 1장
+        ③ <strong>아이디어 카드 3장</strong> — 만들고 싶은 웹 프로젝트를 1인 3개, 한 줄씩.
+        9주차는 이 카드를 꺼내는 것으로 시작합니다.
       </p>
       <div class="point">
         <div class="k">AI 영상 생성은 "걸어두고 하교"</div>
@@ -1060,12 +1066,14 @@ footer{
       <tbody>
         <tr><td>개강 전</td><td>계정·저장소·위키 일괄 생성, 1주 완성 예시, tmux 치트시트 인쇄, 전 과정 리허설, <strong>자동 위키 생성 스크립트 구축·시험 가동</strong>, Slack 워크스페이스 개설 + 학생 gmail 취합·초대, Notion 통합·발행 시험, gmail 미준비 대비 예비 계정</td></tr>
         <tr><td>2주 전</td><td>작품관 템플릿, 학생 페이지 경로 가동 확인, ChatGPT 웹 비교 시연 준비</td></tr>
-        <tr><td>3주 전</td><td><strong>모델별 응답 실측 자료 확보</strong> (수업 중 즉석 비교 금지), <strong>모델 비교 봇 가동</strong> (회사 승인 협의 — 미승인 시 GPT 단독)</td></tr>
+        <tr><td>2주 전</td><td><strong>모델별 응답 실측 자료 확보</strong>(즉석 비교 금지), <strong>비교 봇 가동</strong>(미승인 시 GPT 단독), ChatGPT 웹 계정</td></tr>
+        <tr><td>3주 전</td><td>design.md 2~3종 제작, 발표 주제 제공 목록, 단체 디자인 세션(Claude) 리허설</td></tr>
         <tr><td>5주 전</td><td>스킬 사전 설치·테스트, 장당 비용 실측 → 상한 확정, <strong>마켓·GitHub 접근 가능 여부 확인</strong></td></tr>
         <tr><td>6주 전</td><td>봇 뼈대(웹훅) 구축, 공공데이터포털 공용 키 발급, SKILL.md 뼈대 양식, 소재 카드 3종</td></tr>
         <tr><td>7주 전</td><td><strong>Playwright 6명 동시 부하 테스트</strong>, 금지 사이트 목록, 위키 공개 화면 정리, Gemini 키 발급 절차 시연 준비, (채택 시) n8n 셀프호스트 + 브리핑 봇 워크플로</td></tr>
         <tr><td>8주 전</td><td>자유 심화 재료 점검(ffmpeg 포함), AI 영상 생성 큐 준비(걸어두기용)</td></tr>
-        <tr><td>9주 전</td><td>프로젝트 주제 목록 확정, 작업 분해표 양식, <strong>포트 배정·nginx 블록·MY-SERVER.md 배포</strong> (alloc-ports.sh --deploy), 오프라인 안내 페이지 가동</td></tr>
+        <tr><td>8주 전 (추가)</td><td><strong>포트 배정·nginx 블록·MY-SERVER.md 배포</strong> (alloc-ports.sh --deploy), 오프라인 안내 페이지, 아이디어 카드 양식</td></tr>
+        <tr><td>9주 전</td><td>프로젝트 주제 목록 확정, 작업 분해표 양식</td></tr>
         <tr><td>10주 전</td><td><strong>Paseo 검증</strong>: 학원 IP 등록, 메모리 실측, 동시 6명, 상시 구동, 모바일 페어링, 동의 문구. <strong>외부 접속 개방</strong>: DNS 레코드·Access 정책(OTP 24h)·검증 기준 7항(specs/110)</td></tr>
         <tr><td>11주 전</td><td>위키 기반 체험 자료 구성</td></tr>
         <tr><td>12주 전</td><td>1주차 기록 정리, 2차 스프린트 과제 확정, 수료증</td></tr>
