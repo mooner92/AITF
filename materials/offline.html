@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>아직 서버를 켜지 않았어요</title>
+<style>
+/* 학생 서버가 안 떠 있을 때 502 대신 뜨는 페이지 — specs/110
+   디자인 스펙(docs/design-spec.md) 적용. 서브셋 폰트는 넣지 않는다:
+   이 페이지는 자주 뜨고 빨라야 하므로 시스템 폰트로 간다 */
+:root{
+  --canvas:#000;--card:#0a0a0c;--elevated:#101012;--ink:#fcfdff;
+  --body:rgba(252,253,255,.86);--charcoal:rgba(252,253,255,.7);--ash:#888e90;
+  --hair:rgba(255,255,255,.06);--hair-strong:rgba(255,255,255,.14);--blue:#3b9eff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--canvas);color:var(--body);min-height:100vh;
+  font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  line-height:1.72;display:grid;place-items:center;padding:32px;
+}
+.box{max-width:560px;width:100%;position:relative}
+.box::before{
+  content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);
+  width:600px;height:320px;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(0,117,255,.22),transparent 72%);
+}
+.eyebrow{
+  position:relative;font-size:12px;font-weight:600;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--blue);margin-bottom:16px;
+}
+h1{
+  position:relative;font-weight:300;font-size:clamp(28px,6vw,40px);line-height:1.2;
+  letter-spacing:-.02em;color:var(--ink);margin-bottom:14px;
+}
+p{position:relative;color:var(--charcoal);margin-bottom:22px}
+.card{
+  position:relative;background:var(--card);border:1px solid var(--hair-strong);
+  border-radius:12px;padding:22px 24px;
+}
+.card h2{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+         color:var(--ash);margin-bottom:12px}
+ol{margin:0;padding-left:20px}
+li{margin-bottom:9px;color:var(--body)}
+li:last-child{margin-bottom:0}
+code{
+  background:var(--elevated);border:1px solid var(--hair-strong);border-radius:5px;
+  padding:2px 8px;font-family:ui-monospace,Menlo,monospace;font-size:14px;color:var(--ink);
+}
+.foot{position:relative;margin-top:22px;font-size:13.5px;color:var(--ash)}
+</style>
+</head>
+<body>
+<div class="box">
+  <p class="eyebrow">서버 응답 없음</p>
+  <h1>아직 서버를<br>켜지 않았어요</h1>
+  <p>주소는 맞습니다. 이 자리에 뜰 서비스가 아직 실행되지 않았을 뿐이에요.</p>
+
+  <div class="card">
+    <h2>해보세요</h2>
+    <ol>
+      <li>터미널 창으로 돌아갑니다</li>
+      <li>프로젝트 폴더에서 실행 명령을 칩니다 — 예: <code>npm run dev</code></li>
+      <li>실행됐다는 메시지가 뜨면 이 페이지를 새로고침합니다</li>
+    </ol>
+  </div>
+
+  <p class="foot">
+    명령을 쳤는데도 그대로면 <strong>포트 번호</strong>를 확인해 보세요.
+    자기 대역의 첫 번째 포트로 띄워야 이 주소로 연결됩니다.
+    그래도 안 되면 손을 드세요.
+  </p>
+</div>
+</body>
+</html>
