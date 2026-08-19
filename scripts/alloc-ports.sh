@@ -6,6 +6,7 @@
 #
 #   ./alloc-ports.sh accounts.csv                 # 배정표만 출력 (기본)
 #   ./alloc-ports.sh accounts.csv --nginx         # nginx 조각까지 생성
+#   ./alloc-ports.sh accounts.csv --deploy        # nginx + 학생 MY-SERVER.md 배포
 #   BASE_DOMAIN=aitf.example.uk ./alloc-ports.sh ...
 #
 # accounts.csv 형식: 계정,비밀번호  (040-accounts.md 와 동일)
@@ -41,7 +42,41 @@ while IFS=, read -r acct _pw; do
   echo "${acct},${p},${p},$((p + 99)),https://${host}"
   echo "${acct},${p},$((p + 99)),${host}" >> "$TABLE.tmp"
 
-  [ "$MODE" = "--nginx" ] || continue
+  # 학생 홈에 내 포트·주소를 적어 둔다. AI 에이전트도 이 파일을 읽는다 (server-rules.md)
+  if [ "$MODE" = "--deploy" ] && [ -d "/home/$acct" ]; then
+    install -d -o "$acct" -g "$acct" -m 755 "/home/$acct/project"
+    cat > "/home/$acct/project/MY-SERVER.md" <<EOF
+# 내 서버 정보 — ${acct}
+
+> 자동 생성 파일입니다. 고치지 마세요 (다시 만들어집니다).
+> 사용 규칙은 옆의 \`SERVER-RULES.md\` 를 보세요.
+
+| | |
+|---|---|
+| 내 계정 | \`${acct}\` |
+| **밖에서 보이는 포트** | **${p}** |
+| 내 포트 대역 | ${p} – $((p + 99)) |
+| 내 주소 | https://${host} |
+
+## 웹페이지를 남에게 보여주려면
+
+\`\`\`bash
+# 반드시 ${p} 번 포트에 띄웁니다
+npm run dev -- --port ${p}
+\`\`\`
+
+띄운 다음 https://${host} 를 열어보세요.
+
+백엔드나 데이터베이스는 $((p + 1)) ~ $((p + 99)) 중 아무거나 쓰면 됩니다.
+그건 나만 볼 수 있고, 내 웹페이지에서는 부를 수 있습니다.
+EOF
+    chown "$acct":"$acct" "/home/$acct/project/MY-SERVER.md"
+    chmod 644 "/home/$acct/project/MY-SERVER.md"
+    ln -sfn /opt/harness/server-rules.md "/home/$acct/project/SERVER-RULES.md"
+    chown -h "$acct":"$acct" "/home/$acct/project/SERVER-RULES.md"
+  fi
+
+  case "$MODE" in --nginx|--deploy) ;; *) continue ;; esac
 
   mkdir -p "$OUTDIR"
   cat > "${OUTDIR}/${acct}.conf" <<EOF
@@ -78,7 +113,7 @@ done < "$CSV"
 
 mv "$TABLE.tmp" "$TABLE" 2>/dev/null || rm -f "$TABLE.tmp"
 
-if [ "$MODE" = "--nginx" ]; then
+if [ "$MODE" = "--nginx" ] || [ "$MODE" = "--deploy" ]; then
   echo >&2
   echo "nginx 조각 생성: ${OUTDIR}/" >&2
   echo "적용 전 반드시: sudo nginx -t && sudo systemctl reload nginx" >&2
