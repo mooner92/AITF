@@ -75,9 +75,12 @@ codex   # 아무거나 물어보기 → 답 끝에 "냥"이 붙는지
 ## 5. 스킬 실험 — 5·6주차 리허설 (20분)
 
 ```bash
-ls /opt/harness/skills/           # 이미 설치된 슬라이드·스토리북 스킬
-cat /opt/harness/skills/slides/SKILL.md
+ls ~/.codex/skills/               # 여기가 Codex 탐색 경로 (심링크로 연결돼 있음)
+cat ~/.codex/skills/deck/SKILL.md
 ```
+
+대화 안에서 `$aitf-deck` 을 쳐서 스킬이 뜨는지, `/skills` 메뉴에 3개가 보이는지 확인하세요.
+**안 보이면** `./scripts/deploy-skills.sh --check` 로 연결 상태를 봅니다.
 
 - 슬라이드 스킬을 실제로 한 번 돌려 발표자료가 나오는지
 - **해부용 well-made 하네스**: oh-my-codex 계열 저장소를 clone해서 SKILL.md들을 읽어보세요.
