@@ -36,6 +36,11 @@ HTML은 내려받아 브라우저로 열면 됩니다 (글꼴 내장, 오프라�
 git clone git@github.com:mooner92/AITF.git && open AITF/docs/architecture.html
 ```
 
+## 검증 원칙
+
+문서보다 실물을 믿습니다 — [`docs/verification-practice.md`](docs/verification-practice.md).
+"문서에 그렇게 쓰여 있다"가 근거가 되지 못한 사례들과, 그래서 세운 규칙이 정리돼 있습니다.
+
 ## 진행 방식 (Spec-Driven)
 
 1. 각 단계는 `specs/NNN-*.md` 스펙 문서로 시작한다 — 목표 / 설계 / 작업 / 검증 기준 / 결정 기록.

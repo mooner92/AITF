@@ -19,6 +19,7 @@
 | [100](100-rehearsal.md) | P9 | 리허설·완료 판정 | In Progress (부하·정리·복구 통과) | 실 CLI 재시험(키 대기) |
 | [110](110-student-services.md) | P10 | 학생 웹서비스 포트·외부 접속 (10~12주) | **Draft** | 방화벽 규칙 승인, DNS·Cloudflare 규칙(운영자) |
 | [120](120-integrations.md) | P11 | Slack·Notion·모델비교 봇·n8n | **Draft** | Slack 전환 확정, **회사 서버 사용 승인**, n8n 채택 여부 |
+| [130](130-prelaunch-plan.md) | — | **개강 전 작업 계획** (대기 구간에 할 일) | **Active** | — |
 
 **확정된 것**: 셰이프 4 OCPU/24GB 현행 유지, **8/18 = 세팅 완료 목표일** · 주제 "내 최애 전문가 AI" · 일요일 14–16 중등반 / 16–18 고등반 · 반당 ~6명 · tmux 키보드 교육
 
