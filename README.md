@@ -36,6 +36,10 @@ HTML은 내려받아 브라우저로 열면 됩니다 (글꼴 내장, 오프라�
 git clone git@github.com:mooner92/AITF.git && open AITF/docs/architecture.html
 ```
 
+## 지금 상태가 궁금하면
+
+[`docs/server-readiness-report.md`](docs/server-readiness-report.md) — 완료·진행 중·승인 대기를 한눈에 정리한 요약입니다.
+
 ## 검증 원칙
 
 문서보다 실물을 믿습니다 — [`docs/verification-practice.md`](docs/verification-practice.md).
