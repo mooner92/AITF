@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # 학생 계정 → 포트 대역 · 호스트명 · nginx 블록 생성 (specs/110)
 #
-# 공식: 중등 11000 + N×100 / 고등 12000 + N×100  (N = 계정 번호)
+# 공식: 중등 11000 + N×100 / 고등 12000 + N×100
+#   반(mid/high)과 N 은 계정명이 아니라 roster.csv 에서 온다 — 계정명을 학생 메일
+#   앞부분으로 쓰기로 하면서(2026-08-25) 이름에서 번호를 뽑을 수 없게 됐다.
+#   N = 같은 반 안에서 roster.csv 에 적힌 순서(1부터). 행 순서를 바꾸면 포트가 바뀐다.
 # 대역 100개 중 외부에 열리는 것은 첫 포트 하나뿐이다.
 #
 #   ./alloc-ports.sh accounts.csv                 # 배정표만 출력 (기본)
@@ -18,16 +21,21 @@ DOMAIN="${BASE_DOMAIN:-<BASE_DOMAIN 미설정>}"
 OUTDIR="${NGINX_OUT:-/etc/nginx/conf.d/students}"
 TABLE="${PORTS_CSV:-/opt/scripts/ports.csv}"
 
-port_of() {                      # 계정명 → 공개 포트
-  local acct="$1" num base
-  num=$(printf '%s' "$acct" | sed 's/[^0-9]//g')
-  num=$((10#${num:-0}))
-  case "$acct" in
-    mid*)  base=11000 ;;
-    high*) base=12000 ;;
-    *)     echo "알 수 없는 계정 접두사: $acct" >&2; return 1 ;;
-  esac
-  echo $(( base + num * 100 ))
+ROSTER="${ROSTER_CSV:-/opt/scripts/roster.csv}"
+
+port_of() {                      # 계정명 → 공개 포트 (roster.csv 기준)
+  local acct="$1"
+  awk -F, -v want="$acct" '
+    NR==1 { next }                                  # 헤더
+    $1=="" || $2=="" { next }
+    { n[$1]++; if ($2==want) { cls=$1; idx=n[$1] } }
+    END {
+      if (cls=="")  { print "roster.csv 에 없는 계정: " want > "/dev/stderr"; exit 1 }
+      if (cls=="mid")       base=11000
+      else if (cls=="high") base=12000
+      else { print "알 수 없는 반: " cls > "/dev/stderr"; exit 1 }
+      print base + idx*100
+    }' "$ROSTER"
 }
 
 echo "계정,공개포트,대역시작,대역끝,주소"

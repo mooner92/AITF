@@ -36,9 +36,14 @@ newest() {
 # ── 학생 적립 현황 ──
 students_json="["
 first=1
-for home in /home/mid* /home/high* /home/test* /home/bash* /home/demo*; do
+# roster.csv 의 학생 + 테스트 계정. 계정명이 자유 형식이라 글로브로는 못 찾는다.
+_accounts() {
+  [ -f /opt/scripts/roster.csv ] && awk -F, 'NR>1 && $2!="" {print $2}' /opt/scripts/roster.csv
+  for h in /home/test* /home/bash* /home/demo*; do [ -d "$h" ] && basename "$h"; done
+}
+for u in $(_accounts | sort -u); do
+  home="/home/$u"
   [ -d "$home" ] || continue
-  u=$(basename "$home")
   id -u "$u" >/dev/null 2>&1 || continue
 
   commits=0

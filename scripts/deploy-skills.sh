@@ -16,7 +16,15 @@ REPO_SKILLS="$(cd "$(dirname "$0")/.." && pwd)/materials/skills"
 STORE=/opt/harness/skills
 MODE="${1:-}"
 
-students() { awk -F: '$3>=1000 && $6 ~ /^\/home\// {print $1}' /etc/passwd | grep -E '^(mid|high)[0-9]+$' || true; }
+# 학생 계정 목록 — roster.csv 가 정본이다. 계정명이 학생 메일 앞부분이라
+# 이름 패턴(^(mid|high)[0-9]+$)으로는 더 이상 찾을 수 없다 (2026-08-25).
+ROSTER="${ROSTER_CSV:-/opt/scripts/roster.csv}"
+students() {
+  [ -f "$ROSTER" ] || return 0
+  awk -F, 'NR>1 && $2!="" {print $2}' "$ROSTER" | while read -r u; do
+    id -u "$u" >/dev/null 2>&1 && echo "$u"
+  done
+}
 
 if [ "$MODE" = "--check" ]; then
   echo "원본(저장소): $REPO_SKILLS"
