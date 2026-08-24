@@ -23,7 +23,8 @@
 | [140](140-gemini-pro.md) | — | Google AI Pro 활용 검토 | Done (검토 완료) | Flow 일일 한도 실측 |
 | [150](150-model-bots.md) | — | 모델별 Slack 봇 | Draft | 회사 서버 승인, OpenAI 호환 API 확인 |
 | [160](160-ssh-access.md) | — | SSH 접속 + Notion 문서 체계 | Draft | 학원 IP, 방화벽 22 승인(운영자) |
-| [170](170-instructor-hub.md) | — | 강사 관제탑 (운영 허브) | In Progress (배포·검증 완료) | 개강일 설정, 자동 위키 연동 |
+| [170](170-instructor-hub.md) | — | 강사 관제탑 (운영 허브) | In Progress (배포·검증 완료) | 자동 위키 연동 |
+| [180](180-wiki.md) | — | **자동 위키 (학생별·반별·전체)** | **Draft — 개강 전 필수** | 최소판 구현 |
 
 **확정된 것**: 셰이프 4 OCPU/24GB 현행 유지, **8/18 = 세팅 완료 목표일** · 주제 "내 최애 전문가 AI" · 일요일 14–16 중등반 / 16–18 고등반 · 반당 ~6명 · tmux 키보드 교육
 
