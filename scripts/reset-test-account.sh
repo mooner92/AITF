@@ -47,6 +47,9 @@ chown -h "$U": "/home/$U/project/public"
 echo "── 4. 하네스 재배선 (AGENTS.md·codex 설정·스킬) ──"
 ./link-harness.sh "$U"
 
+echo "── 4-1. 규칙 문서 복구 (모노레포 rules/) ──"
+/home/opc/projects/AITF/scripts/push-rule.sh --sync "$U" 2>/dev/null || echo "  (push-rule 생략 — 배포된 규칙 없음)"
+
 echo "── 5. git 신원 재설정 (Gitea 토큰이 있는 경우만) ──"
 if grep -q "^${U}," gitea-tokens.csv 2>/dev/null; then
   tok=$(grep "^${U}," gitea-tokens.csv | cut -d, -f2)
