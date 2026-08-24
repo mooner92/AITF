@@ -81,6 +81,8 @@ th.r{text-align:right} td.r{text-align:right}
 td{padding:10px 14px 10px 0;border-bottom:1px solid var(--line);color:var(--body);white-space:nowrap}
 tr:last-child td{border-bottom:0}
 td.name{color:var(--ink)}
+.plain{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line2)}
+.plain:hover{border-color:var(--ink)}
 
 /* ── Chart: 라벨 | 트랙 | 값 3열 고정 (값이 넘치지 않음) ── */
 .chart{display:grid;grid-template-columns:minmax(64px,auto) 1fr minmax(56px,auto);
@@ -321,11 +323,10 @@ function buildLinks(dom){
     ? `<a class="tile" href="https://${esc(dom)}${p}" target="_blank" rel="noopener"><b>${esc(l)}</b><small>${esc(s)}</small></a>`
     : `<a class="tile dead"><b>${esc(l)}</b><small>도메인 미설정</small></a>`;
   return T("Gitea 관리자","/git/-/admin","계정 · 저장소 전체 관리") +
-         T("중등부 위키","/git/class/class-wiki-mid/wiki","반별 LLM 위키") +
-         T("고등부 위키","/git/class/class-wiki-high/wiki","반별 LLM 위키") +
-         T("통합 아카이브","/git/class/class-archive/wiki","수업 기록") +
-         T("OpenObserve","/monweb/web/","토큰 · 리소스 지표") +
-         T("작품관","/pages/","학생 결과물");
+         T("중등부 위키","/git/mid/class-wiki-mid","반별 LLM 위키") +
+         T("고등부 위키","/git/high/class-wiki-high","반별 LLM 위키") +
+         T("통합 아카이브","/git/archive/class-archive","수업 기록") +
+         T("OpenObserve","/monweb/web/","토큰 · 리소스 지표");
 }
 
 function prepBlock(wk, now){
@@ -412,7 +413,10 @@ function render(d){
 
   $("stu-rows").innerHTML = stu.map(s => {
     const idle = !s.last_activity || Date.now()/1000-s.last_activity > 7*86400;
-    return `<tr><td class="name">${esc(s.id)}</td><td class="r num">${s.commits}</td>` +
+    const pg = d.domain
+      ? `<a class="plain" href="https://${esc(d.domain)}/pages/${esc(s.id)}/" target="_blank" rel="noopener">${esc(s.id)}</a>`
+      : esc(s.id);
+    return `<tr><td class="name">${pg}</td><td class="r num">${s.commits}</td>` +
       `<td class="r num">${s.pages}</td><td>${ago(s.last_activity) ?? "—"}</td>` +
       `<td><span class="badge ${idle?"warn":"ok"}">${idle?"휴면":"활동"}</span></td></tr>`;
   }).join("") || `<tr><td colspan="5" class="empty">서버 계정 없음</td></tr>`;
