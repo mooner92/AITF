@@ -371,7 +371,8 @@ function render(d){
   $("automation").innerHTML =
     autoRow("토큰 수집", d.automation.tokens_last, 3600) +
     autoRow("전원 스냅샷", d.automation.snapshot_last, 8*86400) +
-    autoRow("자동 위키 (일 20시)", 0, 0, d.automation.wiki_built) +
+    autoRow("자동 위키 (일 20시)", d.automation.wiki_last, 8*86400,
+            d.automation.wiki_built ? undefined : false) +
     autoRow("리허설 로그", d.automation.rehearsal_last, 365*86400);
 
   const mw = (wk && wk>=1 && wk<=12) ? wk : 1;
