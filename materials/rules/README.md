@@ -22,7 +22,7 @@ project/                    ← 학생 저장소 (1인 1개, 12주 내내 이것
 ./scripts/push-rule.sh naming          # 규칙 1개를 전 학생에게
 ./scripts/push-rule.sh sdd make_sdd    # 여러 개 동시
 ./scripts/push-rule.sh --sync          # 배포된 전체를 재배포 (신규·리셋 계정 복구)
-./scripts/push-rule.sh --sync lklk74   # 한 계정만
+./scripts/push-rule.sh --sync ⟪계정⟫    # 한 계정만
 ./scripts/push-rule.sh --list          # 배포 가능/배포됨 목록
 ```
 

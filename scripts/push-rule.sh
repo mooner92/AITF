@@ -11,7 +11,7 @@
 #   push-rule.sh naming            # materials/rules/naming.md → 전 학생
 #   push-rule.sh sdd make_sdd      # 여러 개
 #   push-rule.sh --sync            # /opt/harness/rules 전체 재배포 (리셋 복구)
-#   push-rule.sh --sync lklk74     # 한 계정만
+#   push-rule.sh --sync ⟪계정⟫      # 한 계정만
 #   push-rule.sh --list
 set -euo pipefail
 
