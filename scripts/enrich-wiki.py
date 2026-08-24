@@ -11,17 +11,20 @@ build-wiki.py 가 만든 `raw/` 사실을 읽고, 엔티티 페이지의 **마�
     **raw 에 실제로 있는 항목만** 근거로 쓰게 하고 출처를 함께 남긴다.
   · 이미 사람이 쓴 서술이 있으면 덮어쓰지 않는다 (--force 로만).
 
-설정: /opt/scripts/wiki-llm.env
-    LLM_URL=https://⟪모델서버⟫/v1        OpenAI 호환 엔드포인트
-    LLM_MODEL=qwen3.6-27b
-    LLM_KEY=⟪키⟫                        (없으면 헤더 생략)
+설정: /opt/scripts/wiki-llm.env (600)
+    LLM_URL     OpenAI 호환 엔드포인트. 둘 다 된다:
+                  OpenAI 종량제 — https://api.openai.com/v1
+                  회사 서버      — https://⟪모델서버⟫/v1
+    LLM_MODEL   모델 ID (대시보드/서버에 표시된 그대로)
+    LLM_KEY     API 키 (없으면 Authorization 헤더 생략)
+    LLM_MAX_TOKENS / LLM_TEMPERATURE  (선택)
 
 사용:
     enrich-wiki.py --class high            비어 있는 서술만 채움
     enrich-wiki.py --class high --force    이미 있는 서술도 갱신
     enrich-wiki.py --class high --dry-run  호출만 하고 저장 안 함
 """
-import argparse, json, os, re, subprocess, sys, urllib.request
+import argparse, json, os, re, subprocess, sys, urllib.error, urllib.request
 from pathlib import Path
 
 WORK = Path("/var/lib/wiki-build")
@@ -41,26 +44,61 @@ def load_env():
     return cfg
 
 
-def ask(cfg, system, user):
-    """OpenAI 호환 /chat/completions 호출. 실패하면 None (위키는 그대로 둔다)."""
+def _post(cfg, payload):
     url = cfg.get("LLM_URL", "").rstrip("/") + "/chat/completions"
-    body = json.dumps({
-        "model": cfg.get("LLM_MODEL", "qwen"),
-        "messages": [{"role": "system", "content": system},
-                     {"role": "user", "content": user}],
-        "temperature": 0.3, "max_tokens": 400,
-    }).encode()
-    req = urllib.request.Request(url, data=body, method="POST")
+    req = urllib.request.Request(url, data=json.dumps(payload).encode(), method="POST")
     req.add_header("Content-Type", "application/json")
     if cfg.get("LLM_KEY"):
         req.add_header("Authorization", f"Bearer {cfg['LLM_KEY']}")
-    try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-            d = json.loads(r.read())
-        return d["choices"][0]["message"]["content"].strip()
-    except Exception as e:
-        print(f"  ! 모델 호출 실패: {e}")
-        return None
+    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+        return json.loads(r.read())
+
+
+def ask(cfg, system, user):
+    """OpenAI 호환 /chat/completions 호출. 실패하면 None (위키는 그대로 둔다).
+
+    출력 길이 파라미터가 갈린다:
+      · OpenAI 최신 모델 — max_tokens 는 deprecated, max_completion_tokens 를 쓴다
+      · 로컬 서버(vLLM·Ollama 등) — 대개 max_tokens 만 안다
+    그래서 max_completion_tokens 로 먼저 시도하고, 파라미터 거부(400)면
+    max_tokens 로 한 번 더 시도한다. 어느 쪽이든 동작한다.
+    또 일부 추론 모델은 temperature 커스텀을 거부하므로 그때는 빼고 재시도한다.
+    """
+    base = {
+        "model": cfg.get("LLM_MODEL", "gpt-5.6-luna"),
+        "messages": [{"role": "system", "content": system},
+                     {"role": "user", "content": user}],
+    }
+    limit = int(cfg.get("LLM_MAX_TOKENS", "400"))
+    temp = cfg.get("LLM_TEMPERATURE", "0.3")
+
+    attempts = [
+        {**base, "max_completion_tokens": limit, "temperature": float(temp)},
+        {**base, "max_tokens": limit, "temperature": float(temp)},
+        {**base, "max_completion_tokens": limit},          # temperature 거부 모델
+        {**base, "max_tokens": limit},
+    ]
+    last = None
+    for payload in attempts:
+        try:
+            d = _post(cfg, payload)
+            msg = d["choices"][0]["message"].get("content") or ""
+            if msg.strip():
+                return msg.strip()
+            last = "빈 응답"
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode("utf-8", "replace")[:300]
+            last = f"HTTP {e.code} {detail}"
+            # 파라미터 문제면 다음 조합으로, 그 외(인증·모델없음)는 즉시 중단
+            if e.code != 400 or not any(
+                    k in detail for k in ("max_tokens", "max_completion_tokens",
+                                          "temperature", "Unsupported", "unsupported")):
+                break
+        except Exception as e:
+            last = str(e)
+            break
+    print(f"  ! 모델 호출 실패: {last}")
+    return None
 
 
 SYSTEM = """너는 중고등학생 코딩 수업의 반 위키를 관리한다. 한국어 해요체로 쓴다.
