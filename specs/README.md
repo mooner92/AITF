@@ -20,6 +20,10 @@
 | [110](110-student-services.md) | P10 | 학생 웹서비스 포트·외부 접속 (10~12주) | **Draft** | 방화벽 규칙 승인, DNS·Cloudflare 규칙(운영자) |
 | [120](120-integrations.md) | P11 | Slack·Notion·모델비교 봇·n8n | **Draft** | Slack 전환 확정, **회사 서버 사용 승인**, n8n 채택 여부 |
 | [130](130-prelaunch-plan.md) | — | **개강 전 작업 계획** (대기 구간에 할 일) | **Active** | — |
+| [140](140-gemini-pro.md) | — | Google AI Pro 활용 검토 | Done (검토 완료) | Flow 일일 한도 실측 |
+| [150](150-model-bots.md) | — | 모델별 Slack 봇 | Draft | 회사 서버 승인, OpenAI 호환 API 확인 |
+| [160](160-ssh-access.md) | — | SSH 접속 + Notion 문서 체계 | Draft | 학원 IP, 방화벽 22 승인(운영자) |
+| [170](170-instructor-hub.md) | — | 강사 관제탑 (운영 허브) | In Progress (배포·검증 완료) | 개강일 설정, 자동 위키 연동 |
 
 **확정된 것**: 셰이프 4 OCPU/24GB 현행 유지, **8/18 = 세팅 완료 목표일** · 주제 "내 최애 전문가 AI" · 일요일 14–16 중등반 / 16–18 고등반 · 반당 ~6명 · tmux 키보드 교육
 
