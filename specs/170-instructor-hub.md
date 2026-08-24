@@ -82,3 +82,11 @@ nginx location /hub/    ── 기존 서버 블록에 추가, htpasswd 인증(1
 - 2026-08-24 · 인증은 htpasswd(110의 2안). 정적 페이지에 자체 인증이 없으므로
   nginx 계층에서 잠근다. 새 포트 개방 없음 — 방화벽 원칙 무접촉.
 - 2026-08-24 · 도메인·개강일은 `hub.env`(서버 전용)에서 주입 — 저장소에 실값 금지.
+- 2026-08-24 · **디자인을 xAI 디자인 언어로 전면 교체** — 강사가 제공한 xAI 분석 스펙 기반.
+  룰 정본은 [`web/hub/DESIGN.md`](../web/hub/DESIGN.md) (근흑 캔버스·필 버튼·웨이트 400
+  단일·mono 대문자 아이브로우·그림자 금지). 운영 도구 웹은 이후 전부 이 룰을 따르고,
+  배포물·발표자료는 기존 design-spec 유지 — 두 체계는 섞지 않는다.
+- 2026-08-24 · **shadcn/ui 는 구조·문법만 채택, 정적 구현** — 외부 요청 0의 단일 HTML
+  원칙과 React 빌드가 충돌하므로 Navigation Menu·Card·Table·Badge·Progress·Chart 의
+  형태를 CSS/vanilla JS 로 구현. 차트 팔레트는 xAI 악센트 4색 매핑. 페이지는 해시 탭
+  4개(개요/학생/준비/운영)로 분할, 주차별 준비 체크리스트는 localStorage 저장.
