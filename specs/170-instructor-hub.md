@@ -26,10 +26,13 @@
 
 ```
 scripts/hub-status.sh   ── cron(5분) → /srv/hub/status.json 생성
-web/hub/index.html      ── 배포 시 /srv/hub/index.html 로 복사
-nginx location /hub/    ── 기존 서버 블록에 추가, htpasswd 인증(110의 2안 방식)
+web/hub/index.src.html  ── 페이지 소스 (편집 대상)
+web/hub/build.py        ── Paperlogy 임베드 → index.html 생성
+web/hub/index.html      ── 빌드 산출물. 배포 시 /srv/hub/index.html 로 복사
+nginx location /hub/    ── 기존 서버 블록에 추가, 쿠키 게이트 (+ absolute_redirect off)
 /opt/scripts/hub.env    ── DOMAIN=·COURSE_START= (서버에만 — 저장소에 실값 금지)
-/opt/scripts/hub-notes.md ── 강사 수동 노트(외부 의존·결정 대기) → 페이지에 그대로 표시
+/opt/scripts/hub-notes.md ── 강사 수동 노트(외부 의존·결정 대기) → 페이지에 표시
+/opt/scripts/roster.csv   ── 학생 명단(반·계정ID·이름·gmail). gmail 은 페이지로 안 나감
 ```
 
 ### 페이지 구역
@@ -53,27 +56,31 @@ nginx location /hub/    ── 기존 서버 블록에 추가, htpasswd 인증(1
   심고 이후 `/hub/` 가 열린다. 쿠키 없으면 403. 진입 URL은 `/opt/scripts/hub-admin.txt`(600)
 - `/srv/hub` 는 root:nginx 750 — 학생 로컬 계정이 status.json 을 직접 못 읽는다
   (다른 학생의 활동 시각·커밋 수가 담기므로)
-- status.json 에 이름·gmail·비밀번호·토큰은 **절대 넣지 않는다** — 계정 ID와 집계 수치만
+- status.json 에 **gmail·비밀번호·토큰은 절대 넣지 않는다.** 학생 **이름·반·계정 ID**는
+  강사 전용 페이지에서 명단 관리에 필요하므로 포함하되, 유출 시 영향이 큰 연락처는
+  서버(`roster.csv`, 600)에만 둔다. gmail 은 보유 여부(`has_mail`)만 불리언으로 노출.
+  자격증명도 **값이 아니라 파일 경로**만 표시한다(OpenObserve 사용자명은 예외 — 비밀번호와
+  분리돼 있어 단독으로는 쓸모가 없다)
 - 웹에서 서버 명령을 실행하는 버튼은 두지 않는다 — 복사만. 실행 경로에 인증·감사가
   없는 웹 트리거는 사고 표면이다
 
 ## 작업 체크리스트
 
 - [x] `scripts/hub-status.sh` 작성
-- [x] `web/hub/index.html` 작성
+- [x] `web/hub/index.src.html` + `build.py` (Paperlogy 임베드)
 - [x] `/srv/hub` 생성 + 배포 + cron(5분) 등록
-- [x] nginx `/hub/` location + htpasswd — **새 포트 개방 없음**(기존 8081 서버 블록에 추가)
-- [x] curl 검증 — 무인증 401 / 인증 200 / status.json 값 실측 일치
-- [ ] `COURSE_START` 설정 (개강일 확정 시)
+- [x] nginx `/hub/` location + 쿠키 게이트 — **새 포트 개방 없음**(기존 8081 서버 블록에 추가)
+- [x] 검증 — 무인증 403 / 진입 302 / 인증 후 200 / 실제 Chromium 렌더 확인
+- [x] `COURSE_START=2026-08-30` 설정 (개강 = 일요일)
 - [ ] 자동 위키 구축 후 `auto-wiki.sh` 최근 실행 시각으로 표시 전환
 
 ## 검증 기준
 
-1. 무인증 접근 → 401
+1. 무인증 접근 → 403 (쿠키 없음)
 2. 학생 계정에서 `/srv/hub/status.json` 직접 읽기 → 거부
 3. 서비스 하나를 내리면 5분 내 빨간 점으로 표시
 4. cron 이 멈추면 페이지 상단에 "상태 파일이 오래됐습니다" 배너
-5. status.json 에 이름·이메일·비밀번호가 없다
+5. status.json 에 **gmail·비밀번호·토큰**이 없다 (이름·반·계정 ID 는 허용 — 보안 절 참조)
 
 ## 결정 기록
 
@@ -96,9 +103,20 @@ nginx location /hub/    ── 기존 서버 블록에 추가, htpasswd 인증(1
 - 2026-08-24 · 도메인·개강일은 `hub.env`(서버 전용)에서 주입 — 저장소에 실값 금지.
 - 2026-08-24 · **디자인을 xAI 디자인 언어로 전면 교체** — 강사가 제공한 xAI 분석 스펙 기반.
   룰 정본은 [`web/hub/DESIGN.md`](../web/hub/DESIGN.md) (근흑 캔버스·필 버튼·웨이트 400
-  단일·mono 대문자 아이브로우·그림자 금지). 운영 도구 웹은 이후 전부 이 룰을 따르고,
+  단일·아이브로우·그림자 금지). 운영 도구 웹은 이후 전부 이 룰을 따르고,
   배포물·발표자료는 기존 design-spec 유지 — 두 체계는 섞지 않는다.
 - 2026-08-24 · **shadcn/ui 는 구조·문법만 채택, 정적 구현** — 외부 요청 0의 단일 HTML
   원칙과 React 빌드가 충돌하므로 Navigation Menu·Card·Table·Badge·Progress·Chart 의
   형태를 CSS/vanilla JS 로 구현. 차트 팔레트는 xAI 악센트 4색 매핑. 페이지는 해시 탭
   4개(개요/학생/준비/운영)로 분할, 주차별 준비 체크리스트는 localStorage 저장.
+- 2026-08-24 · **타이포그래피를 Paperlogy 로 교체.** xAI 원본의 mono 캡션 페이스를
+  아이브로우·배지·라벨 전반에 쓰던 것을 강사가 "못생겼다"고 판단 — mono 는 코드·경로에만
+  남기고, 나머지는 Paperlogy(한글) + 대문자 트래킹으로 아이브로우 성격을 유지한다.
+  DESIGN.md §1 타이포그래피 표를 이에 맞춰 갱신했다.
+- 2026-08-24 · 폰트는 **한글 음절 전체를 서브셋해 임베드**한다(woff2 135KB). 페이지 텍스트가
+  JS 로 동적 생성돼 curriculum/build-html.py 의 "보이는 글자만 서브셋" 방식을 쓸 수 없다.
+  `web/hub/build.py` 가 `index.src.html` → `index.html` 을 만든다.
+- 2026-08-24 · **명령 목록에서 코드 원문을 감췄다.** 가로 스크롤바가 화면을 해치고 강사가
+  읽지도 않는다 — 설명 한 줄 + 복사 버튼만 남기고 명령은 클립보드로만 전달한다.
+- 2026-08-24 · 차트를 `라벨 | 트랙 | 값` **3열 그리드**로 재구성. 값 라벨을 절대 위치로
+  띄우던 방식은 최대값 막대에서 카드 밖으로 삐져나갔다.

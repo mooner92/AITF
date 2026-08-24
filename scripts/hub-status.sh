@@ -56,6 +56,32 @@ for home in /home/mid* /home/high* /home/test* /home/bash* /home/demo*; do
 done
 students_json+="]"
 
+# ── 명단 (roster.csv: 반,계정ID,이름,gmail) ──
+# gmail 은 넣지 않는다 — 노출 시 영향이 큰 연락처는 서버에만 둔다(specs/170 보안).
+# 이름·반·계정ID 는 강사 전용 페이지에서 필요하므로 포함한다.
+roster_json="[]"
+if [ -f /opt/scripts/roster.csv ]; then
+  roster_json=$(python3 - <<'PY'
+import csv, json
+rows=[]
+with open("/opt/scripts/roster.csv", encoding="utf-8") as f:
+    r=csv.reader(f)
+    next(r, None)                     # 헤더
+    for row in r:
+        if len(row) < 3 or not row[2].strip():
+            continue
+        cls=row[0].strip()
+        rows.append({
+            "class": "" if cls.startswith("⟪") else cls,   # ⟪mid|high⟫ = 미배정
+            "account": row[1].strip(),
+            "name": row[2].strip(),
+            "has_mail": bool(len(row) > 3 and row[3].strip()),
+        })
+print(json.dumps(rows, ensure_ascii=False))
+PY
+)
+fi
+
 # ── 수동 노트 (JSON 문자열로 이스케이프) ──
 notes_escaped="\"\""
 if [ -f "$NOTES" ]; then
@@ -75,6 +101,7 @@ cat > "$OUT.tmp" <<JSON
   "generated_at": $now,
   "domain": "$DOMAIN",
   "course_start": "$COURSE_START",
+  "openobserve_user": "$(cut -d: -f1 /opt/scripts/openobserve-admin.txt 2>/dev/null || echo '')",
   "services": {
     "nginx": "$(svc nginx)",
     "gitea": "$(svc gitea)",
@@ -91,6 +118,7 @@ cat > "$OUT.tmp" <<JSON
     "wiki_built": $wiki_built
   },
   "students": $students_json,
+  "roster": $roster_json,
   "notes": $notes_escaped
 }
 JSON
