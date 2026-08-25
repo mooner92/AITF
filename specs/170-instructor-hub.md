@@ -25,6 +25,8 @@
 ## 구성
 
 ```
+web/landing/            ── 메인 페이지(공개). build.py --deploy → /srv/hub-public/
+web/gitea/              ── Gitea 테마·로고 (theme-aitf.css, logo.svg)
 scripts/hub-status.sh   ── cron(5분) → /srv/hub/status.json 생성
 scripts/build-weeks.py  ── detailed-plan.md → /srv/hub/weeks.json (커리큘럼 변경 시 수동 실행)
 web/hub/index.src.html  ── 페이지 소스 (편집 대상)
@@ -133,3 +135,15 @@ nginx location /hub/    ── 기존 서버 블록에 추가, 쿠키 게이트 
   경우(8주차 `**진행 · 전반 60분**`)와 같은 라벨이 여러 번 나오는 경우 → 라벨
   접두 매칭 + 다중 블록 결합. 12주 전부 정상 추출 확인.
   `build-weeks.py` 는 저장소 경로를 참조하므로 `/opt/scripts` 에 설치하지 않는다.
+- 2026-08-25 · **메인 페이지를 실제 랜딩으로.** nginx 설정 안 `return 200 '<h1>…'` 이라
+  링크 3개만 있는 빈 화면이었다. `web/landing/` 으로 분리해 과정 소개·12주 진행
+  막대·주차 목록·대상별(학생/강사) 진입점을 담았다.
+  **공개 페이지이므로 담는 것을 제한한다** — 주차는 제목·만들기 목표까지만이고
+  강사 준비·진행 상세는 넣지 않는다(7주차 위키 공개 같은 장치가 미리 새면 안 되므로).
+  학생 이름·활동 수치도 넣지 않는다(그건 쿠키 뒤 관제탑의 몫).
+- 2026-08-25 · **Gitea·랜딩을 같은 디자인 언어로 통일.** Gitea 기본 초록을 걷어내고
+  `custom/public/assets/css/theme-aitf.css` + `[ui] DEFAULT_THEME=aitf` 로 근흑 캔버스·
+  흰 잉크·필 버튼·Paperlogy 를 적용했다(공식 커스텀 테마 규격 확인 후 적용).
+  초록 로고도 단색 SVG 로 교체. 배경 #0a0a0a·Paperlogy 로드를 실제 브라우저로 확인.
+  **OpenObserve 는 손대지 않는다** — 컨테이너 배포라 CSS 주입 경로가 공식 지원되지
+  않고, 업그레이드마다 깨진다. 지표 화면이라 사용 빈도도 낮다.
