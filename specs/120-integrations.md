@@ -73,6 +73,55 @@
 **정본은 서버 위키(Gitea)다.** Notion은 읽기 좋은 발행본이며, 학생·학부모가 링크 하나로
 복습하는 용도다. Notion이 죽어도 수업 데이터는 서버에 있다.
 
+### 발행 구현 (2026-08-26 — `scripts/publish-notion.py`)
+
+임커밋 레퍼런스(Claude Code Stop Hook → Notion DB)를 수업 단위로 번안했다:
+
+| 레퍼런스 | 우리 번안 | 이유 |
+|---|---|---|
+| Stop Hook (대화 턴마다) | **일요일 20시 위키 cron** | 학생은 Codex 를 쓰고, 수업 단위가 주차다 |
+| 속성: 작업/날짜/프로젝트/세션ID | 제목/날짜/**반(Select)**/주차/커밋/활동 학생 | 분류 축이 프로젝트가 아니라 반·주차 |
+| 세션ID 로 같은 카드에 누적 | **(반, 주차) 키로 업서트** | 같은 주를 다시 돌려도 페이지가 늘지 않음(멱등) |
+| 날짜별·프로젝트별 뷰 | 날짜별·**반별** 뷰 (Notion UI 에서 강사 1회 생성) | 그룹화 속성은 스크립트가 넣어 줌 |
+
+- cron 은 `build-wiki.py && publish-notion.py` 순서 — 위키 생성이 실패하면 발행도 안 한다
+- **토큰 미설정이면 조용히 생략** — Notion 이 없어도 위키는 항상 쌓인다 (LLM 비의존과 같은 원칙)
+- 본문 블록은 raw JSON 에서 직접 생성 — 계정 ID만, 실명 없음
+- DB 최초 생성은 스크립트가 하고(`NOTION_PARENT_PAGE` 필요), 이후 `NOTION_DB_ID` 재사용
+
+### 구축 순서 — 누가 뭘 하나
+
+**강사가 직접 (계정 소유라 자동화 불가):**
+
+1. **Slack 워크스페이스 생성** (slack.com/create) — 이름 예: `AITF`
+   채널 4개: `#공지` `#질문` `#작품` `#모델비교` (+ 나중에 `#위키` `#프로젝트`)
+2. **학생 초대** — roster 의 gmail 5건으로 (수집 완료 상태)
+3. **Notion 워크스페이스**(또는 기존 계정에 페이지 하나) → "AITF 수업 기록" 페이지 생성
+4. notion.so/profile/integrations → **내부 통합 생성** → 토큰 복사
+5. 3의 페이지 우상단 ⋯ → 연결(Connections) → 4의 통합 추가
+6. 서버에 토큰 저장:
+   ```bash
+   sudo tee -a /opt/scripts/.env <<'ENV'
+   NOTION_TOKEN=⟪ntn_...⟫
+   NOTION_PARENT_PAGE=⟪페이지 URL 끝의 32자리 ID⟫
+   ENV
+   sudo chmod 600 /opt/scripts/.env
+   ```
+7. 1회 실행해 DB 생성 확인: `sudo /opt/scripts/publish-notion.py --week 1`
+   → 출력된 `NOTION_DB_ID=` 줄을 `.env` 에 추가
+8. Notion UI 에서 뷰 2개 생성 — 날짜별(Day 그룹) · 반별(Select 그룹)
+
+**서버가 자동 (구축 완료):**
+
+- 일요일 20시: 위키 생성 → Notion 발행 (cron 등록됨)
+- 멱등 업서트라 재실행·백필(`--week N`) 자유
+
+**다음 단계 (Slack 워크스페이스 생긴 뒤):**
+
+- Slack 앱 생성(Socket Mode) → `#위키` 알림 봇 + `/compare` 봇 (150 과 뼈대 공유)
+- 자동화에 MCP 는 쓰지 않는다 — 크론은 REST 직결(기존 결정). MCP 는 강사가
+  대화로 Notion 을 다듬을 때만
+
 ### 위키는 세 개다 — 반별 2 + 통합 아카이브 1 (2026-08-24 확정)
 
 | 위키 | 내용 | 열람 |

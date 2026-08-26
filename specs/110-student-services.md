@@ -209,8 +209,8 @@ Cloudflare Access OTP보다 **약하다.** 비밀번호가 유출되면 그 학�
 
 ## 작업 체크리스트
 
-- [ ] 포트 배정표 생성 스크립트 (`scripts/alloc-ports.sh`) — 명단에서 계정·포트·호스트명 산출
-- [ ] nginx 학생 서버 블록 생성기 (스크립트가 conf 조각을 쓰고 `nginx -t` 후 reload)
+- [x] 포트 배정표 생성 스크립트 (`scripts/alloc-ports.sh`) — roster.csv 기반으로 개정, 5명 배포 완료
+- [x] nginx 학생 서버 블록 생성기 — `--deploy` 로 5명 conf 생성 완료
 - [ ] 오프라인 안내 페이지 (`/srv/fallback/offline.html`) — 디자인 스펙 적용
 - [ ] Cloudflare DNS 레코드 12개 + 터널 ingress 규칙 (운영자)
 - [ ] Cloudflare 규칙 2개 (운영자) — 국가 제한(KR) + 요청 속도 제한
@@ -220,7 +220,7 @@ Cloudflare Access OTP보다 **약하다.** 비밀번호가 유출되면 그 학�
 - [ ] AGENTS.md에 포트 규칙 추가 — "네 대역 밖의 포트를 쓰지 않는다"
 - [ ] 학생 안내 카드에 "내 주소" 한 줄 추가
 - [ ] 서버 마스터 규칙 배포 (`materials/server-rules.md` → `/opt/harness/`)
-- [ ] 학생별 `MY-SERVER.md` 생성 (포트·주소 실값)
+- [x] 학생별 `MY-SERVER.md` 생성 — 5명 배포 완료
 
 ## 검증 기준
 
