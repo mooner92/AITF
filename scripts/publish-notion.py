@@ -66,6 +66,45 @@ def rt(text):  # rich_text 축약
     return [{"type": "text", "text": {"content": text[:2000]}}]
 
 
+PLACEHOLDER = "(아직 기록 없음)"
+
+
+def prose_of(path: Path, heading: str) -> str:
+    """엔티티 페이지에서 **마커 밖 서술**만 꺼낸다.
+
+    마커 안(<!-- auto:… -->)은 build-wiki.py 가 매주 덮어쓰는 사실이고,
+    밖은 사람·LLM 이 쓴 서술이다. Notion 에는 서술을 싣는다 —
+    **LLM 은 git 으로 검토 가능한 위키 파일에 쓰고, 이 스크립트는 운반만 한다**
+    (발행 경로에 모델을 두지 않는다는 120·180 원칙).
+    """
+    if not path.exists():
+        return ""
+    m = re.search(rf"^## {re.escape(heading)}\s*$(.*?)(?=^## |^<!-- auto:|\Z)",
+                  path.read_text(encoding="utf-8"), re.S | re.M)
+    if not m:
+        return ""
+    body = m.group(1).strip()
+    return "" if (not body or PLACEHOLDER in body) else re.sub(r"\s+", " ", body)
+
+
+def new_this_week(cls_dir: Path, week: int):
+    """이번 주에 처음 등장한 스킬·프로젝트 (지난주 raw 와 비교)."""
+    def load(w):
+        f = cls_dir / "raw" / f"{TERM}-w{w:02d}.json"
+        if not f.exists():
+            return None
+        return json.loads(f.read_text(encoding="utf-8"))
+
+    cur, prev = load(week), load(week - 1)
+    if not cur:
+        return [], []
+    def collect(d, key):
+        return {v for s in d["students"] for v in s.get(key, [])} if d else set()
+    skills = sorted(collect(cur, "skills") - collect(prev, "skills"))
+    projects = sorted(collect(cur, "folders") - collect(prev, "folders"))
+    return skills, projects
+
+
 def db_schema(cfg):
     """레퍼런스의 속성 설계를 수업 단위로 매핑한 DB."""
     return {
@@ -84,7 +123,7 @@ def db_schema(cfg):
     }
 
 
-def week_payload(cls, data):
+def week_payload(cls, data, cls_dir=None):
     """raw JSON → Notion 페이지 속성 + 본문 블록. 계정 ID만, 실명 없음."""
     label = CLASS_LABEL.get(cls, cls)
     week = data["week"]
@@ -119,15 +158,30 @@ def week_payload(cls, data):
         line = f"{s['account']} — " + (" · ".join(parts) if parts else "활동 없음")
         blocks.append({"object": "block", "type": "bulleted_list_item",
                        "bulleted_list_item": {"rich_text": rt(line)}})
+    # 이번 주 새로 생긴 스킬·프로젝트 + 위키에 쌓인 서술
+    if cls_dir:
+        skills, projects = new_this_week(cls_dir, week)
+        entries = ([(s, cls_dir / "skills" / f"{s}.md", "뭘 하는 스킬인가") for s in skills]
+                   + [(p, cls_dir / "projects" / f"{p}.md", "무엇을 만드는 폴더인가")
+                      for p in projects])
+        if entries:
+            blocks.append({"object": "block", "type": "heading_2",
+                           "heading_2": {"rich_text": rt("이번 주 새로 생긴 것")}})
+            for name, path, heading in entries:
+                text = prose_of(path, heading)
+                blocks.append({"object": "block", "type": "paragraph",
+                               "paragraph": {"rich_text": rt(
+                                   f"{name} — {text}" if text else name)}})
+
     blocks.append({"object": "block", "type": "paragraph",
                    "paragraph": {"rich_text": rt(
                        "정본은 서버 위키(Gitea)입니다. 계정 ID만 기록합니다.")}})
     return props, blocks
 
 
-def upsert(cfg, dbid, cls, data, dry):
+def upsert(cfg, dbid, cls, data, dry, cls_dir=None):
     label = CLASS_LABEL.get(cls, cls)
-    props, blocks = week_payload(cls, data)
+    props, blocks = week_payload(cls, data, cls_dir)
     if dry:
         print(f"  [dry-run] {data['week']}주차 {label}: "
               f"블록 {len(blocks)}개, 속성 {list(props)}")
@@ -197,7 +251,7 @@ def main():
         if not raw.exists():
             continue
         data = json.loads(raw.read_text(encoding="utf-8"))
-        upsert(cfg, dbid, cls_dir.name, data, a.dry_run)
+        upsert(cfg, dbid, cls_dir.name, data, a.dry_run, cls_dir)
         found += 1
     if not found:
         print(f"w{week:02d} raw 자료 없음 — build-wiki.py 를 먼저 실행하세요.")
