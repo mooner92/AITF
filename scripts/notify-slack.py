@@ -60,15 +60,30 @@ def post(url, payload, dry):
 
 
 def build(cls, data, domain):
-    """블록 구성. 숫자와 링크만 — 평가·비교 문구는 넣지 않는다(위키 원칙과 동일)."""
+    """블록 구성. 숫자와 링크만 — 평가·비교 문구는 넣지 않는다(위키 원칙과 동일).
+
+    **커밋 수를 앞세우지 않는다.** git 은 커리큘럼상 4주차에 배우므로 1~3주차
+    커밋은 구조적으로 0건이다. 그 기간에 "커밋 0개"만 보이면 알림이 무의미해진다.
+    1차 지표는 커밋과 무관하게 잡히는 것(바꾼 파일·폴더·작품)으로 두고,
+    커밋은 실제로 있을 때만 덧붙인다.
+    """
     week, students = data["week"], data["students"]
     commits = sum(len(s["commits"]) for s in students)
+    touched = sum(len(s.get("touched", [])) for s in students)
+    works = sum(s["pages"] for s in students)
     active = sum(1 for s in students
                  if s["commits"] or s.get("touched") or s["folders"])
     folders = sorted({f for s in students for f in s["folders"]})
 
-    lines = [f"*{week}주차 기록이 올라왔어요*",
-             f"활동한 사람 {active}명 · 커밋 {commits}개"]
+    stat = [f"활동한 사람 {active}명"]
+    if touched:
+        stat.append(f"바꾼 파일 {touched}개")
+    if commits:                      # 4주차부터 의미가 생긴다
+        stat.append(f"커밋 {commits}개")
+    if works:
+        stat.append(f"작품 {works}개")
+
+    lines = [f"*{week}주차 기록이 올라왔어요*", " · ".join(stat)]
     if folders:
         lines.append("이번 주 폴더: " + " ".join(f"`{f}`" for f in folders))
 
