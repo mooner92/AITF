@@ -28,6 +28,13 @@ sleep 1
 
 echo "── 2. 홈 디렉토리 완전 초기화 (.git·.bashrc 포함) ──"
 find "/home/$U" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+
+# 셸 기본 파일을 먼저 깐다. /opt/template-home 에는 project 와 .codex 만 들어
+# 있어서, 이걸 건너뛰면 .bash_profile 이 없는 홈이 만들어진다.
+# 그러면 SSH 로그인이 .bashrc 를 아예 읽지 않아 **tmux 자동 진입도 PATH 도
+# 죽는다** — 리셋한 계정만 실제 학생과 다르게 동작해서, 리허설이 거짓 신호를
+# 준다. (2026-08-28 학원 현장에서 test01 이 이 상태로 발견됨)
+rsync -a /etc/skel/ "/home/$U/"
 rsync -a /opt/template-home/ "/home/$U/"
 chown -R "$U": "/home/$U"
 chmod 700 "/home/$U"
