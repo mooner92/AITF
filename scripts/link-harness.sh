@@ -31,3 +31,9 @@ for s in /opt/harness/skills/*/; do
 done
 
 echo "하네스 배포 완료: $U (스킬 $(ls -1 /opt/harness/skills 2>/dev/null | wc -l)개 연결)"
+
+# 작품관 발행 경로 — project/public 에 넣으면 바로 인터넷에 뜬다 (3주차)
+# 2026-08-28: 학생 계정 5개 전부 이 링크가 없는 채로 발견됐다. check-account.sh 가 잡았다.
+install -d -o "$U" -g "$U" -m 755 "/srv/pages/$U"
+ln -sfn "/srv/pages/$U" "$H/project/public"
+chown -h "$U": "$H/project/public"
