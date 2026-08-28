@@ -57,6 +57,11 @@ echo "── 4. 하네스 재배선 (AGENTS.md·codex 설정·스킬) ──"
 echo "── 4-1. 규칙 문서 복구 (모노레포 rules/) ──"
 /home/opc/projects/AITF/scripts/push-rule.sh --sync "$U" 2>/dev/null || echo "  (push-rule 생략 — 배포된 규칙 없음)"
 
+echo "── 4-2. OpenAI 키 재주입 ──"
+# 홈을 통째로 비웠으므로 ~/.bashrc.d/50-openai.sh 도 함께 지워졌다.
+# 여기서 다시 넣지 않으면 리셋한 계정만 codex 가 인증 오류를 낸다.
+/opt/scripts/push-key.sh "$U" 2>/dev/null || echo "  (키 미등록 — openai-keys.csv 없음)"
+
 echo "── 5. git 신원 재설정 (Gitea 토큰이 있는 경우만) ──"
 if grep -q "^${U}," gitea-tokens.csv 2>/dev/null; then
   tok=$(grep "^${U}," gitea-tokens.csv | cut -d, -f2)
