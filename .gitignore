@@ -34,3 +34,5 @@ decks/*.html
 # 랜딩 빌드 산출물 (폰트 임베드로 커짐 — 배포본은 서버에만)
 web/landing/dist/
 openai-keys.csv
+decks/pptx/node_modules/
+decks/pptx/package-lock.json
