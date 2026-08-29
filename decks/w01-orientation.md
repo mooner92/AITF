@@ -23,10 +23,10 @@
 
 | 기간 | 어디서 | 무엇을 |
 |---|---|---|
-| 2026~ | 한국환경연구원 (KEI) | AI 연구원 — GPU 서버 운영 · 규정 찾아주는 AI 개발 |
+| 2026~ | 국책연구단지 | AI 연구원 — GPU 서버 운영 · 규정 찾아주는 AI 개발 |
 | 2024~25 | Branchify · 영국 맨체스터 | 중고거래 앱 공동창업 |
 | 2024 | 한국정보통신기술협회 (TTA) | AI 의료기기 검증 기준 연구 |
-| 2022~24 | JR 코딩학원 | 알고리즘 강사 · 대회 준비반 코치 |
+| 2022~24 | JR 코딩학원 | 알고리즘 강사 |
 
 ^^^
 <div class="flow">
@@ -268,6 +268,7 @@
 ```
 내 프로필 카드를 HTML로 만들어줘.
 내가 좋아하는 OOO 정보를 웹에서 찾아서 넣어줘.
+다운로드할 수 있게 해줘.
 ```
 
 ^^^
@@ -283,15 +284,14 @@
 
 | 단계 | 무엇을 |
 |:--:|---|
-| 1 | 코드를 전부 복사한다 |
-| 2 | 메모장을 연다 |
-| 3 | 붙여넣고, 이름을 `me.html` 로 저장한다 |
-| 4 | 저장한 파일을 더블클릭한다 |
+| 1 | 화면 오른쪽에 코드 창(캔버스)이 뜬다 |
+| 2 | 위쪽 **다운로드** 버튼을 누른다 |
+| 3 | 다운로드된 파일을 더블클릭한다 |
 
 ^^^
-> 저장한 파일을 열면, 방금 만든 카드가 브라우저에 떠요.
+> 방금 만든 카드가 브라우저에 떠요.
 
-??? 여기서 5분. 메모장 저장 시 "파일 형식"을 "모든 파일"로, 확장자를 .html 로 정확히 — 흔한 실수 지점. 이 순간이 오늘의 첫 정점이다.
+??? 여기서 5분. 캔버스가 안 뜨면 "코드 창(캔버스)으로 보여줘"를 덧붙이게 한다. 그래도 다운로드가 안 되는 학생은 대체 경로 — 코드 전체 복사 → 메모장 붙여넣기 → `me.html`로 저장(파일 형식 "모든 파일") → 더블클릭. 이 순간이 오늘의 첫 정점이다.
 
 ---
 ## 마음에 안 들면 <b>다시 시키면 돼요</b>
@@ -311,32 +311,33 @@
 ## 방금 우리가 <b>한 일이에요</b>
 
 <figure class="media" style="border:none;background:none">
-<svg viewBox="0 0 760 300" role="img" aria-label="고칠 때마다 사람이 복사, 저장, 새로고침을 반복하는 순환 구조"
-     style="width:100%;max-height:46vmin;color:#fcfdff">
+<svg viewBox="0 0 640 430" role="img" aria-label="AI에게 바꿔달라고 하면, 코드 전체를 다시 받고, 다운로드해서, 새로고침하는 과정이 한 바퀴를 돈다"
+     style="width:100%;max-height:44vmin;color:#fcfdff">
   <defs>
     <marker id="clArw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#ff801f"/>
     </marker>
   </defs>
+  <g fill="none" stroke="#ff801f" stroke-width="2.5">
+    <path class="march" pathLength="1" marker-end="url(#clArw)" d="M 143,158 A 186,186 0 0,1 263,38"/>
+    <path class="march" pathLength="1" marker-end="url(#clArw)" d="M 377,38 A 186,186 0 0,1 497,158"/>
+    <path class="march" pathLength="1" marker-end="url(#clArw)" d="M 497,272 A 186,186 0 0,1 377,392"/>
+    <path class="march" pathLength="1" marker-end="url(#clArw)" d="M 263,392 A 186,186 0 0,1 143,272"/>
+  </g>
   <g fill="none" stroke="currentColor" stroke-opacity=".25">
-    <rect class="draw" pathLength="1" x="40"  y="110" width="150" height="80" rx="14"/>
-    <rect class="draw" pathLength="1" style="--d:.15s" x="290" y="30"  width="180" height="70" rx="14"/>
-    <rect class="draw" pathLength="1" style="--d:.3s" x="560" y="110" width="160" height="80" rx="14"/>
-    <rect class="draw" pathLength="1" style="--d:.45s" x="290" y="200" width="180" height="70" rx="14"/>
+    <rect class="draw" pathLength="1" x="72" y="179" width="176" height="72" rx="16"/>
+    <rect class="draw" pathLength="1" style="--d:.15s" x="232" y="19" width="176" height="72" rx="16"/>
+    <rect class="draw" pathLength="1" style="--d:.3s" x="392" y="179" width="176" height="72" rx="16"/>
+    <rect class="draw" pathLength="1" style="--d:.45s" x="232" y="339" width="176" height="72" rx="16"/>
   </g>
-  <g font-size="21" fill="currentColor" text-anchor="middle" font-family="inherit">
-    <g class="pop" style="--d:.1s"><text x="115" y="143">AI에게</text><text x="115" y="170">"바꿔줘"</text></g>
-    <g class="pop" style="--d:.25s"><text x="380" y="58">코드 전체를</text><text x="380" y="84">다시 받음</text></g>
-    <g class="pop" style="--d:.4s"><text x="640" y="143">복사해서</text><text x="640" y="170">메모장에 저장</text></g>
-    <g class="pop" style="--d:.55s"><text x="380" y="228">브라우저</text><text x="380" y="254">새로고침</text></g>
+  <g font-size="20" fill="currentColor" text-anchor="middle" font-family="inherit">
+    <g class="pop" style="--d:.1s"><text x="160" y="212">AI에게</text><text x="160" y="238">"바꿔줘"</text></g>
+    <g class="pop" style="--d:.25s"><text x="320" y="52">코드 전체를</text><text x="320" y="78">다시 받음</text></g>
+    <g class="pop" style="--d:.4s"><text x="480" y="212">다운로드해서</text><text x="480" y="238">파일 받기</text></g>
+    <g class="pop" style="--d:.55s"><text x="320" y="372">브라우저</text><text x="320" y="398">새로고침</text></g>
   </g>
-  <g fill="none" stroke="#ff801f" stroke-width="2.5" marker-end="url(#clArw)">
-    <path class="march" pathLength="1" d="M190,130 Q230,80 285,68"/>
-    <path class="march" pathLength="1" d="M470,68 Q530,80 575,110"/>
-    <path class="march" pathLength="1" d="M615,190 Q530,225 475,232"/>
-    <path class="march" pathLength="1" d="M285,232 Q200,225 130,190"/>
-  </g>
-  <text class="pop" style="--d:.8s" x="380" y="158" font-size="19" fill="#ff801f" text-anchor="middle" font-family="inherit">고칠 때마다 한 바퀴</text>
+  <text class="pop" style="--d:.8s" x="320" y="215" font-size="19" fill="#ff801f" text-anchor="middle" font-family="inherit">고칠 때마다</text>
+  <text class="pop" style="--d:.85s" x="320" y="240" font-size="19" fill="#ff801f" text-anchor="middle" font-family="inherit">한 바퀴</text>
 </svg>
 <figcaption>"색만 바꿔줘"인데, 사람이 하는 일이 세 가지예요</figcaption>
 </figure>
@@ -367,7 +368,7 @@
 ^^^
 > 그럴듯한 답이 나와요. 그런데 **맞는 답일까요?**
 
-??? 말 대신 시연(핸즈온 03). 최신 모델은 자동 검색·되묻기를 해서 "완전한 헛소리"는 드물다 — 대신 **동명이인을 자신 있게 설명**하거나 근거 없는 세부를 섞는 경우가 많다. 어느 쪽이 나와도 교훈은 같다: 그럴듯함 ≠ 맞음. **반드시 전날 실측**해서 실제 출력을 확인해 둘 것 — 결과에 따라 멘트를 맞춘다(대본에 세 갈래 준비). 여기서 5분.
+??? 말 대신 시연(핸즈온 03). **2026-08-29 밤 실측**: "동명이인이 여러 명이라 특정하기 어렵다"며 실존하는 다른 최명헌 네 명(전 국회의원, 귀농인, LG전자 재직자, 대표이사)을 열거하고 되물었다 — 진짜 강사는 그 목록에 없다. 완전한 지어냄은 아니지만 **그럴듯한 답 중 진짜는 하나도 없다**는 점은 같다. 이 결과가 재현되면 그대로 쓰고, 다른 결과(단정적 오답/모른다)가 나오면 대본의 대안 멘트로 받는다. 여기서 5분.
 
 ---
 ## 오늘 <b>제일 중요한 그림</b>이에요
@@ -418,6 +419,22 @@
 > AI의 답은 **확인하고 써요.** 12주 내내 지킬 습관이에요.
 
 ??? 여기서 3분. 방금 겪은 두 장면(카드=웹에서 찾음, 강사 이름=근거가 불분명)을 이 그림 하나로 정리한다. "이렇게 지내요"의 세 번째 줄과 연결.
+
+---
+## 만든 걸 <b>여기에 모아둬요</b>
+
+| 단계 | 무엇을 |
+|:--:|---|
+| 1 | 나눠드린 주소로 접속한다 |
+| 2 | 계정 카드의 아이디·비밀번호로 로그인한다 |
+| 3 | `project` 저장소를 연다 |
+| 4 | **Upload file** 을 누르고 `me.html` 을 끌어다 놓는다 |
+| 5 | 아래 **Commit Changes** 를 누른다 |
+
+^^^
+> 나만 보는 저장소예요. 다음 주부터 여기가 우리 작업 공간이 돼요.
+
+??? 여기서 5분(핸즈온에 URL 있음). **오늘 쓰는 계정은 아까 만든 ChatGPT 계정이 아니라, 처음에 나눠드린 계정 카드**라는 걸 짚어준다 — 헷갈리는 지점. 로그인 실패 시 카드 아이디·비번 재확인, 그래도 안 되면 강사가 화면 공유로 대신 받는다. 여기서 만든 저장소가 다음 주 서버 접속에도 그대로 쓰인다(예고만, 설명은 안 함).
 
 ---
 <!-- class: chapter g-green -->
