@@ -9,12 +9,22 @@
 # 키 목록: /opt/scripts/openai-keys.csv  (600, git 에 절대 올리지 않는다)
 #     계정ID,sk-...
 #
-# 주입 위치: ~/.bashrc.d/50-openai.sh (600, 학생 소유)
-#   .bashrc 가 ~/.bashrc.d/* 를 읽도록 이미 배선돼 있다.
-#   .bashrc 본문에 직접 쓰지 않는 이유: 학생이 .bashrc 를 고치다 키를 날리거나,
+# 주입 위치 — **두 곳에 같은 키를 넣는다. 하나만 넣으면 Codex 가 실제로는 인증하지 못한다.**
+#
+#   ① ~/.bashrc.d/50-openai.sh (600, 학생 소유) — 환경변수. `codex doctor` 는 이것만
+#      보고 "auth is provided by environment" 라고 통과시키지만, 이 문서 작성 시점
+#      (codex-cli 0.147.0) 기준 **기본 openai 프로바이더는 실제 요청에 이 값을 안 쓴다** —
+#      알려진 문제(OPENAI_API_KEY exported 인데도 401 Missing bearer). doctor 의 초록
+#      체크만 보고 "됐다"고 판단하면 안 된다 — 2026-08-29 실제 학생 계정 5개에서
+#      전부 재현·확인했다.
+#   ② ~/.codex/auth.json — `codex login --with-api-key` 가 쓰는 실제 인증 파일.
+#      Codex 요청은 이걸 읽는다. `printenv OPENAI_API_KEY | codex login --with-api-key`
+#      로 만든다 — 학생 계정으로 실행해야 그 계정 소유 파일이 된다.
+#
+#   .bashrc 본문에 직접 쓰지 않는 이유(①): 학생이 .bashrc 를 고치다 키를 날리거나,
 #   반대로 키가 섞인 .bashrc 를 통째로 커밋할 수 있다.
 #
-# ⚠ 홈을 리셋하면 키도 지워진다. reset-test-account.sh 뒤에 다시 돌릴 것.
+# ⚠ 홈을 리셋하면 둘 다 지워진다. reset-test-account.sh 뒤에 다시 돌릴 것.
 #
 # 사용:
 #   sudo ./push-key.sh                 전원
@@ -56,7 +66,13 @@ while IFS=, read -r acct key; do
   printf 'export OPENAI_API_KEY=%s\n' "$key" > "$f"
   chown "$acct:$acct" "$f"
   chmod 600 "$f"
-  echo "  $acct: 주입"
+
+  # 진짜 필요한 쪽 — auth.json. 이게 없으면 codex exec 이 401 로 죽는다.
+  if printf '%s' "$key" | su -s /bin/bash -l "$acct" -c 'codex login --with-api-key' >/dev/null 2>&1; then
+    echo "  $acct: 주입 (env + auth.json)"
+  else
+    echo "  $acct: 주입 (env만 — auth.json 쓰기 실패, codex exec 이 여전히 401 날 수 있다)"
+  fi
   n=$((n+1))
 
   if [[ $VERIFY -eq 1 ]]; then

@@ -43,12 +43,17 @@ check() {
   sudo test -f "$h/.codex/config.toml" && ok ".codex/config.toml" || no ".codex/config.toml 없음"
   sudo test -d "$h/project/public" && ok "project/public (작품관 배포용)" || no "project/public 없음"
 
-  # 키 — 없으면 codex 가 인증 오류를 낸다
+  # 키 — 두 곳 다 있어야 한다. env만 있으면 doctor 는 통과해도 codex exec 은 401 (2026-08-29 실측)
   if sudo test -f "$h/.bashrc.d/50-openai.sh"; then
     [[ "$(sudo stat -c %a "$h/.bashrc.d/50-openai.sh")" == 600 ]] \
-      && ok "OpenAI 키 주입 (600)" || no "OpenAI 키 파일 권한이 600 이 아니다"
+      && ok "OpenAI 키 — 환경변수 (600)" || no "OpenAI 키 파일 권한이 600 이 아니다"
   else
-    no "OpenAI 키 미주입 → codex 인증 오류"
+    no "OpenAI 키 — 환경변수 미주입"
+  fi
+  if sudo test -f "$h/.codex/auth.json"; then
+    ok "OpenAI 키 — auth.json (실제 codex exec 이 쓰는 파일)"
+  else
+    no "OpenAI 키 — auth.json 없음 → codex exec 이 401 로 죽는다 (push-key.sh 재실행)"
   fi
 
   # sudo 가 붙으면 계정 격리가 통째로 무너진다. 매번 확인한다.
