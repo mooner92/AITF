@@ -47,6 +47,7 @@ python3 ../scripts/check-design.py w01-orientation.html
 | `{{ACCESS_URL}}` | `class-config.json` 값으로 치환 |
 | `{{STUDENTS_MID:list}}` | 배열을 목록으로 (`:table` 도 가능) |
 | 표·목록·코드·인용 | 마크다운 그대로 |
+| `![캡션](assets/img/파일)` | 이미지 — 빌드 때 파일 안에 인라인됨 (아래 "이미지" 절) |
 | `<` 로 시작하는 줄 | 원본 HTML 그대로 통과 |
 
 ### 슬라이드 class
@@ -57,6 +58,54 @@ python3 ../scripts/check-design.py w01-orientation.html
 | `chapter` | 간지 — 가운데 큰 번호 |
 | `g-none` | 글로우 끔 |
 | `g-green` `g-violet` `g-orange` | 글로우 색 (기본은 파랑) |
+
+---
+
+## 이미지
+
+학생 대상 슬라이드는 글보다 그림이 먼저입니다. 사진·다이어그램을 넣는 규칙:
+
+### 받은 사진을 그대로 쓸 때
+
+1. 파일을 `assets/img/` 에 넣습니다 (jpg·png·webp·svg)
+2. 원고에 `![캡션](assets/img/파일명.jpg)` — 캡션은 비워도 됩니다
+3. 빌드하면 **파일 안에 base64 로 인라인**됩니다 — 산출물은 여전히 파일 하나입니다
+4. 파일이 없으면 빌드가 주황 점선 **자리표시자**를 넣고 경고를 냅니다.
+   사진이 아직 안 온 상태에서도 나머지 장을 검토할 수 있고,
+   자리표시자가 화면에 뜨면 어차피 눈에 띕니다 (미설정 치환값과 같은 철학)
+
+나란히 놓을 때는 원본 HTML로:
+
+```html
+<div class="media-row">
+<figure class="media"><img src="assets/img/before.png" alt=""><figcaption>적용 전</figcaption></figure>
+<figure class="media"><img src="assets/img/after.png" alt=""><figcaption>적용 후</figcaption></figure>
+</div>
+```
+
+### 사진이 테마와 안 맞을 때 — 직접 그립니다
+
+받은 이미지가 밝은 배경·다른 색감이라 순흑 캔버스에서 겉돌면, 사진을 억지로 넣지 말고
+**같은 내용을 컴포넌트로 다시 그립니다.** 우선순위:
+
+1. **카드 그리드** (`.grid.c3` + `.card`) — 비교·나열은 대부분 이걸로 끝납니다
+2. **흐름** (`.flow`) — 순서·단계
+3. **막대** (`.bars`) — 수치 비교
+4. **인라인 SVG** — 위 셋으로 안 되는 구조도(다이어그램)만. design-spec 4-4 규칙
+   (currentColor, 의미 있는 색 하나, `role="img"`)을 그대로 따릅니다
+
+shadcn/ui 컴포넌트의 **디자인 언어**(카드·배지·차트 팔레트)를 가져오되 라이브러리는
+가져오지 않습니다 — design-spec 5-3-2와 같은 원칙입니다. 재사용할 만한 조각이 생기면
+`assets/` 에 `.html` 조각으로 두고 원고에 붙여 씁니다.
+
+### 사진 넣을 때 지킬 것
+
+- **학생 얼굴·실명이 보이는 사진은 넣지 않습니다** (SECURITY.md와 같은 원칙 —
+  슬라이드는 파일로 돌아다닙니다)
+- 스크린샷은 **어두운 테마로 찍은 것**이 우선입니다. 밝은 스크린샷은 테두리가
+  좁은 화면에서 번쩍입니다
+- 한 장에 사진은 1~2개. 사진이 3개 이상 필요하면 장을 나눕니다
+- 원본이 5MB를 넘으면 넣기 전에 줄입니다 — 산출물 전체가 그만큼 커집니다
 
 ---
 

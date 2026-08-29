@@ -255,6 +255,25 @@ html[data-dir="back"]::view-transition-new(slide){animation-name:vt-in-back}
 
 .notes{display:none}
 
+/* ── 이미지 (design-spec 4-6) ──
+   사진은 카드와 같은 문법으로 앉힌다 — 헤어라인 테두리, 라운드, 그림자 없음.
+   높이 상한을 두는 이유: 세로로 긴 사진 한 장이 제목까지 밀어내면 슬라이드가
+   무너진다. 넘치면 이미지가 잘리는 게 낫다. */
+.media{margin:2vmin 0;max-width:100%}
+.media img{max-width:100%;max-height:52vmin;object-fit:contain;
+           border:1px solid var(--hair-strong);border-radius:var(--r-lg);
+           background:var(--card)}
+.media figcaption{font-size:1.9vmin;color:var(--mute);margin-top:1.2vmin}
+/* 나란히 놓기: <div class="media-row"> 안에 figure 2~3개 */
+.media-row{display:flex;gap:2vmin;align-items:flex-start}
+.media-row .media{flex:1;min-width:0;margin:0}
+.media-row .media img{max-height:40vmin;width:100%;object-fit:cover}
+/* 없는 이미지 자리표시자 — 미설정 치환값과 같은 철학으로 요란하게 */
+.img-missing{border:2px dashed var(--orange);border-radius:var(--r-lg);
+             color:var(--orange);padding:6vmin 4vmin;text-align:center;
+             font-size:2.6vmin;margin:2vmin 0}
+.img-missing small{color:var(--mute);font-size:1.9vmin}
+
 /* ── 모션 저감 (필수) ── */
 @media(prefers-reduced-motion:reduce){
   ::view-transition-old(slide),::view-transition-new(slide){animation:none}

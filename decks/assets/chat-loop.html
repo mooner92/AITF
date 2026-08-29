@@ -1,0 +1,35 @@
+<!-- 에셋: 챗봇 왕복 루프 — "고칠 때마다 복사→저장→새로고침" 을 그림 하나로.
+     쓰는 곳: 1주차 "어? 이거 계속 이렇게 해야 돼요?" 직전, 2주차 도입 회상.
+     design-spec 4-4: currentColor, 의미 있는 색 하나(주황 = 사람이 하는 반복 노동). -->
+<figure class="media" style="border:none;background:none">
+<svg viewBox="0 0 760 300" role="img" aria-label="고칠 때마다 사람이 복사, 저장, 새로고침을 반복하는 순환 구조"
+     style="width:100%;max-height:46vmin;color:#fcfdff">
+  <defs>
+    <marker id="clArw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff801f"/>
+    </marker>
+  </defs>
+  <!-- 노드 4개 -->
+  <g fill="none" stroke="currentColor" stroke-opacity=".25">
+    <rect x="40"  y="110" width="150" height="80" rx="14"/>
+    <rect x="290" y="30"  width="180" height="70" rx="14"/>
+    <rect x="560" y="110" width="160" height="80" rx="14"/>
+    <rect x="290" y="200" width="180" height="70" rx="14"/>
+  </g>
+  <g font-size="21" fill="currentColor" text-anchor="middle" font-family="inherit">
+    <text x="115" y="143">AI에게</text><text x="115" y="170">"바꿔줘"</text>
+    <text x="380" y="58">코드 전체를</text><text x="380" y="84">다시 받음</text>
+    <text x="640" y="143">복사해서</text><text x="640" y="170">메모장에 저장</text>
+    <text x="380" y="228">브라우저</text><text x="380" y="254">새로고침</text>
+  </g>
+  <!-- 순환 화살표 (시계 방향) — 주황: 사람이 매번 하는 일 -->
+  <g fill="none" stroke="#ff801f" stroke-width="2.5" marker-end="url(#clArw)">
+    <path d="M190,130 Q230,80 285,68"/>
+    <path d="M470,68 Q530,80 575,110"/>
+    <path d="M615,190 Q530,225 475,232"/>
+    <path d="M285,232 Q200,225 130,190"/>
+  </g>
+  <text x="380" y="158" font-size="19" fill="#ff801f" text-anchor="middle" font-family="inherit">고칠 때마다 한 바퀴</text>
+</svg>
+<figcaption>"색만 바꿔줘"인데, 사람이 하는 일이 세 가지예요</figcaption>
+</figure>

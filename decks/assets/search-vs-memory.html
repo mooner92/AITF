@@ -1,0 +1,40 @@
+<!-- 에셋: 검색 O vs 검색 X — 할루시네이션 대비를 그림 하나로.
+     쓰는 곳: 1주차 할루시네이션 시연 직후 정리, 2주차 회상.
+     의미 있는 색: 초록(찾아봄=맞음) / 주황(기억만=지어냄). 두 색이 짝(design-spec 1-2 예외). -->
+<figure class="media" style="border:none;background:none">
+<svg viewBox="0 0 760 260" role="img" aria-label="검색하면 인터넷에서 찾아 맞히고, 검색하지 않으면 기억만으로 그럴듯하게 지어낸다"
+     style="width:100%;max-height:42vmin;color:#fcfdff">
+  <defs>
+    <marker id="svArw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity=".5"/>
+    </marker>
+  </defs>
+  <g font-family="inherit" text-anchor="middle">
+    <!-- 왼쪽: 검색 O -->
+    <rect x="30" y="30" width="330" height="200" rx="16" fill="none" stroke="#11ff99" stroke-opacity=".45"/>
+    <text x="195" y="66" font-size="21" fill="#11ff99">찾아봐 달라고 하면</text>
+    <g fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="2" marker-end="url(#svArw)">
+      <path d="M110,120 L180,120"/>
+      <path d="M245,120 L310,120"/>
+    </g>
+    <text x="75"  y="127" font-size="20" fill="currentColor">질문</text>
+    <text x="212" y="112" font-size="26">🌐</text>
+    <text x="212" y="145" font-size="15" fill="currentColor" fill-opacity=".6">인터넷</text>
+    <text x="332" y="127" font-size="20" fill="#11ff99">맞음</text>
+    <text x="195" y="200" font-size="17" fill="currentColor" fill-opacity=".65">방금 찾은 진짜 정보로 답해요</text>
+    <!-- 오른쪽: 검색 X -->
+    <rect x="400" y="30" width="330" height="200" rx="16" fill="none" stroke="#ff801f" stroke-opacity=".45"/>
+    <text x="565" y="66" font-size="21" fill="#ff801f">그냥 물어보면</text>
+    <g fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="2" marker-end="url(#svArw)">
+      <path d="M480,120 L550,120"/>
+      <path d="M615,120 L680,120"/>
+    </g>
+    <text x="445" y="127" font-size="20" fill="currentColor">질문</text>
+    <text x="582" y="112" font-size="26">🧠</text>
+    <text x="582" y="145" font-size="15" fill="currentColor" fill-opacity=".6">기억만</text>
+    <text x="702" y="127" font-size="20" fill="#ff801f">지어냄</text>
+    <text x="565" y="200" font-size="17" fill="currentColor" fill-opacity=".65">모른다고 안 하고, 그럴듯하게 말해요</text>
+  </g>
+</svg>
+<figcaption>찾아보면 맞히고, 안 찾으면 지어내요 — 오늘 제일 중요한 그림</figcaption>
+</figure>
