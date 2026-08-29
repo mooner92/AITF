@@ -151,7 +151,11 @@ def call_local(cfg, model, prompt, timeout=90, bypass_window=False):
     req = urllib.request.Request(
         f"{base}/chat/completions", data=body, method="POST",
         headers={"CF-Access-Client-Id": cid, "CF-Access-Client-Secret": csec,
-                 "Content-Type": "application/json"})
+                 "Content-Type": "application/json",
+                 # Cloudflare 가 Python urllib 기본 UA("Python-urllib/3.x")를
+                 # 봇으로 인식해 403(에러 1010)으로 차단한다 — curl 은 통과하는데
+                 # urllib 만 막히는 걸로 실측 확인(2026-08-30). UA만 바꾸면 뚫린다.
+                 "User-Agent": "curl/8.5.0"})
 
     # 서버 쪽 동시 실행 상한이 없다 — 여기서 큐잉한다(회사 합의 조건).
     with LOCAL_MODEL_SEM:
