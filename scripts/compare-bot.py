@@ -36,6 +36,7 @@ Socket Mode 를 쓴다 — 인바운드 포트를 열지 않는다(110·150 원�
     CF_ACCESS_CLIENT_SECRET=cfast_...
     LOCAL_LLM_BASE_URL=https://llm.excusa.uk/v1
     LOCAL_LLM_MODEL=qwen3.8-27b
+    QWEN_TESTER_SLACK_IDS=U0XXXXXXX          강사 전용 /qwentest 허용 목록(콤마 구분)
 
 로그: /var/log/aitf-compare.jsonl — 어느 라벨(A/B)이 어느 모델이었는지.
       **Slack에는 절대 안 올라간다.** 강사가 공개할 때 눈으로 보는 용도.
@@ -74,9 +75,13 @@ def in_allowed_window(now=None) -> bool:
     return now.weekday() == ALLOWED_WEEKDAY and now.hour in ALLOWED_HOURS
 
 
+# label 은 출처 표시용. [com] = 회사 서버, 나중에 다른 소스가 붙으면
+# 같은 규칙으로 접두어만 바꾼다 (예: [hf] 허깅페이스 자체 호스팅 등).
+# API 호출에는 반드시 name(서버가 실제로 아는 모델 id)을 쓴다 — label 은
+# 화면 표시 전용이라 오타가 있어도 호출은 깨지지 않지만, 헷갈릴 수 있어 분리했다.
 MODELS = [
-    {"name": "gpt-5.6-luna", "provider": "openai", "in": 0.20, "out": 1.20},
-    {"name": "qwen3.8-27b", "provider": "local", "in": 0.0, "out": 0.0},
+    {"name": "gpt-5.6-luna", "label": "[openai]gpt-5.6-luna", "provider": "openai", "in": 0.20, "out": 1.20},
+    {"name": "qwen3.8-27b", "label": "[com]qwen3.8-27b", "provider": "local", "in": 0.0, "out": 0.0},
 ]
 
 
@@ -117,11 +122,17 @@ def call_openai(cfg, model, prompt, timeout=45):
         return False, None, time.time() - t0, None, str(e)[:80]
 
 
-def call_local(cfg, model, prompt, timeout=90):
+def call_local(cfg, model, prompt, timeout=90, bypass_window=False):
     """회사 서버 qwen. 회신에서 확인된 유일한 안전 조합만 쓴다 —
     비스트리밍 + thinking 끔 + max_tokens 900. 다른 조합(스트리밍+thinking끔)은
-    본문이 빈 문자열로 오는 vLLM 버그가 있어 쓰지 않는다."""
-    if not in_allowed_window():
+    본문이 빈 문자열로 오는 vLLM 버그가 있어 쓰지 않는다.
+
+    bypass_window: 강사 개인 테스트 전용(/qwentest)에서만 True 로 넘긴다.
+    학생이 쓰는 /compare 경로는 이 인자를 절대 안 넘긴다 — 그래서 시간대
+    보호가 학생 트래픽에는 항상 걸린다. 세마포어(동시성 제한)는 두 경로
+    모두 그대로 적용된다 — 이건 "누가 부르냐"가 아니라 "GPU가 몇 개를
+    동시에 버티냐"의 문제라 예외를 두면 안 된다."""
+    if not bypass_window and not in_allowed_window():
         return False, None, 0.0, None, "지금은 로컬 모델 사용 시간이 아니에요 (일요일 14~18시만)"
 
     base = cfg.get("LOCAL_LLM_BASE_URL", "").rstrip("/")
@@ -216,13 +227,49 @@ def main():
             lines = [f"*질문:* {prompt}\n"]
             mapping = {}
             for label, m, (ok, text, elapsed, cost, err) in zip("AB", order, results):
-                mapping[label] = m["name"]
+                mapping[label] = m["label"]
                 if ok:
                     lines.append(f"*{label}* — {elapsed:.1f}초 · {cost}\n> {text}")
                 else:
                     lines.append(f"*{label}* — 응답 실패 ({err})")
             client.chat_update(channel=channel, ts=ts, text="\n\n".join(lines))
             log_reveal(channel, ts, prompt, mapping)
+
+        threading.Thread(target=work, daemon=True).start()
+
+    tester_ids = {u.strip() for u in cfg.get("QWEN_TESTER_SLACK_IDS", "").split(",") if u.strip()}
+    local_model = next(m for m in MODELS if m["provider"] == "local")
+
+    @app.command("/qwentest")
+    def handle_qwentest(ack, body, client):
+        """강사 개인 테스트용 — 시간대 제한 없이 qwen 에 바로 묻는다.
+        A/B 로 가리지 않고 어느 모델인지 그대로 보여준다(학생용 /compare 와 반대).
+        허용 목록(QWEN_TESTER_SLACK_IDS)에 없는 사용자는 거절한다 — 이게 없으면
+        /compare 의 시간대 제한이 사실상 무의미해진다(아무나 이 명령으로 우회 가능)."""
+        ack()
+        user = body["user_id"]
+        channel = body["channel_id"]
+        if user not in tester_ids:
+            client.chat_postEphemeral(channel=channel, user=user,
+                                       text="이 명령은 강사 전용이에요.")
+            return
+        prompt = (body.get("text") or "").strip()
+        if not prompt:
+            client.chat_postEphemeral(channel=channel, user=user,
+                                       text="`/qwentest 질문 내용` 처럼 뒤에 질문을 붙여주세요.")
+            return
+
+        placeholder = client.chat_postMessage(channel=channel,
+                                               text=f"🤔 {local_model['label']} 생각 중…")
+        ts = placeholder["ts"]
+
+        def work():
+            ok, text, elapsed, cost, err = call_local(cfg, local_model, prompt, bypass_window=True)
+            if ok:
+                msg = f"*{local_model['label']}* — {elapsed:.1f}초 · {cost}\n\n{text}"
+            else:
+                msg = f"*{local_model['label']}* — 실패 ({err})"
+            client.chat_update(channel=channel, ts=ts, text=msg)
 
         threading.Thread(target=work, daemon=True).start()
 
