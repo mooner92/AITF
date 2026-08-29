@@ -37,3 +37,4 @@ openai-keys.csv
 decks/assets/img/*
 !decks/assets/img/.gitkeep
 __pycache__/
+decks/.artifact-scratch/
