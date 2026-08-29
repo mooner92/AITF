@@ -5,10 +5,20 @@
 **이름을 가린 채(A/B)** 나란히 보여준다. 정답 공개는 봇이 하지 않는다 —
 강사가 서버 로그를 보고 수업 중에 말로 공개한다(2주차 슬라이드 설계 그대로).
 
-강등 경로 (specs/150 "⚠ 확인 필요"): 회사 서버 로컬 모델 사용은 아직
-미승인이라, 지금은 **GPT 두 티어(luna·terra) 비교**로 돈다. 승인이 나면
-로컬 모델 엔드포인트를 MODELS 에 추가하기만 하면 된다 — 채널·학생 습관은
-그대로 두고 뒤의 모델만 바꾸는 게 애초 설계 원칙(150 "0. 확정 사항").
+2026-08-30: GPT 두 티어(luna·terra) 비교는 같은 회사 모델끼리라 실습으로서
+의미가 부족하다고 판단해 폐기. **luna(OpenAI) vs qwen3.8-27b(회사 서버)**로
+교체했다 — "AI는 하나가 아니다"가 실제로 성립하는 조합이다.
+
+qwen 은 회사 GPU 서버를 Cloudflare Access **Service Token**으로 통과해
+호출한다. 회사 쪽 회신에서 확인된 제약 셋을 그대로 반영했다:
+  · 비스트리밍 + `chat_template_kwargs.enable_thinking=false` + `max_tokens≤900`
+    만 안전하다 — 스트리밍+thinking끔은 본문이 빈 문자열로 오는 vLLM 버그가
+    있고, thinking 을 켜면 100초(Cloudflare 프록시 타임아웃) 벽에 걸린다.
+  · 서버 쪽에 동시 실행 상한이 없어(`--max-num-seqs` 미지정) **봇 쪽에서
+    반드시 큐잉**해야 한다 — LOCAL_MODEL_SEM 이 그 역할.
+  · Access 정책엔 요일/시각 조건이 없어(신원·IP 기준만 지원) **봉 쪽에서
+    스스로 시간대를 지킨다** — ALLOWED_HOURS. 회사와 합의한 대로
+    일요일 14~18시(수업 시간)에만 qwen 을 부른다.
 
 동작 원리 — ack-fast / work-slow (150 §1 ⓑ):
     1. 슬래시 커맨드 수신 → 3초 안에 ack (Bolt 가 자동)
@@ -19,9 +29,13 @@
 Socket Mode 를 쓴다 — 인바운드 포트를 열지 않는다(110·150 원칙과 동일).
 
 설정: /opt/scripts/.env (600)
-    SLACK_BOT_TOKEN=xoxb-...        OAuth 봇 토큰
-    SLACK_APP_TOKEN=xapp-...        앱 레벨 토큰 (connections:write 스코프)
-    COMPARE_BOT_OPENAI_KEY=sk-...   전용 키 (학생 키와 분리 — specs 결정)
+    SLACK_BOT_TOKEN=xoxb-...            OAuth 봇 토큰
+    SLACK_APP_TOKEN=xapp-...            앱 레벨 토큰 (connections:write 스코프)
+    COMPARE_BOT_OPENAI_KEY=sk-...       OpenAI 쪽 전용 키 (학생 키와 분리)
+    CF_ACCESS_CLIENT_ID=...access       회사 서버용 Service Token
+    CF_ACCESS_CLIENT_SECRET=cfast_...
+    LOCAL_LLM_BASE_URL=https://llm.excusa.uk/v1
+    LOCAL_LLM_MODEL=qwen3.8-27b
 
 로그: /var/log/aitf-compare.jsonl — 어느 라벨(A/B)이 어느 모델이었는지.
       **Slack에는 절대 안 올라간다.** 강사가 공개할 때 눈으로 보는 용도.
@@ -36,6 +50,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
+from datetime import datetime
 from pathlib import Path
 
 from slack_bolt import App
@@ -44,11 +59,24 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 ENV = Path("/opt/scripts/.env")
 LOG = Path("/var/log/aitf-compare.jsonl")
 
-# 강등 경로 — 회사 서버 승인 나면 여기에 로컬 모델을 추가한다.
-# key 는 라벨이 아니라 "고를 때 참고할 이름"일 뿐, 학생에게는 절대 노출 안 함.
+# 서버 쪽에 동시 실행 상한이 없다 — 여기서 반드시 걸어야 한다 (회사 회신 필수 조건).
+# openai 쪽은 이 제한이 필요 없다(우리 프로젝트 예산으로만 제한됨).
+LOCAL_MODEL_SEM = threading.Semaphore(2)
+
+# 일요일(weekday()==6) 14~18시만. 회사와 합의한 시간대 — 이 창을 넓히려면
+# 반드시 먼저 회사와 다시 협의한다(요청서에 적어 보낸 조건).
+ALLOWED_WEEKDAY = 6
+ALLOWED_HOURS = range(14, 18)
+
+
+def in_allowed_window(now=None) -> bool:
+    now = now or datetime.now()
+    return now.weekday() == ALLOWED_WEEKDAY and now.hour in ALLOWED_HOURS
+
+
 MODELS = [
-    {"name": "gpt-5.6-luna", "in": 0.20, "out": 1.20},
-    {"name": "gpt-5.6-terra", "in": 2.00, "out": 12.00},
+    {"name": "gpt-5.6-luna", "provider": "openai", "in": 0.20, "out": 1.20},
+    {"name": "qwen3.8-27b", "provider": "local", "in": 0.0, "out": 0.0},
 ]
 
 
@@ -63,9 +91,7 @@ def load_env():
     return cfg
 
 
-def call_model(api_key, model, prompt, timeout=45):
-    """모델 하나 호출. (성공여부, 답, 걸린시간, 예상비용, 에러메시지) 반환.
-    실패해도 예외를 밖으로 던지지 않는다 — 한 모델이 죽어도 나머지는 보여줘야 한다."""
+def call_openai(cfg, model, prompt, timeout=45):
     t0 = time.time()
     body = json.dumps({
         "model": model["name"],
@@ -74,7 +100,8 @@ def call_model(api_key, model, prompt, timeout=45):
     }).encode()
     req = urllib.request.Request(
         "https://api.openai.com/v1/chat/completions", data=body, method="POST",
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"})
+        headers={"Authorization": f"Bearer {cfg['COMPARE_BOT_OPENAI_KEY']}",
+                 "Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             data = json.loads(r.read())
@@ -83,11 +110,58 @@ def call_model(api_key, model, prompt, timeout=45):
         usage = data.get("usage", {})
         cost = (usage.get("prompt_tokens", 0) * model["in"]
                 + usage.get("completion_tokens", 0) * model["out"]) / 1_000_000
-        return True, text, elapsed, cost, None
+        return True, text, elapsed, f"약 ${cost:.4f}", None
     except urllib.error.HTTPError as e:
-        return False, None, time.time() - t0, 0.0, f"HTTP {e.code}"
+        return False, None, time.time() - t0, None, f"HTTP {e.code}"
     except Exception as e:
-        return False, None, time.time() - t0, 0.0, str(e)[:80]
+        return False, None, time.time() - t0, None, str(e)[:80]
+
+
+def call_local(cfg, model, prompt, timeout=90):
+    """회사 서버 qwen. 회신에서 확인된 유일한 안전 조합만 쓴다 —
+    비스트리밍 + thinking 끔 + max_tokens 900. 다른 조합(스트리밍+thinking끔)은
+    본문이 빈 문자열로 오는 vLLM 버그가 있어 쓰지 않는다."""
+    if not in_allowed_window():
+        return False, None, 0.0, None, "지금은 로컬 모델 사용 시간이 아니에요 (일요일 14~18시만)"
+
+    base = cfg.get("LOCAL_LLM_BASE_URL", "").rstrip("/")
+    cid = cfg.get("CF_ACCESS_CLIENT_ID")
+    csec = cfg.get("CF_ACCESS_CLIENT_SECRET")
+    if not (base and cid and csec):
+        return False, None, 0.0, None, "로컬 모델 설정 미완료"
+
+    t0 = time.time()
+    body = json.dumps({
+        "model": model["name"],
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 900,
+        "chat_template_kwargs": {"enable_thinking": False},
+    }).encode()
+    req = urllib.request.Request(
+        f"{base}/chat/completions", data=body, method="POST",
+        headers={"CF-Access-Client-Id": cid, "CF-Access-Client-Secret": csec,
+                 "Content-Type": "application/json"})
+
+    # 서버 쪽 동시 실행 상한이 없다 — 여기서 큐잉한다(회사 합의 조건).
+    with LOCAL_MODEL_SEM:
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                data = json.loads(r.read())
+            elapsed = time.time() - t0
+            text = data["choices"][0]["message"]["content"].strip()
+            return True, text, elapsed, "무료 (사내 GPU)", None
+        except urllib.error.HTTPError as e:
+            return False, None, time.time() - t0, None, f"HTTP {e.code}"
+        except Exception as e:
+            return False, None, time.time() - t0, None, str(e)[:80]
+
+
+def call_model(cfg, model, prompt):
+    """모델 하나 호출. (성공여부, 답, 걸린시간, 비용표시, 에러메시지) 반환.
+    실패해도 예외를 밖으로 던지지 않는다 — 한 모델이 죽어도 나머지는 보여줘야 한다."""
+    if model["provider"] == "local":
+        return call_local(cfg, model, prompt)
+    return call_openai(cfg, model, prompt)
 
 
 def log_reveal(channel, ts, prompt, mapping):
@@ -104,9 +178,8 @@ def main():
     cfg = load_env()
     bot_token = cfg.get("SLACK_BOT_TOKEN")
     app_token = cfg.get("SLACK_APP_TOKEN")
-    api_key = cfg.get("COMPARE_BOT_OPENAI_KEY")
-    missing = [k for k, v in [("SLACK_BOT_TOKEN", bot_token), ("SLACK_APP_TOKEN", app_token),
-                               ("COMPARE_BOT_OPENAI_KEY", api_key)] if not v]
+    missing = [k for k in ("SLACK_BOT_TOKEN", "SLACK_APP_TOKEN", "COMPARE_BOT_OPENAI_KEY")
+               if not cfg.get(k)]
     if missing:
         print(f"설정 누락: {', '.join(missing)} — /opt/scripts/.env 확인")
         raise SystemExit(1)
@@ -132,7 +205,7 @@ def main():
             results = [None, None]
 
             def run(i, m):
-                results[i] = call_model(api_key, m, prompt)
+                results[i] = call_model(cfg, m, prompt)
 
             threads = [threading.Thread(target=run, args=(i, m)) for i, m in enumerate(order)]
             for t in threads:
@@ -145,7 +218,7 @@ def main():
             for label, m, (ok, text, elapsed, cost, err) in zip("AB", order, results):
                 mapping[label] = m["name"]
                 if ok:
-                    lines.append(f"*{label}* — {elapsed:.1f}초 · 약 ${cost:.4f}\n> {text}")
+                    lines.append(f"*{label}* — {elapsed:.1f}초 · {cost}\n> {text}")
                 else:
                     lines.append(f"*{label}* — 응답 실패 ({err})")
             client.chat_update(channel=channel, ts=ts, text="\n\n".join(lines))
