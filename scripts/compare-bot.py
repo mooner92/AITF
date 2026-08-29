@@ -79,6 +79,17 @@ def in_allowed_window(now=None) -> bool:
 # 같은 규칙으로 접두어만 바꾼다 (예: [hf] 허깅페이스 자체 호스팅 등).
 # API 호출에는 반드시 name(서버가 실제로 아는 모델 id)을 쓴다 — label 은
 # 화면 표시 전용이라 오타가 있어도 호출은 깨지지 않지만, 헷갈릴 수 있어 분리했다.
+# 두 모델 다 이 지시를 받는다 — /compare 가 "블라인드" 테스트가 되려면
+# 서식 스타일 자체가 힌트가 되면 안 된다(헤더·표·이모지로 도배하는 쪽이
+# 한눈에 다른 모델임을 드러내면 블라인드가 깨진다). 2026-08-30 실측:
+# 지시 없이 물었더니 qwen 이 보고서 스타일로 900토큰을 다 채워 답이
+# 중간에 잘렸다 — 짧게 답하라는 지시가 없어서 생긴 문제였다.
+SYSTEM_PROMPT = (
+    "중고등학생 채팅방에서 짧게 답한다. 한국어로, 2~4문장. "
+    "마크다운 제목(#)·표·이모지·볼드 남발 없이 평범한 대화체로 쓴다. "
+    "모르는 용어가 나오면 모른다고 짧게 말하고 넘어간다."
+)
+
 MODELS = [
     {"name": "gpt-5.6-luna", "label": "[openai]gpt-5.6-luna", "provider": "openai", "in": 0.20, "out": 1.20},
     {"name": "qwen3.8-27b", "label": "[com]qwen3.8-27b", "provider": "local", "in": 0.0, "out": 0.0},
@@ -100,7 +111,8 @@ def call_openai(cfg, model, prompt, timeout=45):
     t0 = time.time()
     body = json.dumps({
         "model": model["name"],
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [{"role": "system", "content": SYSTEM_PROMPT},
+                     {"role": "user", "content": prompt}],
         "max_completion_tokens": 400,
     }).encode()
     req = urllib.request.Request(
@@ -144,7 +156,8 @@ def call_local(cfg, model, prompt, timeout=90, bypass_window=False):
     t0 = time.time()
     body = json.dumps({
         "model": model["name"],
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [{"role": "system", "content": SYSTEM_PROMPT},
+                     {"role": "user", "content": prompt}],
         "max_tokens": 900,
         "chat_template_kwargs": {"enable_thinking": False},
     }).encode()
