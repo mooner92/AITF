@@ -255,6 +255,18 @@ html[data-dir="back"]::view-transition-new(slide){animation-name:vt-in-back}
 
 .notes{display:none}
 
+/* ── SVG 그림 모션 (design-spec 5-3에 준함) ──
+   슬라이드에 들어올 때 선이 그려지고(draw) 라벨이 떠오른다(pop).
+   march 는 순환 화살표 전용 — 점선이 도는 것 자체가 "반복"이라는 내용이다.
+   기본 상태(개요·인쇄·비활성 슬라이드)는 완성된 그림이어야 하므로,
+   숨김은 .on 에서만 animation-fill-mode:both 의 from 프레임으로 만든다. */
+.slide.on svg .draw{stroke-dasharray:1;animation:svg-draw .9s cubic-bezier(.4,0,.2,1) both;animation-delay:var(--d,0s)}
+.slide.on svg .pop{animation:svg-pop .5s ease both;animation-delay:var(--d,0s)}
+.slide.on svg .march{stroke-dasharray:.06 .04;animation:svg-march 1.8s linear infinite}
+@keyframes svg-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes svg-pop{from{opacity:0;transform:translateY(.6vmin)}to{opacity:1;transform:none}}
+@keyframes svg-march{to{stroke-dashoffset:-.5}}
+
 /* ── 이미지 (design-spec 4-6) ──
    사진은 카드와 같은 문법으로 앉힌다 — 헤어라인 테두리, 라운드, 그림자 없음.
    높이 상한을 두는 이유: 세로로 긴 사진 한 장이 제목까지 밀어내면 슬라이드가
@@ -281,6 +293,8 @@ html[data-dir="back"]::view-transition-new(slide){animation-name:vt-in-back}
   #bar,#glow{transition:none}
   .slide.on .bar .track i{animation:none;transform:none}
   .slide.on > *{animation:none}
+  /* SVG 모션도 정지 — 기본 상태가 완성된 그림이므로 끄기만 하면 된다 */
+  .slide.on svg .draw,.slide.on svg .pop,.slide.on svg .march{animation:none;stroke-dasharray:none}
 }
 
 /* ── 인쇄 / PDF ── */
