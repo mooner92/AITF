@@ -63,20 +63,43 @@ def read_or_seed(path: Path, seed: str) -> str:
 
 
 # ── 수집 (결정적) ────────────────────────────────────────────────
+GITEA_REPOS = Path("/var/lib/gitea/data/gitea-repositories")
+
+
 def collect(acct: str, since: str, days: int = 7) -> dict:
     """활동 수집. **커밋에 의존하지 않는다** — git 은 4주차에 배우므로
     1~3주차에는 커밋이 구조적으로 0건이다. 파일 변경이 1차 신호이고
-    커밋은 그 위에 얹히는 부가 정보다."""
+    커밋은 그 위에 얹히는 부가 정보다.
+
+    커밋은 **두 곳**에서 온다. SSH/Codex 로 만든 커밋은 학생 홈의 워킹 카피
+    (`/home/<acct>/project/.git`)에 남고, 1주차처럼 서버 접속 없이 Gitea
+    웹 업로드로만 만든 커밋은 그 워킹 카피에 전혀 반영되지 않는다 — Gitea의
+    베어 저장소에만 존재한다. 홈 디렉터리만 보면 1주차 활동이 통째로
+    0건으로 잡힌다(2026-08-29 설계 검토 중 발견). 그래서 베어 저장소도
+    반드시 같이 본다."""
     home = Path("/home") / acct
     proj = home / "project"
     out = {"account": acct, "commits": [], "folders": [], "pages": 0,
            "skills": [], "touched": [], "uncommitted": 0}
+    seen = set()
+
+    def add_commits(log: str):
+        for l in log.splitlines():
+            l = l.strip()
+            if l and l not in seen:
+                seen.add(l)
+                out["commits"].append(l)
+
     if (proj / ".git").is_dir():
         # root 가 학생 소유 저장소를 읽으면 git 이 dubious ownership 으로 거부한다.
         # 소유자로 실행해 우회한다 (읽기 전용이므로 안전).
-        log = sh("sudo", "-u", acct, "-H", "git", "-C", str(proj),
-                 "log", f"--since={since}", "--pretty=%s")
-        out["commits"] = [l for l in log.splitlines() if l.strip()]
+        add_commits(sh("sudo", "-u", acct, "-H", "git", "-C", str(proj),
+                       "log", f"--since={since}", "--pretty=%s"))
+    bare = GITEA_REPOS / acct / "project.git"
+    if bare.is_dir():
+        # 베어 저장소는 gitea 시스템 계정 소유 — 같은 계정으로 읽는다.
+        add_commits(sh("sudo", "-u", "gitea", "git", "-C", str(bare),
+                       "log", f"--since={since}", "--pretty=%s"))
     if proj.is_dir():
         out["folders"] = sorted(
             p.name for p in proj.iterdir()
@@ -361,16 +384,25 @@ def main():
 
     week = a.week
     if week is None:
-        start = ""
-        env = Path("/opt/scripts/hub.env")
-        if env.exists():
-            m = re.search(r"^COURSE_START=(.*)$", env.read_text(), re.M)
-            start = (m.group(1).strip() if m else "")
-        if start:
-            d0 = datetime.strptime(start, "%Y-%m-%d").date()
-            week = max(0, (date.today() - d0).days // 7 + 1)
-        else:
-            week = 0
+        # term_calendar 가 확정된 주차만 안다 — 휴일이 아닌 12번의 실제 수업일로
+        # 계산한다(연속 날짜 나누기가 아니라). 아직 미설정이면 기존 방식으로 폴백.
+        sys.path.insert(0, str(HERE))
+        import term_calendar
+        week = term_calendar.week_of()
+        if week is None:
+            if term_calendar.is_after_course():
+                print("과정 종료일이 지났다 — 위키를 만들지 않는다 (term-calendar.json 참고)")
+                return 0
+            start = ""
+            env = Path("/opt/scripts/hub.env")
+            if env.exists():
+                m = re.search(r"^COURSE_START=(.*)$", env.read_text(), re.M)
+                start = (m.group(1).strip() if m else "")
+            if start:
+                d0 = datetime.strptime(start, "%Y-%m-%d").date()
+                week = max(0, (date.today() - d0).days // 7 + 1)
+            else:
+                week = 0
 
     today = date.today().isoformat()
     WORK.mkdir(parents=True, exist_ok=True)

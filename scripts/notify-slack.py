@@ -109,12 +109,21 @@ def main():
 
     week = a.week
     if week is None:
-        hub = load_env(Path("/opt/scripts/hub.env")).get("COURSE_START", "")
-        if hub:
-            d0 = datetime.strptime(hub, "%Y-%m-%d").date()
-            week = max(0, (date.today() - d0).days // 7 + 1)
-        else:
-            week = 0
+        # build-wiki.py 와 같은 원칙 — 휴일 반영한 실제 수업일 목록을 먼저 본다.
+        # scripts/term_calendar.py 참고.
+        sys.path.insert(0, str(Path(__file__).parent))
+        import term_calendar
+        week = term_calendar.week_of()
+        if week is None:
+            if term_calendar.is_after_course():
+                print("과정 종료일이 지났다 — 알림을 보내지 않는다")
+                return 0
+            hub = load_env(Path("/opt/scripts/hub.env")).get("COURSE_START", "")
+            if hub:
+                d0 = datetime.strptime(hub, "%Y-%m-%d").date()
+                week = max(0, (date.today() - d0).days // 7 + 1)
+            else:
+                week = 0
 
     sent = 0
     for cls_dir in sorted(WORK.iterdir()) if WORK.exists() else []:

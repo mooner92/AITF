@@ -36,3 +36,4 @@ web/landing/dist/
 openai-keys.csv
 decks/assets/img/*
 !decks/assets/img/.gitkeep
+__pycache__/

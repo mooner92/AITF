@@ -222,16 +222,24 @@ def main():
         print(f"NOTION_TOKEN 미설정({ENV}) — 발행 생략. 위키는 서버에 그대로 있다.")
         return 0
 
-    # 주차 결정 (build-wiki 와 동일 규칙)
+    # 주차 결정 (build-wiki 와 동일 규칙 — scripts/term_calendar.py)
     week = a.week
     if week is None:
-        m = re.search(r"^COURSE_START=(.+)$",
-                      Path("/opt/scripts/hub.env").read_text(encoding="utf-8"), re.M)
-        if m and m.group(1).strip():
-            d0 = datetime.strptime(m.group(1).strip(), "%Y-%m-%d").date()
-            week = max(0, (date.today() - d0).days // 7 + 1)
-        else:
-            week = 0
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).parent))
+        import term_calendar
+        week = term_calendar.week_of()
+        if week is None:
+            if term_calendar.is_after_course():
+                print("과정 종료일이 지났다 — Notion 발행을 생략한다")
+                return 0
+            m = re.search(r"^COURSE_START=(.+)$",
+                          Path("/opt/scripts/hub.env").read_text(encoding="utf-8"), re.M)
+            if m and m.group(1).strip():
+                d0 = datetime.strptime(m.group(1).strip(), "%Y-%m-%d").date()
+                week = max(0, (date.today() - d0).days // 7 + 1)
+            else:
+                week = 0
 
     # DB 준비 (최초 1회 생성 → .env 에 기록 안내)
     dbid = cfg.get("NOTION_DB_ID", "")
