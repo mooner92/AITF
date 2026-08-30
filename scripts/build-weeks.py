@@ -78,11 +78,19 @@ def parse():
         LABEL = r"\*\*(?:진행|강사 준비)(?:[^*]*)?\*\*\s*:"
 
         def field(label):
-            """같은 라벨의 블록이 여럿이면(8주차 전반/후반) 모두 이어 붙인다."""
+            """같은 라벨의 블록이 여럿이면(8주차 전반/후반, v8.6 실습 블록) 모두 이어 붙인다.
+
+            라벨의 부제("· 실습 1 — 터미널 리프레시 (20분)")는 블록의 제목·시간 정보라
+            버리지 않고 본문 앞에 붙인다 — 허브 주간 화면에서 블록 경계가 보이게."""
             found = re.findall(
-                rf"\*\*{label}(?:[^*]*)?\*\*\s*:\s*(.*?)(?=\n{LABEL}|\Z)",
+                rf"\*\*{label}([^*]*)?\*\*\s*:\s*(.*?)(?=\n{LABEL}|\Z)",
                 body, re.S)
-            return "\n".join(x.strip() for x in found)
+            parts = []
+            for sub, content in found:
+                sub = (sub or "").strip(" ·—-")
+                head = f"[{sub}] " if sub else ""
+                parts.append(head + content.strip())
+            return "\n".join(parts)
 
         prep_raw = field("강사 준비")
         weeks.append({
