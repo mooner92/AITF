@@ -45,3 +45,11 @@ CSV 한 장으로 학생 계정을 일괄 생성/재생성. 각 계정은 tmux �
 ## 결정 기록
 
 - 2026-08-16 · `systemctl set-property` 대신 slice 드롭인 파일 채택 — 로그인 전 적용 + TasksMax 추가.
+- 2026-08-30 · **`/opt/template-home/`에 `.bash_profile`이 애초에 없던 버그 발견·수정.**
+  개강 이틀 전 학원 현장에서 발견한 ".bash_profile 없으면 SSH 로그인이 .bashrc 를
+  안 읽는다"는 문제를 기존 5개 학생 홈에는 직접 고쳤지만, 그 수정이 템플릿
+  자체(`/opt/template-home/`, `template-home/`)에는 반영되지 않았다. 그 결과
+  `reset-home.sh`(rsync `--delete`, `.bash_profile`은 제외 목록에 없음)를 새 계정에
+  돌리면 `useradd -m`이 `/etc/skel`에서 만들어 준 `.bash_profile`을 오히려 지워버리는
+  상태였다 — 고등반 신규 3명(최민범·양재훈·김태윤) 추가 중 `check-account.sh`로
+  잡았다. `/etc/skel/.bash_profile`과 동일한 내용을 템플릿에 추가해 근본 수정.
