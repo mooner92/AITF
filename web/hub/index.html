@@ -314,13 +314,19 @@ function autoRow(n, ep, stale, built){
 }
 
 let LINKS = "";
-function buildLinks(dom){
+function buildLinks(dom, notion){
   const T = (l,p,s) => dom
     ? `<a class="tile" href="https://${esc(dom)}${p}" target="_blank" rel="noopener"><b>${esc(l)}</b><small>${esc(s)}</small></a>`
     : `<a class="tile dead"><b>${esc(l)}</b><small>도메인 미설정</small></a>`;
+  /* Notion 은 우리 도메인이 아니라 발행 스크립트가 남긴 절대 URL — 최신 주차 페이지로 간다 */
+  const N = (cls,l) => {
+    const e = notion && notion[cls];
+    return e ? `<a class="tile" href="${esc(e.url)}" target="_blank" rel="noopener"><b>${esc(l)}</b><small>${esc(e.week + "주차 · Notion 발행본")}</small></a>` : "";
+  };
   return T("Gitea 관리자","/git/-/admin","계정 · 저장소 전체 관리") +
          T("중등부 위키","/git/mid/class-wiki-mid","반별 LLM 위키") +
          T("고등부 위키","/git/high/class-wiki-high","반별 LLM 위키") +
+         N("mid","중등부 Notion") + N("high","고등부 Notion") +
          T("통합 아카이브","/git/archive/class-archive","수업 기록") +
          T("OpenObserve","/monweb/web/","토큰 · 리소스 지표");
 }
@@ -397,7 +403,7 @@ function render(d){
     `<div class="tiles"><a class="tile" href="#prep"><b>체크리스트</b><small>주차별 준비 항목</small></a></div>`;
 
   /* 링크 */
-  LINKS = buildLinks(d.domain);
+  LINKS = buildLinks(d.domain, d.notion);
   $("links").innerHTML = LINKS;
   $("links-mini").innerHTML = LINKS;
 

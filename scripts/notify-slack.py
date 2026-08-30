@@ -86,6 +86,9 @@ def build(cls, data, domain):
     lines = [f"*{week}주차 기록이 올라왔어요*", " · ".join(stat)]
     if folders:
         lines.append("이번 주 폴더: " + " ".join(f"`{f}`" for f in folders))
+    # 한입 요약 — weeks/wNN.md 에서 결정적으로 뽑는다 (LLM 없음, 120 원칙).
+    # 자기 전에 폰으로 훑는 용도라 3줄을 넘기지 않는다. 자세한 건 Notion 버튼.
+    lines += digest(cls, week)
 
     wiki = (f"https://{domain}/git/{cls}/class-wiki-{cls}"
             if domain else "")
@@ -106,6 +109,33 @@ def build(cls, data, domain):
     if buttons:
         blocks.append({"type": "actions", "elements": buttons})
     return {"text": f"{week}주차 기록이 올라왔어요", "blocks": blocks}
+
+
+def digest(cls, week):
+    """weeks/wNN.md 에서 '### 소제목'(오늘 배운 것)과 '## 다음 주 예고' 첫 줄만 뽑는다."""
+    f = WORK / cls / "weeks" / f"w{week:02d}.md"
+    if not f.exists():
+        return []
+    topics, teaser_lines, in_teaser = [], [], False
+    for line in f.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if s.startswith("### "):
+            topics.append(re.sub(r"^\d+\.\s*", "", s[4:]).strip())
+        elif s.startswith("## "):
+            in_teaser = "다음 주" in s
+        elif in_teaser:
+            if not s or s.startswith("---"):   # 문단 끝
+                if teaser_lines:
+                    in_teaser = False
+            else:
+                teaser_lines.append(re.sub(r"[*`]", "", s))
+    teaser = " ".join(teaser_lines)
+    out = []
+    if topics:
+        out.append("📚 오늘 배운 것: " + " · ".join(topics[:6]))
+    if teaser:
+        out.append(f"🔮 다음 주: {teaser}")
+    return out
 
 
 NOTION_LINKS = Path("/var/lib/wiki-build/notion-links.json")

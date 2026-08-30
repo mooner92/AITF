@@ -125,6 +125,7 @@ cat > "$OUT.tmp" <<JSON
     "wiki_built": $wiki_built,
     "wiki_last": $wiki_last
   },
+  "notion": $(cat /var/lib/wiki-build/notion-links.json 2>/dev/null || echo "{}"),
   "students": $students_json,
   "roster": $roster_json,
   "notes": $notes_escaped
