@@ -216,7 +216,7 @@ JR-AITF/
 
 ## 6. 작업 체크리스트
 
-- [x] A: `scripts/build-wiki.sh` — 수집 → 3층 생성 → 커밋
+- [x] A: `scripts/build-wiki.py` — 수집 → 3층 생성 → 커밋
 - [x] A: cron 일 20:00 등록 + 관제탑 표시를 실행 시각으로 전환
 - [x] A: 활동 0건 실행 검증 + 권한 격리 검증 (아래 검증 기준 1~6)
 - [ ] B: 스킬·토큰 수집 결합
@@ -307,3 +307,13 @@ JR-AITF/
 - 2026-08-26 · **중복 잔디 함정 확인·회피안 채택.** 학생 개인 사본과 org 사본이
   동시에 접근 가능하면 기여가 두 번 세진다. org 에는 위키·아카이브만 두고
   학생 코드 사본이 필요하면 private 으로 둔다.
+- 2026-08-29 · **수집 사각지대 발견·수정: Gitea bare 저장소를 안 읽고 있었다.**
+  `collect()`가 학생 홈의 워킹 카피(`/home/<계정>/project/.git`)만 읽고 Gitea bare
+  저장소(`/var/lib/gitea/data/gitea-repositories/<계정>/project.git`)는 보지 않았다 —
+  1주차가 SSH 없이 **Gitea 브라우저 업로드만**으로 진행되도록 개정되면서(160), 이 경로가
+  1주차 전체 활동을 놓치는 사각지대가 됐다. `sudo -u gitea git -C <bare경로> log`로 bare
+  저장소도 함께 읽고 커밋 메시지 기준으로 중복 제거하도록 고쳤다.
+- 2026-08-30 · **`enrich-wiki.py`에 실제 gpt-5.6-luna 키 주입·실행 검증 완료.**
+  `/opt/scripts/wiki-llm.env`(600)에 `LLM_URL=https://api.openai.com/v1`,
+  `LLM_MODEL=gpt-5.6-luna`, 실 키를 넣고 dry-run 아닌 실제 실행으로 서술 생성 +
+  Gitea push까지 왕복 확인했다.

@@ -32,7 +32,12 @@
   which codex   # /usr/bin 또는 /usr/local/bin 이어야 정상. /home/** 이면 잘못 설치된 것
   ```
 - **키 발급**: 인원수만큼 개별 키 + **hard cap**. 위 예상액이 학생당 ~$8이므로 cap은 $20~30이면 충분히 여유롭다. 벤더가 하나라 대시보드도 하나.
-- **키 주입**: 각 학생 `~/.bashrc`에 export, `chmod 600`. 계정 분리(홈 700)로 상호 열람 불가.
+- **키 주입 — 두 곳 다 필요하다**: 각 학생 `~/.bashrc.d/50-openai.sh`에 export(`chmod 600`)에 더해
+  `codex login --with-api-key`로 `~/.codex/auth.json`도 함께 써야 한다. `codex doctor`는 env var만
+  있어도 "auth is provided by environment"라며 통과시키지만, **`codex exec`는 실제로 env var를
+  무시하고 401로 죽는다**(codex-cli 0.147.0의 알려진 버그, 2026-08-29 실측). `scripts/push-key.sh`가
+  둘 다 주입하도록 이미 반영돼 있고, `scripts/check-account.sh`가 두 파일 존재를 각각 점검한다.
+  계정 분리(홈 700)로 상호 열람 불가.
 - 전역 gitignore(060)가 `.codex/` `.env`를 커밋에서 차단.
 
 ## 작업 체크리스트
@@ -52,3 +57,4 @@
 - 2026-08-16 · tokscale도 이 단계에서 함께 root 전역 설치 (070에서 사용).
 - 2026-08-18 · **모델 스택 확정.** 후보를 성능·가격·라우팅 가능 여부로 비교한 결과, 단일 벤더 2티어로 결정. 다른 벤더의 경량 모델은 (1) CLI 간 라우팅이 불가능하고 (2) 기본 모델보다 오히려 비싸며 (3) 내년 초 가격 인상이 예고돼 있어 제외.
 - 2026-08-19 · **"ChatGPT Free/Plus의 Luna 무제한 텍스트 대화"와 이 스펙의 과금은 무관함을 확인·기록.** 무제한은 `chatgpt.com` 채팅 화면 한정이며 Codex CLI는 별도 계량이다. ChatGPT 계정으로 Codex에 로그인해도 2026-04-02부터 포함 크레딧 소진 후에는 API와 동일 단가(≈$0.04/크레딧, 토큰가 연동)로 과금돼 "진짜 무제한" 구간이 없다. 대안(Business 좌석 인당 $20~25/월 × 12명 × 3개월 ≈ $720~900)은 현재 API 키 방식(12주 총 $97~250 추정)보다 크게 비싸 채택하지 않는다. **결론: API 키 + hard cap 방식 유지, 변경 없음.**
+- 2026-08-29 · **`codex exec`가 env var 인증을 무시하는 버그를 개강 이틀 전 실측으로 발견.** 5개 학생 키 전원이 `codex doctor` 통과에도 불구하고 조용히 401 상태였다 — 실제 완성 응답을 받아 보기 전까지는 몰랐다. `push-key.sh`에 `codex login --with-api-key` 호출을 추가해 `~/.codex/auth.json`까지 함께 쓰도록 고치고, 5개 계정 전원 재검증(실제 `codex exec` 완성 응답 확인) 완료.
