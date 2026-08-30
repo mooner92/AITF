@@ -161,7 +161,7 @@ def build_class(cls: str, week: int, today: str, since: str, dry: bool):
             print(f"  ! 저장소를 못 열었습니다: {cls}/{repo}")
             return
     else:
-        sh("git", "-C", str(dir_), "pull", "-q", "--ff-only")
+        sh("git", "-C", str(dir_), "pull", "-q", "--ff-only", url, "main")
     sh("git", "-C", str(dir_), "config", "user.name", "AITF 위키봇")
     sh("git", "-C", str(dir_), "config", "user.email", "wiki@class.local")
 
@@ -296,7 +296,10 @@ def build_class(cls: str, week: int, today: str, since: str, dry: bool):
     sh("git", "-C", str(dir_), "add", "-A")
     if subprocess.run(["git", "-C", str(dir_), "diff", "--cached", "--quiet"]).returncode:
         sh("git", "-C", str(dir_), "commit", "-q", "-m", f"{week}주차 자동 기록 ({today})")
-        ok = subprocess.run(["git", "-C", str(dir_), "push", "-q", "origin", "HEAD"],
+        # origin 이 아니라 매번 cred() 로 만든 url 로 민다 — clone 시점의 origin 에는
+        # 그때의 관리자 비밀번호가 박혀 있어, 비밀번호를 바꾸면 조용히 push 만 실패한다
+        # (2026-08-30 실측: 비밀번호 변경 후 high·archive 만 실패, 당일 재클론된 mid 만 성공).
+        ok = subprocess.run(["git", "-C", str(dir_), "push", "-q", url, "HEAD:main"],
                             capture_output=True).returncode == 0
         print("  push 완료" if ok else "  ! push 실패")
     else:
@@ -328,7 +331,7 @@ def build_archive(week: int, today: str, dry: bool):
             print("  ! 저장소를 못 열었습니다")
             return
     else:
-        sh("git", "-C", str(dir_), "pull", "-q", "--ff-only")
+        sh("git", "-C", str(dir_), "pull", "-q", "--ff-only", url, "main")
     sh("git", "-C", str(dir_), "config", "user.name", "AITF 위키봇")
     sh("git", "-C", str(dir_), "config", "user.email", "wiki@class.local")
 
@@ -367,7 +370,10 @@ def build_archive(week: int, today: str, dry: bool):
     sh("git", "-C", str(dir_), "add", "-A")
     if subprocess.run(["git", "-C", str(dir_), "diff", "--cached", "--quiet"]).returncode:
         sh("git", "-C", str(dir_), "commit", "-q", "-m", f"{week}주차 아카이브 ({today})")
-        ok = subprocess.run(["git", "-C", str(dir_), "push", "-q", "origin", "HEAD"],
+        # origin 이 아니라 매번 cred() 로 만든 url 로 민다 — clone 시점의 origin 에는
+        # 그때의 관리자 비밀번호가 박혀 있어, 비밀번호를 바꾸면 조용히 push 만 실패한다
+        # (2026-08-30 실측: 비밀번호 변경 후 high·archive 만 실패, 당일 재클론된 mid 만 성공).
+        ok = subprocess.run(["git", "-C", str(dir_), "push", "-q", url, "HEAD:main"],
                             capture_output=True).returncode == 0
         print("  push 완료" if ok else "  ! push 실패")
     else:
@@ -386,7 +392,7 @@ def main():
     if week is None:
         # term_calendar 가 확정된 주차만 안다 — 휴일이 아닌 12번의 실제 수업일로
         # 계산한다(연속 날짜 나누기가 아니라). 아직 미설정이면 기존 방식으로 폴백.
-        sys.path.insert(0, str(HERE))
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
         import term_calendar
         week = term_calendar.week_of()
         if week is None:

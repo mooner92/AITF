@@ -197,7 +197,14 @@ def main():
         subprocess.run(["git", "-C", str(dir_), "add", "-A"], capture_output=True)
         subprocess.run(["git", "-C", str(dir_), "commit", "-q", "-m",
                         f"서술 보강 (LLM) — {changed}개 페이지"], capture_output=True)
-        ok = subprocess.run(["git", "-C", str(dir_), "push", "-q", "origin", "HEAD"],
+        # origin 이 아니라 매번 자격증명 파일로 URL 을 만들어 민다 — clone 시점의
+        # origin 에는 그때의 관리자 비밀번호가 박혀 있어, 비밀번호를 바꾸면 조용히
+        # push 만 실패한다 (build-wiki.py 와 같은 수정, 2026-08-30 실측).
+        cred = Path("/opt/scripts/gitea-admin.txt").read_text().strip()
+        repo = "class-archive" if a.cls == "archive" else f"class-wiki-{a.cls}"
+        org = "archive" if a.cls == "archive" else a.cls
+        push_url = f"http://{cred}@127.0.0.1:3000/{org}/{repo}.git"
+        ok = subprocess.run(["git", "-C", str(dir_), "push", "-q", push_url, "HEAD:main"],
                             capture_output=True).returncode == 0
         print("push 완료" if ok else "! push 실패")
         # 학생 읽기 사본 갱신
