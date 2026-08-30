@@ -1,0 +1,65 @@
+# Week 01 — 개강일
+
+## 2026-08-30 · 개강 — 고등부 7 / 중등부 6으로 인원 재배정·증원
+
+당초 고등부에 몰아 등록했던 인원 중 4명(geonbag1015·gihunwon03·khy37479554·lklk74)을
+중등부로 옮기고, hl2dncs2 + 오늘 신규 가입한 6명(choeminbeom1·jaehoonxx·taeyuntwo·
+donggritk·andysong201111·osm0511)을 고등부로 확정했다. 이후 mid에 2명(noonsongi1000·
+steamgamw09) 추가로 합류해 **최종 고등부 7명 / 중등부 6명**.
+
+신규 계정은 전원 동일 파이프라인으로 프로비저닝: Linux 계정(`create-accounts.sh`) →
+템플릿 홈+하네스(`reset-home.sh`) → `check-account.sh` 통과 확인 → Gitea 계정·비공개
+`project` 저장소·git 신원/토큰(`setup-git-students.sh`) → 실제 로그인 요청으로 검증
+→ OpenAI 키 주입(`push-key.sh --verify` + 실제 `codex exec` 완성 응답 확인) → 계정 카드
+재생성. 매 단계 실제 요청/실행으로 검증했고, "설정돼 있어 보인다"만으로 완료 처리한
+항목은 없다.
+
+## 2026-08-30 · 계정 템플릿 버그 발견 — `.bash_profile` 누락
+
+`/opt/template-home/`(및 저장소 `template-home/`)에 애초에 `.bash_profile`이 없었다.
+`reset-home.sh`는 `rsync --delete`로 템플릿을 미러링하는데 `.bash_profile`이 제외
+목록에 없어서, 새 계정을 만들 때마다 `useradd -m`이 `/etc/skel`에서 만들어 준
+`.bash_profile`을 **오히려 지워버리는** 상태였다. 결과: SSH 로그인 시 `.bashrc`가
+안 읽혀 tmux·PATH가 죽음 — 개강 전날 학원 현장에서 잡았던 것과 같은 증상이 새
+계정마다 재발하는 구조였다. `check-account.sh`로 잡아서 템플릿에 근본 수정
+(specs/040 결정 기록 참고). 기존 5개 학생 계정은 직접 고쳤던 상태라 영향 없었음.
+
+## 2026-08-30 · `gitea-admin.txt` 동기화 누락 — 강사 비밀번호 변경 시 같이 안 바뀜
+
+강사(sean-admin) Gitea 비밀번호를 재설정하면서, `build-wiki.py`가 쓰는
+`/opt/scripts/gitea-admin.txt`(관리자 basic-auth 자격증명)를 같이 안 바꾸면 위키
+발행 파이프라인이 조용히 깨진다는 걸 확인했다. 즉시 동기화하고 실제 `git ls-remote`
+요청으로 재검증. **교훈**: 관리자 계정 비밀번호를 바꿀 때는 그 자격증명을 참조하는
+스크립트가 몇 개인지 먼저 확인할 것.
+
+## 2026-08-30 · 로그인 트러블슈팅 두 건
+
+**① pam_faillock 30분 잠금.** 신규 학생 하나가 새 비밀번호로 5회 연속 실패(오타
+추정) → `pam_faillock`(15분 내 5회 실패 시 30분 잠금)에 걸려, 그 이후로는 맞는
+비밀번호를 쳐도 거부되는 상태가 됐다. `faillock --user <계정> --reset`으로 즉시
+해제. 이후 **`unlock_time`을 1800초 → 180초(3분)로 조정**(`authselect` 커스텀
+프로필 `custom/oci-default` 소스 수정 → `apply-changes`로 반영, 재부팅에도 유지).
+중고등학생 대상 수업에서 5회 오타는 드문 일이 아니라고 판단.
+
+**② Cloudflare 대역으로 나가는 학생 PC.** 다른 학생 하나는 `Permission denied
+(publickey,...)`로 비밀번호 입력창 자체가 안 뜨는 증상. `journalctl -u sshd` 로그
+확인 결과 접속 시도가 학원 고정 IP(정상)와 Cloudflare 소속 IP(AS13335, 실제
+whois로 검증) 사이를 오갔다. 후자로 나갈 때는 서버가 비밀번호 인증 자체를 열지
+않아(학원 IP 한정 정책) 거부된 것 — 학생 PC의 Cloudflare WARP(공식 DNS·VPN 앱, 본인은
+"VPN 없다"고 인지 못 할 수 있음) 또는 학원 네트워크 자체의 콘텐츠 필터링 경유가
+의심됨. 근본 해결은 미확인(학생 PC 직접 확인 필요) — WARP 앱 끄기를 1차로 안내.
+
+## 2026-08-30 · 미해결 — Cloudflare Access 이메일 OTP 미수신 (2명)
+
+신규 학생 중 2명이 Cloudflare Access 이메일 OTP를 못 받는다고 보고. 이 서버에는
+Cloudflare 계정 관리 API 토큰이 없어(Access 서비스 토큰만 있음) 정책·발송 로그를
+직접 조회할 수 없었다 — **누가 두 명인지부터 특정 필요.** 유력 후보로 학교 도메인
+이메일(`@dshs.kr` 등)이 외부 발신 OTP 메일을 필터링하는 경우를 짚었으나 미확인.
+다음 확인 사항: (1) Access 정책에 등록된 이메일 철자가 실제 이메일과 정확히
+일치하는지 (2) 스팸함 (3) 학교 메일 도메인이면 IT 담당자에게 발신자 화이트리스트
+요청.
+
+## 2026-08-30 · 다음 주(2주차) 예고 — Codex 데스크탑 앱 연동
+
+2주차에 Codex 데스크탑 앱 사용 + 서버에 Codex 설치·데스크탑 앱과 연결하는 실습을
+계획 중. 서버 쪽 준비(원격 연결 방식 확정)는 2주차 임박 시 별도로 조사·정리 예정.
