@@ -9,7 +9,7 @@
     --canvas:#0a0b0d; --card:#111318; --elevated:#171a20;
     --ink:#f4f6f8; --body:rgba(244,246,248,.86); --mute:#9aa1ab; --faint:rgba(244,246,248,.5);
     --hair:rgba(255,255,255,.09); --hair-strong:rgba(255,255,255,.18);
-    --accent:#3ddc97; --accent-ink:#04140d; --blue:#5b9dff; --amber:#ffb84d;
+    --accent:#3ddc97; --blue:#5b9dff; --amber:#ffb84d; --red:#ff7a7a;
     --font-body:"Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
     --font-mono:ui-monospace,"D2Coding","Cascadia Code",SFMono-Regular,Consolas,"Liberation Mono",monospace;
   }
@@ -17,14 +17,14 @@
     --canvas:#f7f7f5; --card:#ffffff; --elevated:#ffffff;
     --ink:#16181c; --body:rgba(22,24,28,.82); --mute:#5b616b; --faint:rgba(22,24,28,.5);
     --hair:rgba(0,0,0,.1); --hair-strong:rgba(0,0,0,.18);
-    --accent:#0e9463; --accent-ink:#ffffff; --blue:#2568d6; --amber:#a2650a;
+    --accent:#0e9463; --blue:#2568d6; --amber:#a2650a; --red:#c23c3c;
   }
   @media (prefers-color-scheme: light){
     :root:not([data-theme="dark"]){
       --canvas:#f7f7f5; --card:#ffffff; --elevated:#ffffff;
       --ink:#16181c; --body:rgba(22,24,28,.82); --mute:#5b616b; --faint:rgba(22,24,28,.5);
       --hair:rgba(0,0,0,.1); --hair-strong:rgba(0,0,0,.18);
-      --accent:#0e9463; --accent-ink:#ffffff; --blue:#2568d6; --amber:#a2650a;
+      --accent:#0e9463; --blue:#2568d6; --amber:#a2650a; --red:#c23c3c;
     }
   }
   *{box-sizing:border-box}
@@ -81,102 +81,128 @@
     padding:14px 16px; font-size:14px;
   }
   .mistake .bad{
-    font-family:var(--font-mono); color:var(--amber); font-size:13px;
-    background:color-mix(in srgb, var(--amber) 12%, transparent);
+    font-family:var(--font-mono); color:var(--red); font-size:13px;
+    background:color-mix(in srgb, var(--red) 12%, transparent);
+    padding:2px 7px; border-radius:5px;
+  }
+  .mistake .good{
+    font-family:var(--font-mono); color:var(--accent); font-size:13px;
+    background:color-mix(in srgb, var(--accent) 12%, transparent);
     padding:2px 7px; border-radius:5px;
   }
   .mistake .why{color:var(--mute); margin-top:6px; font-size:13.5px}
+  .golden{
+    background:var(--card); border:1px solid var(--hair); border-left:3px solid var(--blue);
+    border-radius:10px; padding:16px 18px; font-size:14.5px; color:var(--body);
+  }
+  .golden b{color:var(--ink)}
   footer{
     margin-top:48px; padding-top:20px; border-top:1px solid var(--hair);
     color:var(--faint); font-size:12.5px;
   }
-  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-  @media (max-width:520px){ .grid2{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
 <main>
   <header>
-    <p class="eyebrow">1주차 · 오늘의 터미널</p>
+    <p class="eyebrow">1주차 · 오늘 우리가 쓴 것</p>
     <h1>터미널 명령어 정리</h1>
-    <p class="sub">오늘 서버에 접속해서 실제로 써본 명령어 다섯 개예요. 순서대로 다시 읽어보세요.</p>
+    <p class="sub">오늘 서버에 접속해서 실제로 친 명령어들이에요. 이대로 다시 해보면 그대로 복습이 됩니다.</p>
   </header>
 
   <section>
-    <h2>오늘 쓴 명령어</h2>
+    <h2>오늘 쓴 명령어 여섯 개</h2>
     <div class="cmd-list">
 
       <div class="cmd">
         <span class="cmd-name">ssh</span>
-        <span class="cmd-desc">내 컴퓨터에서 학교 서버로 <b>접속</b>합니다. 계정 카드의 아이디와 비밀번호를 씁니다.</span>
-        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">ssh 내아이디@서버주소</span><span class="out">Password: (쳐도 화면엔 안 보여요)</span></div>
-        <p class="tip">처음 접속할 때 "이 서버를 신뢰합니까?" 라고 물으면 <b>yes</b>를 입력합니다.</p>
+        <span class="cmd-desc">내 컴퓨터에서 수업 서버로 <b>접속</b>합니다. 계정 카드의 아이디·비밀번호를 씁니다.</span>
+        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">ssh 내아이디@서버주소</span><span class="out">Password: (쳐도 화면엔 안 보여요 — 그대로 치고 Enter)</span></div>
+        <p class="tip">처음 접속할 때만 "이 서버를 신뢰합니까?"라고 물어요 → <b>yes</b> 입력. 학원에서만 접속됩니다.</p>
       </div>
 
       <div class="cmd">
         <span class="cmd-name">ls</span>
-        <span class="cmd-desc">지금 있는 폴더 안에 <b>뭐가 들어있는지</b> 봅니다. list의 줄임말이에요.</span>
-        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">ls</span><span class="out">AGENTS.md  public  README.md  work</span></div>
+        <span class="cmd-desc">지금 있는 폴더 안에 <b>뭐가 있는지</b> 봅니다(list). <b>ls -a</b>를 붙이면 숨겨진 파일까지 다 보여요.</span>
+        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">ls</span><span class="out">project</span><span class="prompt">$</span> <span class="typed">ls -a</span><span class="out">.  ..  .bashrc  .codex  project  (점으로 시작하는 게 숨김 파일)</span></div>
       </div>
 
       <div class="cmd">
         <span class="cmd-name">cd</span>
-        <span class="cmd-desc">다른 폴더 <b>안으로 들어갑니다</b>. change directory의 줄임말이에요.</span>
-        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">cd project</span><span class="out">(project 폴더 안으로 이동)</span></div>
+        <span class="cmd-desc">폴더 <b>안으로 들어가거나</b>(cd 폴더이름) <b>다시 나옵니다</b>(cd ..).</span>
+        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">cd project</span><span class="out">(project 안으로 들어감 — 프롬프트가 project로 바뀜)</span><span class="prompt">$</span> <span class="typed">cd ..</span><span class="out">(한 단계 위로 나옴)</span></div>
+        <p class="tip">그냥 <b>cd</b>만 치면 어디에 있든 내 홈 폴더로 돌아와요.</p>
       </div>
 
       <div class="cmd">
         <span class="cmd-name">cat</span>
-        <span class="cmd-desc">파일을 열지 않고 <b>내용을 화면에 그대로</b> 보여줍니다.</span>
-        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">cat README.md</span><span class="out">(파일 내용이 그대로 출력됨)</span></div>
+        <span class="cmd-desc">파일 <b>내용을 화면에 그대로</b> 출력합니다. 편집은 안 되고 보기만.</span>
+        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">cat AGENTS.md</span><span class="out">(파일 내용이 주르륵 출력됨)</span></div>
       </div>
 
       <div class="cmd">
         <span class="cmd-name">nano</span>
-        <span class="cmd-desc">파일을 <b>열어서 직접 고치는</b> 편집기입니다.</span>
-        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">nano README.md</span><span class="out">(편집 화면이 뜸)</span></div>
-        <p class="tip">저장은 <b>Ctrl+O</b> → Enter, 나가기는 <b>Ctrl+X</b>. 화면 맨 아래에 항상 단축키가 떠 있어요.</p>
+        <span class="cmd-desc">파일을 <b>열어서 고치는</b> 편집기. 화면 아래에 단축키 안내가 항상 떠 있어요.</span>
+        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">nano AGENTS.md</span><span class="out">(편집 화면으로 바뀜 — 저장 Ctrl+O → Enter, 나가기 Ctrl+X)</span></div>
+      </div>
+
+      <div class="cmd">
+        <span class="cmd-name">clear</span>
+        <span class="cmd-desc">화면이 지저분해지면 <b>싹 지웁니다</b>. 파일이 지워지는 게 아니라 화면만 정리돼요.</span>
+        <div class="cmd-example"><span class="prompt">$</span> <span class="typed">clear</span></div>
       </div>
 
     </div>
   </section>
 
   <section>
-    <h2>오늘 자주 만난 실수</h2>
+    <h2>오늘 실제로 나온 실수들 — 전부 정상적인 과정이에요</h2>
     <div class="mistake-list">
+
       <div class="mistake">
-        <span class="bad">is</span> 라고 쳐서 "명령어를 찾을 수 없습니다"가 떴어요.
-        <div class="why">→ <b>ls</b>의 오타예요. 터미널은 철자가 하나만 달라도 다른 명령어로 인식해요.</div>
+        <span class="bad">cd..</span> → 안 됨 &nbsp;·&nbsp; <span class="good">cd ..</span> → 됨
+        <div class="why">cd와 .. 사이에 <b>띄어쓰기가 꼭</b> 필요해요. 터미널에서 명령어와 대상은 항상 한 칸 띄웁니다.</div>
       </div>
+
       <div class="mistake">
-        nano 편집 화면 안에서 <span class="bad">y</span>나 다른 글자를 쳤는데 "명령어를 찾을 수 없습니다"가 떴어요.
-        <div class="why">→ nano를 이미 <b>나온 뒤에</b> 친 거예요. 화면 아래 초록 안내줄이 없으면 지금 편집기 밖이라는 뜻이에요.</div>
+        <span class="bad">cd projsct</span> · <span class="bad">cd porject</span> → "No such file or directory"
+        <div class="why">폴더 이름 오타예요. 꿀팁: <b>cd pro</b>까지만 치고 <b>Tab 키</b>를 누르면 나머지를 자동으로 완성해줘요. 오타가 원천 차단됩니다.</div>
       </div>
+
       <div class="mistake">
-        수업용 지시서 파일(AGENTS.md)을 nano로 고치려는데 <span class="bad">Permission denied</span>가 떴어요.
-        <div class="why">→ 일부러 막아둔 파일이라 정상이에요. 학생 계정은 이 파일을 못 고치게 돼 있어요.</div>
+        <span class="bad">cat Agent.md</span> → 안 됨 &nbsp;·&nbsp; <span class="good">cat AGENTS.md</span> → 됨
+        <div class="why">터미널은 <b>대문자·소문자를 다른 글자로</b> 봅니다. 파일 이름은 ls로 확인한 그대로, 한 글자도 다르면 안 돼요. 여기도 Tab 완성이 통합니다.</div>
       </div>
+
+      <div class="mistake">
+        <span class="bad">SERVER-RULES.md</span> (파일 이름만 침) → "command not found"
+        <div class="why">파일 이름만 치면 터미널이 그걸 <b>명령어인 줄 알아요.</b> 파일을 보고 싶으면 앞에 cat을 붙여서 <span class="good">cat SERVER-RULES.md</span> 이렇게 씁니다.</div>
+      </div>
+
+      <div class="mistake">
+        <span class="bad">is</span> → "command not found"
+        <div class="why"><b>ls</b>의 오타예요. 소문자 L + s 입니다.</div>
+      </div>
+
+      <div class="mistake">
+        nano로 <span class="bad">AGENTS.md 저장 시도</span> → "Permission denied"
+        <div class="why">이건 실수가 아니라 <b>일부러 막아둔 거예요.</b> AGENTS.md는 수업용 지시서라 읽기만 되고 고칠 수는 없게 돼 있어요. 여러분 잘못이 아닙니다.</div>
+      </div>
+
     </div>
   </section>
 
-  <section class="grid2">
-    <div>
-      <h2>기억할 것 하나</h2>
-      <p style="font-size:14px;color:var(--body);margin:0">
-        터미널은 오타에 아주 예민해요. 안 될 땐 오류 메시지를 <b>천천히 읽고</b>,
-        방금 친 글자를 한 글자씩 확인하는 습관을 들이면 좋아요.
-      </p>
-    </div>
-    <div>
-      <h2>다음 주에</h2>
-      <p style="font-size:14px;color:var(--body);margin:0">
-        오늘 손으로 익힌 이 다섯 개가, 다음 주부터 AI 에이전트(Codex)를 부리는
-        기본 도구가 됩니다.
-      </p>
-    </div>
+  <section>
+    <h2>딱 하나만 기억한다면</h2>
+    <p class="golden">
+      안 될 때 당황하지 말고 <b>오류 메시지를 그대로 읽으세요.</b>
+      "command not found"는 명령어 오타, "No such file or directory"는 이름 오타.
+      오늘 나온 실수 전부, 메시지가 이미 답을 말해주고 있었어요.
+      그리고 <b>Tab 키</b> — 이름을 반쯤 치고 Tab을 누르는 습관만 들여도 오타의 절반이 사라집니다.
+    </p>
   </section>
 
-  <footer>AITF 1주차 · 오늘 수업 실습 기록 기반으로 정리</footer>
+  <footer>AITF 1주차 · 오늘 수업의 실제 터미널 기록을 바탕으로 정리했습니다</footer>
 </main>
 </body>
 </html>
