@@ -23,7 +23,7 @@ ACCOUNTS = pathlib.Path("/opt/scripts/accounts.csv")
 HUBENV = pathlib.Path("/opt/scripts/hub.env")
 OUT = pathlib.Path("/opt/scripts/account-cards.txt")
 
-LABEL = {"mid": "중등부", "high": "고등부"}
+LABEL = {"class1": "Class 1", "class2": "Class 2"}
 INNER = 46          # 테두리 안쪽 폭(칸 기준)
 
 

@@ -77,7 +77,7 @@ with open("/opt/scripts/roster.csv", encoding="utf-8") as f:
             continue
         cls=row[0].strip()
         rows.append({
-            "class": "" if cls.startswith("⟪") else cls,   # ⟪mid|high⟫ = 미배정
+            "class": "" if cls.startswith("⟪") else cls,   # ⟪class1|class2⟫ = 미배정
             "account": row[1].strip(),
             "name": row[2].strip(),
             "has_mail": bool(len(row) > 3 and row[3].strip()),

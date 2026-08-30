@@ -53,3 +53,10 @@ CSV 한 장으로 학생 계정을 일괄 생성/재생성. 각 계정은 tmux �
   돌리면 `useradd -m`이 `/etc/skel`에서 만들어 준 `.bash_profile`을 오히려 지워버리는
   상태였다 — 고등반 신규 3명(최민범·양재훈·김태윤) 추가 중 `check-account.sh`로
   잡았다. `/etc/skel/.bash_profile`과 동일한 내용을 템플릿에 추가해 근본 수정.
+- 2026-08-31 · **반 명칭을 high/mid → class1/class2 로 변경.** 명단 이동·추가가 거듭되며
+  반 구성이 학년 기준과 어긋나(구 mid 반이 오히려 실력 상위) 이름이 실체를 오도하게 됐다.
+  중립적 이름으로 정리: **class1 = 1교시(일 13:30–15:30, 구 high), class2 = 2교시
+  (일 16:00–18:00, 구 mid)**. 표시 이름은 "Class 1"/"Class 2". roster.csv·Gitea 조직/
+  저장소(org rename API + repo rename)·위키 작업 사본·/srv/wiki·notion-links·발행 3종
+  스크립트·허브·계정 카드 전부 일괄 변경, E2E 재실행으로 검증. 아카이브의 1주차 기록은
+  옛 이름 폴더에서 class1/class2 로 이동(git mv — 이력 보존).

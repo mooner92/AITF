@@ -314,12 +314,13 @@ def main():
             client.chat_postEphemeral(channel=channel, user=user,
                                        text="아직 이번 주 정리가 발행되지 않았어요. 일요일 저녁에 올라와요!")
             return
-        if "high" in cname:
-            wanted = ["high"]
-        elif "mid" in cname or "middle" in cname:
-            wanted = ["mid"]
+        # class1/class2 가 정식 이름. high/mid 는 옛 채널명 호환(개강 첫 주 채널).
+        if "class1" in cname or "class-1" in cname or "high" in cname:
+            wanted = ["class1"]
+        elif "class2" in cname or "class-2" in cname or "mid" in cname:
+            wanted = ["class2"]
         else:
-            wanted = [c for c in ("mid", "high") if c in links]
+            wanted = [c for c in ("class1", "class2") if c in links]
         lines = []
         for c in wanted:
             e = links.get(c)

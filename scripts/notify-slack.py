@@ -6,8 +6,8 @@
 테스트처럼 반끼리 보이면 안 되는 것이 섞인다.
 
 설정: /opt/scripts/.env (600)
-    SLACK_WEBHOOK_HIGH=https://hooks.slack.com/services/...
-    SLACK_WEBHOOK_MID=https://hooks.slack.com/services/...
+    SLACK_WEBHOOK_CLASS1=https://hooks.slack.com/services/...
+    SLACK_WEBHOOK_CLASS2=https://hooks.slack.com/services/...
     BASE_DOMAIN=aitf.excusa.uk          (링크용, 없으면 hub.env 에서 읽음)
 
 원칙:
@@ -27,8 +27,8 @@ from pathlib import Path
 WORK = Path("/var/lib/wiki-build")
 ENV = Path("/opt/scripts/.env")
 TERM = os.environ.get("TERM_NAME", "2026-fall")
-LABEL = {"mid": "중등부", "high": "고등부"}
-HOOK_KEY = {"mid": "SLACK_WEBHOOK_MID", "high": "SLACK_WEBHOOK_HIGH"}
+LABEL = {"class1": "Class 1", "class2": "Class 2"}
+HOOK_KEY = {"class1": "SLACK_WEBHOOK_CLASS1", "class2": "SLACK_WEBHOOK_CLASS2"}
 
 
 def load_env(path=ENV):

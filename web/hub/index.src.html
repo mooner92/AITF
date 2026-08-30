@@ -275,7 +275,7 @@ const CMDS = [
  ["리허설 파이프라인 (1~3주)","sudo -u testmid /home/opc/projects/AITF/scripts/test-pipeline.sh testmid 1 3"],
  ["테스트 계정 리셋","sudo /home/opc/projects/AITF/scripts/reset-test-account.sh testmid"],
  ["전원 스냅샷","sudo /opt/scripts/snapshot-class.sh"],
- ["반 프로세스 정리","sudo /opt/scripts/cleanup-class.sh mid"],
+ ["반 프로세스 정리","sudo /opt/scripts/cleanup-class.sh class1"],
  ["관제탑 상태 강제 갱신","sudo /opt/scripts/hub-status.sh"],
  ["명단 편집","sudo nano /opt/scripts/roster.csv"],
  ["노트 편집","sudo nano /opt/scripts/hub-notes.md"]
@@ -324,9 +324,9 @@ function buildLinks(dom, notion){
     return e ? `<a class="tile" href="${esc(e.url)}" target="_blank" rel="noopener"><b>${esc(l)}</b><small>${esc(e.week + "주차 · Notion 발행본")}</small></a>` : "";
   };
   return T("Gitea 관리자","/git/-/admin","계정 · 저장소 전체 관리") +
-         T("중등부 위키","/git/mid/class-wiki-mid","반별 LLM 위키") +
-         T("고등부 위키","/git/high/class-wiki-high","반별 LLM 위키") +
-         N("mid","중등부 Notion") + N("high","고등부 Notion") +
+         T("Class 1 위키","/git/class1/class-wiki-class1","반별 LLM 위키") +
+         T("Class 2 위키","/git/class2/class-wiki-class2","반별 LLM 위키") +
+         N("class1","Class 1 Notion") + N("class2","Class 2 Notion") +
          T("통합 아카이브","/git/archive/class-archive","수업 기록") +
          T("OpenObserve","/monweb/web/","토큰 · 리소스 지표");
 }

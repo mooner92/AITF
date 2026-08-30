@@ -35,7 +35,7 @@ ENV = Path("/opt/scripts/.env")
 API = "https://api.notion.com/v1"
 NOTION_VERSION = "2022-06-28"   # 구버전이지만 안정 지원 — 2025-09 data source 개편과 무관하게 동작
 TERM = os.environ.get("TERM_NAME", "2026-fall")
-CLASS_LABEL = {"mid": "중등부", "high": "고등부"}
+CLASS_LABEL = {"class1": "Class 1", "class2": "Class 2"}
 
 
 def load_env():
@@ -145,8 +145,8 @@ def db_schema(cfg):
             "제목":   {"title": {}},
             "날짜":   {"date": {}},
             "반":     {"select": {"options": [
-                        {"name": "중등부", "color": "blue"},
-                        {"name": "고등부", "color": "purple"}]}},
+                        {"name": "Class 1", "color": "purple"},
+                        {"name": "Class 2", "color": "blue"}]}},
             "주차":   {"number": {}},
             "커밋":   {"number": {}},
             "활동 학생": {"number": {}},

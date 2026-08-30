@@ -31,8 +31,8 @@ port_of() {                      # 계정명 → 공개 포트 (roster.csv 기�
     { n[$1]++; if ($2==want) { cls=$1; idx=n[$1] } }
     END {
       if (cls=="")  { print "roster.csv 에 없는 계정: " want > "/dev/stderr"; exit 1 }
-      if (cls=="mid")       base=11000
-      else if (cls=="high") base=12000
+      if (cls=="class2")    base=11000
+      else if (cls=="class1") base=12000
       else { print "알 수 없는 반: " cls > "/dev/stderr"; exit 1 }
       print base + idx*100
     }' "$ROSTER"
