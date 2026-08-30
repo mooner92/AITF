@@ -292,6 +292,43 @@ def main():
 
         threading.Thread(target=work, daemon=True).start()
 
+    @app.command("/thisweek")
+    def handle_thisweek(ack, body, client):
+        """이번 주 수업 정리(Notion) 링크 — publish-notion.py 가 남긴
+        /var/lib/wiki-build/notion-links.json 에서 읽는다.
+
+        어느 반 링크를 줄지는 **슬래시 커맨드 페이로드의 channel_name** 으로
+        정한다 — 봇 스코프에 channels:read 가 없어 API 로 채널 이름을 조회할
+        수 없지만, 슬래시 커맨드에는 이름이 실려 온다. 채널 이름에 high/mid 가
+        없으면(DM 등) 양쪽 다 보여준다. 답은 ephemeral — 채널을 어지럽히지 않는다."""
+        ack()
+        user = body["user_id"]
+        channel = body["channel_id"]
+        cname = (body.get("channel_name") or "").lower()
+        try:
+            links = json.loads(Path("/var/lib/wiki-build/notion-links.json")
+                               .read_text(encoding="utf-8"))
+        except Exception:
+            links = {}
+        if not links:
+            client.chat_postEphemeral(channel=channel, user=user,
+                                       text="아직 이번 주 정리가 발행되지 않았어요. 일요일 저녁에 올라와요!")
+            return
+        if "high" in cname:
+            wanted = ["high"]
+        elif "mid" in cname or "middle" in cname:
+            wanted = ["mid"]
+        else:
+            wanted = [c for c in ("mid", "high") if c in links]
+        lines = []
+        for c in wanted:
+            e = links.get(c)
+            if e:
+                lines.append(f"*{e.get('label', c)} {e.get('week')}주차 정리* → {e['url']}")
+        client.chat_postEphemeral(channel=channel, user=user,
+                                   text="\n".join(lines) if lines
+                                   else "이번 주 정리를 찾지 못했어요.")
+
     print("compare-bot: Socket Mode 연결 시작")
     SocketModeHandler(app, app_token).start()
 

@@ -91,11 +91,34 @@ def build(cls, data, domain):
             if domain else "")
     blocks = [{"type": "section",
                "text": {"type": "mrkdwn", "text": "\n".join(lines)}}]
+    buttons = []
+    # Notion 발행본 링크 — publish-notion.py 가 남긴 파일에서 읽는다.
+    # 파일이 없거나 주차가 어긋나면 조용히 생략 (알림은 위키만으로도 성립).
+    notion = notion_link(cls, week)
+    if notion:
+        buttons.append({"type": "button",
+                        "text": {"type": "plain_text", "text": "📖 이번 주 정리 (Notion)"},
+                        "url": notion, "style": "primary"})
     if wiki:
-        blocks.append({"type": "actions", "elements": [
-            {"type": "button", "text": {"type": "plain_text", "text": "위키 열기"},
-             "url": wiki}]})
+        buttons.append({"type": "button",
+                        "text": {"type": "plain_text", "text": "위키 열기"},
+                        "url": wiki})
+    if buttons:
+        blocks.append({"type": "actions", "elements": buttons})
     return {"text": f"{week}주차 기록이 올라왔어요", "blocks": blocks}
+
+
+NOTION_LINKS = Path("/var/lib/wiki-build/notion-links.json")
+
+
+def notion_link(cls, week):
+    """publish-notion.py 가 upsert 후 남기는 {cls: {week, url}} 파일에서 읽는다."""
+    try:
+        d = json.loads(NOTION_LINKS.read_text(encoding="utf-8"))
+        e = d.get(cls, {})
+        return e.get("url") if e.get("week") == week else None
+    except Exception:
+        return None
 
 
 def main():
