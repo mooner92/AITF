@@ -62,8 +62,39 @@ def call(cfg, method, path, payload=None):
         sys.exit(f"Notion API {e.code}: {e.read().decode('utf-8','replace')[:300]}")
 
 
-def rt(text):  # rich_text 축약
+def rt(text):
+    """rich_text 축약. 문자열이면 평문 세그먼트 하나, 리스트면 그대로 통과 —
+    seg()가 만든 주석(굵게·색) 세그먼트 배열을 받을 수 있게 했다."""
+    if isinstance(text, list):
+        return text
     return [{"type": "text", "text": {"content": text[:2000]}}]
+
+
+# 인라인 마크다운 → Notion 주석 세그먼트. **굵게** `코드` *기울임* 만 다룬다 —
+# weeks/*.md 가 실제로 쓰는 전부다. 이전 구현은 * ` 를 그냥 지워버려서
+# 위키에 적힌 강조가 Notion 에서 전부 민짜 텍스트가 됐다 (2026-08-31 피드백).
+_INLINE = re.compile(r"(\*\*.+?\*\*|`[^`]+`|\*[^*]+\*)")
+
+
+def seg(text, base=None):
+    """문자열 → 주석 달린 rich_text 세그먼트 배열."""
+    out = []
+    for part in _INLINE.split(text):
+        if not part:
+            continue
+        ann = dict(base or {})
+        if part.startswith("**") and part.endswith("**") and len(part) > 4:
+            part, ann["bold"] = part[2:-2], True
+        elif part.startswith("`") and part.endswith("`") and len(part) > 2:
+            part, ann["code"] = part[1:-1], True
+            ann.setdefault("color", "red")      # 템플릿들처럼 코드는 붉은 강조
+        elif part.startswith("*") and part.endswith("*") and len(part) > 2:
+            part, ann["italic"] = part[1:-1], True
+        item = {"type": "text", "text": {"content": part[:2000]}}
+        if ann:
+            item["annotations"] = ann
+        out.append(item)
+    return out or [{"type": "text", "text": {"content": ""}}]
 
 
 PLACEHOLDER = "(아직 기록 없음)"
@@ -134,11 +165,18 @@ def _callout(text, emoji, color="gray_background"):
 
 USELESS = re.compile(r"알 수 없|확인할 수 없")   # LLM 이 "모른다"고만 쓴 서술은 싣지 않는다
 
+# 두 템플릿("과외 수업 관리"·"수업 계획 정리")에서 배운 문법:
+#   · 섹션 제목은 색 글자(heading + color) 그리고 바로 아래 divider — 구획이 또렷해진다
+#   · 메타·부가 정보는 회색, 강조 숫자는 굵게, 코드류는 붉은 강조
+#   · 접는 토글 제목은 굵은 회색 — 본문과 급이 다름을 색으로 표시
+_H_COLOR = "green"          # 수업 정리 섹션 제목색 (템플릿 A의 초록 헤딩)
+
 
 def lesson_blocks(cls_dir: Path, week: int):
     """weeks/wNN.md(수업 정리)를 Notion 블록으로 변환 — 페이지의 본문이 되는 부분.
 
     다루는 문법만: 제목(#·##·###), 불릿, 인용(>), 표, 문단. 그 외는 문단 취급.
+    인라인 **굵게** `코드` *기울임* 은 seg()가 Notion 주석으로 살린다.
     표는 Notion table 블록이 아니라 "셀1 — 셀2" 불릿으로 편다 (API table 은
     행 단위 자식 구조라 복잡한데, 우리 표는 2~3열 나열이라 불릿이 더 읽기 좋다).
     """
@@ -153,24 +191,30 @@ def lesson_blocks(cls_dir: Path, week: int):
         if s.startswith("# "):          # 문서 제목은 페이지 제목과 중복 — 생략
             continue
         if s.startswith("### "):
-            out.append(_b("heading_3", rich_text=rt(s[4:])))
+            out.append(_b("heading_3", rich_text=seg(s[4:]), color=_H_COLOR))
         elif s.startswith("## "):
-            out.append(_b("heading_2", rich_text=rt(s[3:])))
+            out.append(_b("heading_2", rich_text=seg(s[3:]), color=_H_COLOR))
+            out.append(_b("divider"))   # 템플릿 문법: 색 헤딩 + 바로 아래 구분선
         elif s.startswith("> "):
-            out.append(_callout(s[2:], "💡", "yellow_background"))
+            out.append(_callout(seg(s[2:]), "💡", "yellow_background"))
         elif s.startswith("- "):
-            out.append(_b("bulleted_list_item", rich_text=rt(
-                re.sub(r"[*`]", "", s[2:]))))
+            out.append(_b("bulleted_list_item", rich_text=seg(s[2:])))
         elif s.startswith("|"):
             cells = [c.strip() for c in s.strip("|").split("|")]
             if all(re.fullmatch(r":?-+:?", c) for c in cells):   # |---|---| 구분선
                 continue
-            out.append(_b("bulleted_list_item", rich_text=rt(
-                " — ".join(re.sub(r"[*`]", "", c) for c in cells if c))))
+            cells = [c for c in cells if c]
+            if not cells:
+                continue
+            # 첫 칸(항목명)은 굵게, 나머지는 평문 — 표의 열 구조를 굵기로 대신한다
+            row = seg(f"**{cells[0]}**")
+            for c in cells[1:]:
+                row += seg("  —  " + c)
+            out.append(_b("bulleted_list_item", rich_text=row))
         elif s.startswith("*") and s.endswith("*"):              # 이탤릭 각주
             continue
         else:
-            out.append(_b("paragraph", rich_text=rt(re.sub(r"[*`]", "", s))))
+            out.append(_b("paragraph", rich_text=seg(s)))
     return out
 
 
@@ -192,9 +236,10 @@ def week_payload(cls, data, cls_dir=None):
         "활동 학생": {"number": active},
     }
 
-    # ① 요약 콜아웃 — 페이지를 열면 제일 먼저 보이는 것
+    # ① 요약 콜아웃 — 페이지를 열면 제일 먼저 보이는 것. 숫자는 굵게(템플릿 문법)
     blocks = [_callout(
-        f"이번 주 {label} — 활동 학생 {active}/{len(students)}명 · 커밋 {total_commits}건",
+        seg(f"이번 주 {label} — 활동 학생 **{active}/{len(students)}명** · "
+            f"커밋 **{total_commits}건**"),
         "📊", "blue_background")]
 
     # ② 수업 정리 (weeks/wNN.md) — 페이지의 본문
@@ -217,9 +262,18 @@ def week_payload(cls, data, cls_dir=None):
         if s["pages"]:
             parts.append(f"작품 {s['pages']}")
         dot = "🟢" if parts else "⚪"
-        line = f"{dot} {s['account']} — " + (" · ".join(parts) if parts else "이번 주 기록 없음")
-        student_items.append(_b("bulleted_list_item", rich_text=rt(line)))
-    blocks.append(_b("toggle", rich_text=rt(f"👥 학생별 활동 ({len(students)}명)"),
+        # 계정 ID 는 코드체(붉은 강조), 활동 요약은 평문, 무활동은 회색
+        line = seg(f"{dot} `{s['account']}`")
+        if parts:
+            line += seg("  " + " · ".join(parts))
+        else:
+            line += [{"type": "text", "text": {"content": "  이번 주 기록 없음"},
+                      "annotations": {"color": "gray"}}]
+        student_items.append(_b("bulleted_list_item", rich_text=line))
+    blocks.append(_b("toggle",
+                     rich_text=[{"type": "text",
+                                 "text": {"content": f"👥 학생별 활동 ({len(students)}명)"},
+                                 "annotations": {"bold": True, "color": "gray"}}],
                      children=student_items))
 
     # ④ 이번 주 새로 생긴 것 — 의미 있는 서술만. "모른다"뿐인 서술은 이름만 나열
@@ -229,17 +283,22 @@ def week_payload(cls, data, cls_dir=None):
                    + [(p, cls_dir / "projects" / f"{p}.md", "무엇을 만드는 폴더인가")
                       for p in projects])
         if entries:
-            blocks.append(_b("heading_2", rich_text=rt("✨ 이번 주 새로 생긴 것")))
+            blocks.append(_b("heading_2", rich_text=rt("✨ 이번 주 새로 생긴 것"),
+                             color="purple"))
+            blocks.append(_b("divider"))
             bare = []
             for name, path, heading in entries:
                 text = prose_of(path, heading)
                 if text and not USELESS.search(text):
-                    blocks.append(_callout(f"{name} — {text}", "🧩"))
+                    blocks.append(_callout(seg(f"**{name}** — {text}"), "🧩"))
                 else:
                     bare.append(name)
             if bare:
-                blocks.append(_b("paragraph", rich_text=rt(
-                    "그 외: " + " · ".join(bare) + "  (서술은 다음 주부터 쌓여요)")))
+                blocks.append(_b("paragraph", rich_text=(
+                    seg("그 외: " + " · ".join(f"`{n}`" for n in bare))
+                    + [{"type": "text",
+                        "text": {"content": "  (서술은 다음 주부터 쌓여요)"},
+                        "annotations": {"color": "gray", "italic": True}}])))
 
     blocks.append(_b("paragraph", rich_text=[{
         "type": "text",
@@ -266,6 +325,7 @@ def upsert(cfg, dbid, cls, data, dry, cls_dir=None):
 
     if hits:
         page = hits[0]["id"]
+        page_url = hits[0].get("url", "")
         call(cfg, "PATCH", f"/pages/{page}", {"properties": props})
         # 본문은 지우고 다시 쓴다 (멱등)
         kids = call(cfg, "GET", f"/blocks/{page}/children?page_size=100").get("results", [])
@@ -274,10 +334,23 @@ def upsert(cfg, dbid, cls, data, dry, cls_dir=None):
         call(cfg, "PATCH", f"/blocks/{page}/children", {"children": blocks})
         print(f"  갱신: {data['week']}주차 {label}")
     else:
-        call(cfg, "POST", "/pages", {
+        made = call(cfg, "POST", "/pages", {
             "parent": {"database_id": dbid},
             "properties": props, "children": blocks})
+        page_url = made.get("url", "")
         print(f"  생성: {data['week']}주차 {label}")
+
+    # 페이지 URL 을 남긴다 — notify-slack.py 등이 알림에 링크를 붙일 수 있게.
+    # 실패해도 발행 자체는 성공이므로 경고만 하고 넘어간다.
+    if page_url:
+        try:
+            links_f = WORK / "notion-links.json"
+            links = json.loads(links_f.read_text(encoding="utf-8")) if links_f.exists() else {}
+            links[cls] = {"week": data["week"], "url": page_url, "label": label}
+            links_f.write_text(json.dumps(links, ensure_ascii=False, indent=2),
+                               encoding="utf-8")
+        except Exception as e:
+            print(f"  ! notion-links.json 기록 실패(발행은 정상): {e}")
 
 
 def main():
