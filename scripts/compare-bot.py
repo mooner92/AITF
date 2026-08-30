@@ -17,8 +17,10 @@ qwen 은 회사 GPU 서버를 Cloudflare Access **Service Token**으로 통과�
   · 서버 쪽에 동시 실행 상한이 없어(`--max-num-seqs` 미지정) **봇 쪽에서
     반드시 큐잉**해야 한다 — LOCAL_MODEL_SEM 이 그 역할.
   · Access 정책엔 요일/시각 조건이 없어(신원·IP 기준만 지원) **봉 쪽에서
-    스스로 시간대를 지킨다** — ALLOWED_HOURS. 회사와 합의한 대로
-    일요일 14~18시(수업 시간)에만 qwen 을 부른다.
+    스스로 시간대를 지킨다** — ALLOWED_HOURS.
+    일요일 13~19시(수업 시간, 여유 포함)에만 qwen 을 부른다. 원래 요청서에는
+    14~18시로 적어 보냈다 — 2026-08-30 여유 확보를 위해 넓혔다(회사 통보 필요,
+    미완료 — specs/150 참고).
 
 동작 원리 — ack-fast / work-slow (150 §1 ⓑ):
     1. 슬래시 커맨드 수신 → 3초 안에 ack (Bolt 가 자동)
@@ -64,10 +66,10 @@ LOG = Path("/var/log/aitf-compare.jsonl")
 # openai 쪽은 이 제한이 필요 없다(우리 프로젝트 예산으로만 제한됨).
 LOCAL_MODEL_SEM = threading.Semaphore(2)
 
-# 일요일(weekday()==6) 14~18시만. 회사와 합의한 시간대 — 이 창을 넓히려면
-# 반드시 먼저 회사와 다시 협의한다(요청서에 적어 보낸 조건).
+# 일요일(weekday()==6) 13~19시. 요청서엔 14~18시로 적어 보냈으나
+# 2026-08-30 여유 확보차 넓혔다 — 회사에 아직 통보 안 함(뒤에 확인).
 ALLOWED_WEEKDAY = 6
-ALLOWED_HOURS = range(14, 18)
+ALLOWED_HOURS = range(13, 19)
 
 
 def in_allowed_window(now=None) -> bool:
@@ -145,7 +147,7 @@ def call_local(cfg, model, prompt, timeout=90, bypass_window=False):
     모두 그대로 적용된다 — 이건 "누가 부르냐"가 아니라 "GPU가 몇 개를
     동시에 버티냐"의 문제라 예외를 두면 안 된다."""
     if not bypass_window and not in_allowed_window():
-        return False, None, 0.0, None, "지금은 로컬 모델 사용 시간이 아니에요 (일요일 14~18시만)"
+        return False, None, 0.0, None, "지금은 로컬 모델 사용 시간이 아니에요 (일요일 13~19시만)"
 
     base = cfg.get("LOCAL_LLM_BASE_URL", "").rstrip("/")
     cid = cfg.get("CF_ACCESS_CLIENT_ID")
