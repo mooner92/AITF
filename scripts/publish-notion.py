@@ -123,8 +123,59 @@ def db_schema(cfg):
     }
 
 
+def _b(type_, **payload):
+    return {"object": "block", "type": type_, type_: payload}
+
+
+def _callout(text, emoji, color="gray_background"):
+    return _b("callout", rich_text=rt(text),
+              icon={"type": "emoji", "emoji": emoji}, color=color)
+
+
+USELESS = re.compile(r"알 수 없|확인할 수 없")   # LLM 이 "모른다"고만 쓴 서술은 싣지 않는다
+
+
+def lesson_blocks(cls_dir: Path, week: int):
+    """weeks/wNN.md(수업 정리)를 Notion 블록으로 변환 — 페이지의 본문이 되는 부분.
+
+    다루는 문법만: 제목(#·##·###), 불릿, 인용(>), 표, 문단. 그 외는 문단 취급.
+    표는 Notion table 블록이 아니라 "셀1 — 셀2" 불릿으로 편다 (API table 은
+    행 단위 자식 구조라 복잡한데, 우리 표는 2~3열 나열이라 불릿이 더 읽기 좋다).
+    """
+    f = cls_dir / "weeks" / f"w{week:02d}.md"
+    if not f.exists():
+        return []
+    out = []
+    for line in f.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s or s.startswith("---"):
+            continue
+        if s.startswith("# "):          # 문서 제목은 페이지 제목과 중복 — 생략
+            continue
+        if s.startswith("### "):
+            out.append(_b("heading_3", rich_text=rt(s[4:])))
+        elif s.startswith("## "):
+            out.append(_b("heading_2", rich_text=rt(s[3:])))
+        elif s.startswith("> "):
+            out.append(_callout(s[2:], "💡", "yellow_background"))
+        elif s.startswith("- "):
+            out.append(_b("bulleted_list_item", rich_text=rt(
+                re.sub(r"[*`]", "", s[2:]))))
+        elif s.startswith("|"):
+            cells = [c.strip() for c in s.strip("|").split("|")]
+            if all(re.fullmatch(r":?-+:?", c) for c in cells):   # |---|---| 구분선
+                continue
+            out.append(_b("bulleted_list_item", rich_text=rt(
+                " — ".join(re.sub(r"[*`]", "", c) for c in cells if c))))
+        elif s.startswith("*") and s.endswith("*"):              # 이탤릭 각주
+            continue
+        else:
+            out.append(_b("paragraph", rich_text=rt(re.sub(r"[*`]", "", s))))
+    return out
+
+
 def week_payload(cls, data, cls_dir=None):
-    """raw JSON → Notion 페이지 속성 + 본문 블록. 계정 ID만, 실명 없음."""
+    """raw JSON + weeks/wNN.md → Notion 페이지. 계정 ID만, 실명 없음."""
     label = CLASS_LABEL.get(cls, cls)
     week = data["week"]
     students = data["students"]
@@ -141,10 +192,20 @@ def week_payload(cls, data, cls_dir=None):
         "활동 학생": {"number": active},
     }
 
-    blocks = [
-        {"object": "block", "type": "heading_2",
-         "heading_2": {"rich_text": rt(f"{week}주차 활동")}},
-    ]
+    # ① 요약 콜아웃 — 페이지를 열면 제일 먼저 보이는 것
+    blocks = [_callout(
+        f"이번 주 {label} — 활동 학생 {active}/{len(students)}명 · 커밋 {total_commits}건",
+        "📊", "blue_background")]
+
+    # ② 수업 정리 (weeks/wNN.md) — 페이지의 본문
+    if cls_dir:
+        lesson = lesson_blocks(cls_dir, week)
+        if lesson:
+            blocks += lesson
+            blocks.append(_b("divider"))
+
+    # ③ 학생별 활동 — 토글 안에 접어 둔다 (요약은 콜아웃이 이미 했다)
+    student_items = []
     for s in students:
         parts = []
         if s["folders"]:
@@ -155,27 +216,35 @@ def week_payload(cls, data, cls_dir=None):
             parts.append(f"커밋 {len(s['commits'])}")
         if s["pages"]:
             parts.append(f"작품 {s['pages']}")
-        line = f"{s['account']} — " + (" · ".join(parts) if parts else "활동 없음")
-        blocks.append({"object": "block", "type": "bulleted_list_item",
-                       "bulleted_list_item": {"rich_text": rt(line)}})
-    # 이번 주 새로 생긴 스킬·프로젝트 + 위키에 쌓인 서술
+        dot = "🟢" if parts else "⚪"
+        line = f"{dot} {s['account']} — " + (" · ".join(parts) if parts else "이번 주 기록 없음")
+        student_items.append(_b("bulleted_list_item", rich_text=rt(line)))
+    blocks.append(_b("toggle", rich_text=rt(f"👥 학생별 활동 ({len(students)}명)"),
+                     children=student_items))
+
+    # ④ 이번 주 새로 생긴 것 — 의미 있는 서술만. "모른다"뿐인 서술은 이름만 나열
     if cls_dir:
         skills, projects = new_this_week(cls_dir, week)
         entries = ([(s, cls_dir / "skills" / f"{s}.md", "뭘 하는 스킬인가") for s in skills]
                    + [(p, cls_dir / "projects" / f"{p}.md", "무엇을 만드는 폴더인가")
                       for p in projects])
         if entries:
-            blocks.append({"object": "block", "type": "heading_2",
-                           "heading_2": {"rich_text": rt("이번 주 새로 생긴 것")}})
+            blocks.append(_b("heading_2", rich_text=rt("✨ 이번 주 새로 생긴 것")))
+            bare = []
             for name, path, heading in entries:
                 text = prose_of(path, heading)
-                blocks.append({"object": "block", "type": "paragraph",
-                               "paragraph": {"rich_text": rt(
-                                   f"{name} — {text}" if text else name)}})
+                if text and not USELESS.search(text):
+                    blocks.append(_callout(f"{name} — {text}", "🧩"))
+                else:
+                    bare.append(name)
+            if bare:
+                blocks.append(_b("paragraph", rich_text=rt(
+                    "그 외: " + " · ".join(bare) + "  (서술은 다음 주부터 쌓여요)")))
 
-    blocks.append({"object": "block", "type": "paragraph",
-                   "paragraph": {"rich_text": rt(
-                       "정본은 서버 위키(Gitea)입니다. 계정 ID만 기록합니다.")}})
+    blocks.append(_b("paragraph", rich_text=[{
+        "type": "text",
+        "text": {"content": "정본은 서버 위키(Gitea)예요 · 계정 ID만 기록해요"},
+        "annotations": {"italic": True, "color": "gray"}}]))
     return props, blocks
 
 
