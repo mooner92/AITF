@@ -19,8 +19,8 @@ qwen 은 회사 GPU 서버를 Cloudflare Access **Service Token**으로 통과�
   · Access 정책엔 요일/시각 조건이 없어(신원·IP 기준만 지원) **봉 쪽에서
     스스로 시간대를 지킨다** — ALLOWED_HOURS.
     일요일 13~19시(수업 시간, 여유 포함)에만 qwen 을 부른다. 원래 요청서에는
-    14~18시로 적어 보냈다 — 2026-08-30 여유 확보를 위해 넓혔다(회사 통보 필요,
-    미완료 — specs/150 참고).
+    14~18시로 적어 보냈으나, 2026-08-30 1시간씩 여유를 더해 넓혔다 — 통보
+    수준(1시간 확대)이라 회사에 별도 재협의는 안 함.
 
 동작 원리 — ack-fast / work-slow (150 §1 ⓑ):
     1. 슬래시 커맨드 수신 → 3초 안에 ack (Bolt 가 자동)
@@ -67,7 +67,7 @@ LOG = Path("/var/log/aitf-compare.jsonl")
 LOCAL_MODEL_SEM = threading.Semaphore(2)
 
 # 일요일(weekday()==6) 13~19시. 요청서엔 14~18시로 적어 보냈으나
-# 2026-08-30 여유 확보차 넓혔다 — 회사에 아직 통보 안 함(뒤에 확인).
+# 2026-08-30 여유 확보차 앞뒤 1시간씩 넓혔다(회사 재협의 불필요 — Sean 확인).
 ALLOWED_WEEKDAY = 6
 ALLOWED_HOURS = range(13, 19)
 
