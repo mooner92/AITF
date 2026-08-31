@@ -36,13 +36,10 @@ API = "https://api.notion.com/v1"
 NOTION_VERSION = "2022-06-28"   # 구버전이지만 안정 지원 — 2025-09 data source 개편과 무관하게 동작
 TERM = os.environ.get("TERM_NAME", "2026-fall")
 CLASS_LABEL = {"class1": "Class 1", "class2": "Class 2"}
-# 주차 페이지 아이콘 — AITF 브랜드 마크 (공개 호스팅 PNG).
-# 반 구분은 select 태그 색(보라/파랑)이 담당한다.
-BRAND_MARK = "https://aitf.excusa.uk/slides/brand/aitf-mark-512.png"
-CLASS_ICON = {
-    "class1": {"type": "external", "external": {"url": BRAND_MARK}},
-    "class2": {"type": "external", "external": {"url": BRAND_MARK}},
-}
+# 주차 페이지 아이콘 — 노션 기본 이모지. 로고는 커버(큰 자리) 한 곳만 쓴다
+# (아이콘까지 로고면 남발 — 2026-09-01 피드백). 반 색은 select 태그와 통일.
+CLASS_ICON = {"class1": {"type": "emoji", "emoji": "🟣"},
+              "class2": {"type": "emoji", "emoji": "🔵"}}
 
 
 def load_env():
