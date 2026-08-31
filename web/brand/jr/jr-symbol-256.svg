@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="256" height="256" viewBox="0 0 82 82" role="img" aria-label="코딩영재원"><title>코딩영재원</title>
+  <defs><clipPath id="r" clip-rule="evenodd"><path d="M10.25 0H71.75A10.25 10.25 0 0 1 82 10.25V71.75A10.25 10.25 0 0 1 71.75 82H10.25A10.25 10.25 0 0 1 0 71.75V10.25A10.25 10.25 0 0 1 10.25 0Z M23.5 20.5H58.5A3 3 0 0 1 61.5 23.5V58.5A3 3 0 0 1 58.5 61.5H23.5A3 3 0 0 1 20.5 58.5V23.5A3 3 0 0 1 23.5 20.5Z"></path></clipPath></defs>
+  <g clip-path="url(#r)">
+    <rect width="20.5" height="61.5" fill="#887eb4"></rect>
+    <rect x="20.5" width="41" height="20.5" fill="#7fa3d1"></rect>
+    <rect x="61.5" width="20.5" height="61.5" fill="#a8cf66"></rect>
+    <rect y="61.5" width="82" height="20.5" fill="#fde47a"></rect>
+  </g>
+</svg>

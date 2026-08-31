@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="308" height="100" viewBox="0 0 308 100" role="img" aria-label="AITF"><title>AITF</title>
+  <defs></defs>
+  <g fill="currentColor">
+    <path fill-rule="evenodd" d="M0 100 34 0h20l34 100H66L60 80H28l-6 20Z M36.3 58h15.4L44 35.3Z"></path>
+    <rect x="108" width="22" height="100"></rect>
+    <rect x="150" width="80" height="22"></rect><rect x="179" width="22" height="100"></rect>
+    <rect x="242" width="22" height="100"></rect><rect x="242" width="66" height="22"></rect><rect x="242" y="39" width="54" height="22"></rect>
+  </g>
+</svg>

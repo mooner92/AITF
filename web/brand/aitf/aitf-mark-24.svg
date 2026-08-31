@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 100 100" role="img" aria-label="AITF"><title>AITF</title>
+  <defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8" y1="6" x2="92" y2="94">
+      <stop offset="0" stop-color="#3b9eff"></stop><stop offset=".5" stop-color="#0075ff"></stop>
+      <stop offset="1" stop-color="#101418"></stop>
+    </linearGradient></defs>
+  <path d="M11.5 62 50 14 88.5 62" fill="none" stroke="url(#g)" stroke-width="11" stroke-linejoin="miter" stroke-linecap="butt"></path>
+    <line x1="50" y1="14" x2="50" y2="88" stroke="url(#g)" stroke-width="11" stroke-linecap="butt"></line>
+    <line x1="29.5" y1="38" x2="70.5" y2="38" stroke="url(#g)" stroke-width="15" stroke-linecap="butt"></line>
+    <line x1="50" y1="60" x2="66" y2="60" stroke="url(#g)" stroke-width="15" stroke-linecap="butt"></line>
+    <line x1="34" y1="88" x2="66" y2="88" stroke="url(#g)" stroke-width="15" stroke-linecap="butt"></line>
+</svg>
