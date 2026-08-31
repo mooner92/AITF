@@ -1,8 +1,8 @@
 <!-- class: cover -->
 ^ 2주차
-# 오늘, <em>바퀴</em>가 사라져요
+# 오늘, <em>Codex</em>를 만나요
 
-지난주에 돌린 그 바퀴 — 복사, 저장, 새로고침 — 를 대신 돌려주는 도구를 만나요.
+지난주엔 고칠 때마다 복사, 저장, 새로고침을 직접 했어요. 오늘부터 그 일은 도구가 해요.
 
 ??? 시작 전 확인: 학생 서버 계정 로그인 가능(faillock 주의), codex 동작 확인(강사 계정에서 1회 실행), 발표자료 모음 페이지 열어두기, 예시 주제 자료 2종 준비, Class 1용 Gitea 5단계 표. 여기서 2분.
 
@@ -68,7 +68,7 @@
 ??? 여기서 2분. 지난주 마지막 그림 재등장 — "이거 계속 해야 돼요?"라는 질문이 있었다면 그 학생을 호명해 공을 돌린다.
 
 ---
-## 오늘 만나는 도구는 <b>이 바퀴를 자기가 돌려요</b>
+## 이 반복 작업을 <b>대신 실행하는 도구</b>가 있어요
 
 ^^^
 > 이름은 **Codex**예요. 앞으로 10주 동안 우리 옆에 있을 도구예요.
@@ -147,8 +147,13 @@
 ## Codex는 <b>폴더 안에서 일해요</b>
 
 <figure class="media" style="border:none;background:none">
-<svg viewBox="0 0 720 310" role="img" aria-label="Codex는 project 폴더 안에서 파일을 직접 읽고, 만든 것도 파일로 남는다"
+<svg viewBox="0 0 720 310" role="img" aria-label="Codex는 project 폴더의 파일을 읽어 오고, 고친 결과를 다시 폴더에 쓴다"
      style="width:100%;max-height:40vmin;color:#fcfdff">
+  <defs>
+    <marker id="w2fold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a1a4a5"/>
+    </marker>
+  </defs>
   <g font-family="inherit">
     <path class="draw" pathLength="1" d="M 140,60 h120 l22,22 h218 a14,14 0 0 1 14,14 v160 a14,14 0 0 1 -14,14 H 140 a14,14 0 0 1 -14,-14 V 74 a14,14 0 0 1 14,-14 z" fill="none" stroke="#11ff99" stroke-opacity=".6" stroke-width="2"/>
     <text class="pop" style="--d:.2s" x="150" y="112" font-size="17" fill="#11ff99">~/project</text>
@@ -161,12 +166,12 @@
       <circle cx="470" cy="150" r="34" fill="#11ff99" fill-opacity=".14" stroke="#11ff99" stroke-opacity=".7"/>
       <text x="470" y="157" font-size="15" fill="#11ff99" text-anchor="middle">Codex</text>
     </g>
-    <g stroke="currentColor" stroke-opacity=".5" stroke-width="2" fill="none">
-      <path class="draw" style="--d:.8s" pathLength="1" d="M 436,140 Q 350,120 290,146"/>
-      <path class="draw" style="--d:.95s" pathLength="1" d="M 290,190 Q 350,214 436,166"/>
+    <g stroke="#a1a4a5" stroke-opacity=".75" stroke-width="2.5" fill="none">
+      <path class="march" pathLength="1" marker-end="url(#w2fold)" d="M 290,146 Q 350,120 428,138"/>
+      <path class="march" pathLength="1" marker-end="url(#w2fold)" d="M 436,166 Q 350,214 298,192"/>
     </g>
-    <text class="pop" style="--d:1.1s" x="352" y="110" font-size="14" fill="currentColor" fill-opacity=".65" text-anchor="middle">직접 읽고</text>
-    <text class="pop" style="--d:1.2s" x="352" y="238" font-size="14" fill="currentColor" fill-opacity=".65" text-anchor="middle">직접 써요</text>
+    <text class="pop" style="--d:1.1s" x="352" y="108" font-size="14" fill="#a1a4a5" text-anchor="middle">읽기</text>
+    <text class="pop" style="--d:1.2s" x="352" y="240" font-size="14" fill="#a1a4a5" text-anchor="middle">쓰기</text>
   </g>
 </svg>
 <figcaption>어제 만든 파일이 그대로 있으니, 설명을 다시 할 필요가 없어요</figcaption>
@@ -195,7 +200,7 @@
 
 ---
 <!-- class: g-green -->
-## 다름 셋. 바퀴를 <b>자기가 돌려요</b>
+## 다름 셋. 실행까지 <b>직접 해요</b>
 
 <figure class="media" style="border:none;background:none">
 <svg viewBox="0 0 640 400" role="img" aria-label="바꿔달라고 말하면 코드 수정, 저장, 확인을 Codex가 돌고 사람은 말만 한다"
@@ -223,10 +228,10 @@
   </g>
   <text class="pop" style="--d:.95s" x="320" y="285" font-size="15" fill="currentColor" fill-opacity=".6" text-anchor="middle" font-family="inherit">나는 "바꿔줘"라고 말만 해요</text>
 </svg>
-<figcaption>지난주의 그 바퀴 — 오늘부터 도는 건 내가 아니에요</figcaption>
+<figcaption>같은 과정이에요 — 실행하는 쪽이 바뀌었어요</figcaption>
 </figure>
 
-??? 여기서 2분. 4장(주황 바퀴)과 같은 구도, 색과 중심만 바뀐 그림 — "같은 바퀴인데 도는 사람이 바뀌었다"가 시각적으로 전달된다.
+??? 여기서 2분. 4장과 같은 구도, 색과 중심만 바뀐 그림 — "같은 과정인데 실행하는 쪽이 바뀌었다"가 시각적으로 전달된다.
 
 ---
 ## 세 가지 다름, <b>정리하면</b>
@@ -234,7 +239,7 @@
 <div class="grid c3">
 <div class="card"><div class="k">기억</div><div class="v">폴더에 남아요</div><p>대화가 아니라 파일로 쌓여요</p></div>
 <div class="card"><div class="k">파일</div><div class="v">직접 만들어요</div><p>복사·붙여넣기가 없어요</p></div>
-<div class="card strong"><div class="k">실행</div><div class="v">바퀴를 돌려요</div><p>고치고 저장하고 확인까지 자기가</p></div>
+<div class="card strong"><div class="k">실행</div><div class="v">직접 해요</div><p>고치고 저장하고 확인까지 한 번에</p></div>
 </div>
 
 ^^^
@@ -271,28 +276,62 @@
 ## 이런 도구, <b>Codex만 있는 게 아니에요</b>
 
 ^^^
-> AI 회사마다 하나씩 만들고 있어요. 지난주 "AI는 하나가 아니에요"의 도구판이에요.
+> AI 회사마다 하나씩 만들고 있어요. 지난주에 "AI는 하나가 아니에요"라고 했죠 — 도구도 하나가 아니에요.
 
 ??? 여기서 1분. 지형도 2장 진입 예고 — "표가 두 장 나오는데, 외우라는 게 아니라 지도 구경이에요"라고 먼저 말해 부담을 낮춘다.
 
 ---
 ## 세 도구 지도 <b>① 누가 만들었나</b>
 
-| | Codex | Claude Code | Antigravity |
-|---|---|---|---|
-| 만든 곳 | OpenAI | Anthropic | Google |
-| 형제 챗봇 | ChatGPT | Claude | Gemini |
-| 속 모델 | GPT 계열 | Claude 계열 | Gemini 계열 |
-| 생김새 | 터미널 + 데스크탑 앱 | 터미널 + 데스크탑 앱 | 코드 편집기(에디터) |
+<div class="grid c3">
+<div class="card" style="text-align:center">
+<svg viewBox="-40 -40 80 80" role="img" aria-label="OpenAI 로고를 단순화한 여섯 갈래 매듭 문양" style="width:11vmin;height:11vmin;color:#fcfdff">
+<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round">
+<g transform="rotate(0)"><path d="M -9,-31 a 9,9 0 0 1 18,0 v22 a 9,9 0 0 1 -18,0 z"/></g>
+<g transform="rotate(60)"><path d="M -9,-31 a 9,9 0 0 1 18,0 v22 a 9,9 0 0 1 -18,0 z"/></g>
+<g transform="rotate(120)"><path d="M -9,-31 a 9,9 0 0 1 18,0 v22 a 9,9 0 0 1 -18,0 z"/></g>
+</g>
+</svg>
+<div class="k" style="color:#74aa9c">OpenAI · ChatGPT의 회사</div>
+<div class="v">Codex</div>
+<p>터미널 + 데스크탑 앱 · GPT 계열 모델</p>
+</div>
+<div class="card" style="text-align:center">
+<svg viewBox="-40 -40 80 80" role="img" aria-label="Claude 로고를 단순화한 여덟 갈래 별 문양" style="width:11vmin;height:11vmin">
+<g stroke="#d97757" stroke-width="6" stroke-linecap="round">
+<line x1="0" y1="-30" x2="0" y2="-10"/><line x1="0" y1="10" x2="0" y2="30"/>
+<line x1="-30" y1="0" x2="-10" y2="0"/><line x1="10" y1="0" x2="30" y2="0"/>
+<line x1="-21" y1="-21" x2="-8" y2="-8"/><line x1="8" y1="8" x2="21" y2="21"/>
+<line x1="21" y1="-21" x2="8" y2="-8"/><line x1="-8" y1="8" x2="-21" y2="21"/>
+</g>
+</svg>
+<div class="k" style="color:#d97757">Anthropic · Claude의 회사</div>
+<div class="v">Claude Code</div>
+<p>터미널 + 데스크탑 앱 · Claude 계열 모델</p>
+</div>
+<div class="card" style="text-align:center">
+<svg viewBox="-40 -40 80 80" role="img" aria-label="구글의 네 가지 색으로 이루어진 고리 문양" style="width:11vmin;height:11vmin">
+<g fill="none" stroke-width="8">
+<path d="M 0,-26 A 26,26 0 0 1 26,0" stroke="#ea4335"/>
+<path d="M 26,0 A 26,26 0 0 1 0,26" stroke="#fbbc05"/>
+<path d="M 0,26 A 26,26 0 0 1 -26,0" stroke="#34a853"/>
+<path d="M -26,0 A 26,26 0 0 1 0,-26" stroke="#4285f4"/>
+</g>
+</svg>
+<div class="k" style="color:#4285f4">Google · Gemini의 회사</div>
+<div class="v">Antigravity</div>
+<p>코드 편집기 · Gemini 계열 모델</p>
+</div>
+</div>
 
-??? 여기서 3분. 열을 손으로 짚으며 "지난주 3사 카드의 도구판"으로 연결. 각 사 형제 챗봇을 아는 학생이 있으면 반응이 온다.
+??? 여기서 3분. 문양은 단순화한 근사 — 로고를 눈에 익혀 두면 나중에 어디서 봐도 소속을 안다. 각 사 형제 챗봇을 아는 학생이 있으면 반응이 온다.
 
 ---
 ## 세 도구 지도 <b>② 무엇이 다른가</b>
 
 | | Codex | Claude Code | Antigravity |
 |---|---|---|---|
-| 쓰는 법 | 구독 또는 API 열쇠 | 구독 또는 API 열쇠 | Google 계정 |
+| 쓰는 법 | 구독 또는 API 열쇠 | 구독 또는 API 열쇠 | Google 계정으로 로그인 |
 | 잘하는 것 | 코딩 · 일 위임 | 긴 작업 · 꼼꼼한 계획 | 편집기 안에서 한 번에 |
 | 우리 수업 | **이걸 써요** | 강사가 수업 준비에 써요 | 구경만 해둬요 |
 
@@ -300,6 +339,20 @@
 > 셋 다 하는 일은 같아요 — **말로 시키면 파일로 해내는 것.** 하나를 제대로 배우면 나머지는 금방이에요.
 
 ??? 여기서 3분. "강사가 수업 준비에 Claude Code를 쓴다"는 사실은 학생 호기심 포인트 — 발표자료가 어떻게 만들어지는지는 나중에(스킬 공개 장면) 이어진다. 세부 요금은 말하지 않는다.
+
+---
+## 같은 기능인데 <b>이름만 달라요</b>
+
+| | Codex | Claude Code | Antigravity |
+|---|---|---|---|
+| 지시서 파일 | AGENTS.md | CLAUDE.md | GEMINI.md |
+| 켜는 명령 | `codex` | `claude` | 앱을 실행 |
+| 위험한 일 전에 | 물어봐요 | 물어봐요 | 물어봐요 |
+
+^^^
+> **하나를 배우면 셋 다 읽을 수 있어요.** 나중에 도구를 고를 일이 생기면, 이 표가 그대로 통역사가 돼요.
+
+??? 여기서 2분. 지시서 파일(AGENTS.md)은 오늘 실습에서 실물로 본다(뒤 실습 2 마지막 장) — "이따 직접 열어봐요"로 연결. 확실한 사실만 실었다 — 요금·버전 같은 바뀌는 정보는 넣지 않는다.
 
 ---
 ## 지금 다 못 외워도 <b>괜찮아요</b>
@@ -426,17 +479,20 @@ ls
 ??? 간지. 여기서부터 약 15분.
 
 ---
-## 켜는 법은 <b>한 단어예요</b>
+## 켜는 법은 한 단어, <b>켜는 곳은 project</b>
 
 ```
+pwd
+cd ~/project
 codex
 ```
 
 ^^^
-- 체크포인트 · 대화 입력창이 뜨면 성공
-- 나가고 싶을 땐 `/quit` 라고 치면 돼요
+- Codex는 **켠 폴더 안에서** 일해요 — 지시서(AGENTS.md)가 있는 project에서 켜야 규칙이 적용돼요
+- 체크포인트 · `codex` 치기 전 프롬프트에 `project` 가 보이고, 대화 입력창이 뜨면 성공
+- 어디 있는지 모르겠으면 언제든 `pwd` · 나가고 싶을 땐 `/quit`
 
-??? 여기서 3분. project 폴더 안에서 실행하게 한다(cd project 먼저). 처음 실행 시 안내 문구가 나올 수 있다 — 화면이 다르게 보여도 입력창만 뜨면 성공이라고 말해준다.
+??? 여기서 3분. tmux가 지난 접속의 위치를 기억하고 있어서 학생마다 시작 위치가 다르다 — cd ~/project를 반드시 먼저. 처음 실행 시 안내 문구가 나올 수 있다 — 화면이 다르게 보여도 입력창만 뜨면 성공이라고 말해준다.
 
 ---
 ## 첫 인사를 <b>해보세요</b>
@@ -592,6 +648,7 @@ w02 폴더에 저장해줘.
 <figure class="media" style="border:none;background:none">
 <svg viewBox="0 0 700 300" role="img" aria-label="바꿔달라고 한 요구사항들이 차곡차곡 쌓여 목록이 된다"
      style="width:100%;max-height:38vmin;color:#fcfdff">
+  <rect class="march" pathLength="1" x="164" y="56" width="372" height="230" rx="14" fill="none" stroke="#a78bfa" stroke-opacity=".45" stroke-width="2"/>
   <g font-family="inherit" font-size="16">
     <g class="pop">
       <rect x="180" y="228" width="340" height="44" rx="10" fill="#a78bfa" fill-opacity=".14" stroke="#a78bfa" stroke-opacity=".5"/>
@@ -749,10 +806,10 @@ w02 폴더에 저장해줘.
 
 ^^^
 학교에서 실제 발표했던 주제로 처음부터 끝까지 만들고, **인터넷에 공개**해요.
-오늘 만든 slide-rule.md 가 그대로 무기가 돼요.
+오늘 만든 slide-rule.md 를 그대로 다시 써요.
 
 ^^^
 - 오늘 만든 slide-rule.md 같은 파일, 세상 개발자들도 만들어 써요 — **이름이 따로 있는데, 다음에 알려드릴게요**
 - 숙제 없음 · 준비물 없음 — 발표했던 주제 하나만 떠올려 오세요
 
-??? 마무리 3분. 스킬 티저는 여기 한 번만 — 단어는 끝까지 아낀다. 시간 합계: 도입 11 + 설명 32 + 손풀기 19 + 첫만남 15 + 휴식 8 + 발표자료1 23 + 규칙 20 + 마무리 10 ≈ 138분에서 각 블록 여유분을 당겨 120분에 맞춘다 — 밀리면 자르는 순서: 34장(AGENTS.md 관찰) → 26장(faillock, 언급만) → 지형도 2장을 1장으로.
+??? 마무리 3분. 스킬 티저는 여기 한 번만 — 단어는 끝까지 아낀다. 시간 합계: 도입 11 + 설명 34 + 손풀기 19 + 첫만남 15 + 휴식 8 + 발표자료1 23 + 규칙 20 + 마무리 10 ≈ 140분에서 각 블록 여유분을 당겨 120분에 맞춘다 — 밀리면 자르는 순서: 35장(AGENTS.md 관찰) → 27장(faillock, 언급만) → 지형도·용어표 3장을 2장으로.
