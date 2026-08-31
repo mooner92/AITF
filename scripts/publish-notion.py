@@ -321,18 +321,19 @@ def slides_blocks(week):
     d = SLIDES_DIR / f"w{week:02d}"
     if not d.is_dir():
         return []
-    files = sorted(d.glob("*.html"))
+    files = sorted(f for f in d.glob("*.html")
+                   if not f.name.endswith(".embed.html"))
     if not files:
         return []
     out = [_b("heading_2", rich_text=rt("📎 수업 자료"), color="orange"),
            _b("divider")]
     for f in files:
         label = SLIDE_LABEL.get(f.stem, f.stem)
-        # 16:9 래퍼(embed.html) 경유 — 노션 iframe 높이를 우리가 못 정하므로
-        # 래퍼가 폭 기준 16:9로 덱을 담는다. v=mtime 은 Cloudflare 엣지 캐시
-        # 무효화용 — 파일을 갈아끼우면 URL이 바뀌어 옛 캐시를 안 받는다.
-        url = (f"{SLIDES_BASE}/embed.html?src=w{week:02d}/{f.name}"
-               f"&v={int(f.stat().st_mtime)}")
+        # 덱별 메타데이터 래퍼(.embed.html) — oEmbed/player 메타로 노션이
+        # 처음부터 큰 16:9 로 그리게 한다 (build-slides-index.py 가 생성).
+        # v=mtime 은 엣지 캐시 무효화 — 파일을 갈아끼우면 URL이 바뀐다.
+        url = (f"{SLIDES_BASE}/w{week:02d}/{f.stem}.embed.html"
+               f"?v={int(f.stat().st_mtime)}")
         out.append(_b("paragraph", rich_text=seg(f"**{label}**")))
         out.append(_b("embed", url=url))
     out.append(_b("paragraph", rich_text=[{

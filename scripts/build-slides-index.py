@@ -36,7 +36,8 @@ def main():
     cards = []
     for d in sorted(SLIDES.glob("w[0-9][0-9]")):
         n = int(d.name[1:])
-        files = sorted(d.glob("*.html"))
+        files = sorted(f for f in d.glob("*.html")
+                       if not f.name.endswith(".embed.html"))
         if not files:
             continue
         links = "".join(
@@ -94,7 +95,72 @@ def main():
 """
     (SLIDES / "index.html").write_text(out, encoding="utf-8")
     (SLIDES / "embed.html").write_text(EMBED, encoding="utf-8")
-    print(f"index.html 생성 — {len(cards)}주차 (+embed.html)")
+    n_embed = write_deck_embeds()
+    print(f"index.html 생성 — {len(cards)}주차 (+embed.html, 덱 래퍼 {n_embed}개)")
+
+
+BASE_URL = "https://aitf.excusa.uk/slides"
+
+
+def write_deck_embeds():
+    """덱마다 정적 메타데이터 래퍼(wNN/<이름>.embed.html)와 oEmbed JSON을 만든다.
+
+    노션은 임베드 블록 크기를 API 로 못 정하고, 대신 iframely 가 URL 의
+    oEmbed/player 메타데이터를 읽어 크기·비율을 정한다(유튜브가 처음부터
+    큰 16:9 로 나오는 경로). 쿼리 파라미터 방식(embed.html?src=)은 정적
+    메타에 개별 덱 정보를 못 실어서, 덱마다 래퍼 파일을 생성한다.
+    사람이 직접 열면 16:9 프레임 + 전체 화면 링크가 보인다."""
+    n = 0
+    oembed_dir = SLIDES / "oembed"
+    oembed_dir.mkdir(exist_ok=True)
+    for d in sorted(SLIDES.glob("w[0-9][0-9]")):
+        for f in sorted(d.glob("*.html")):
+            if f.name.endswith(".embed.html"):
+                continue
+            title = LABEL.get(f.stem, f.stem)
+            deck_url = f"{BASE_URL}/{d.name}/{f.name}"
+            oembed_name = f"{d.name}-{f.stem}.json"
+            oembed_url = f"{BASE_URL}/oembed/{oembed_name}"
+            (oembed_dir / oembed_name).write_text(json.dumps({
+                "version": "1.0", "type": "video",
+                "provider_name": "AITF",
+                "title": title,
+                "html": (f'<iframe src="{deck_url}" width="1280" height="720" '
+                         f'frameborder="0" allowfullscreen></iframe>'),
+                "width": 1280, "height": 720,
+            }, ensure_ascii=False), encoding="utf-8")
+            (d / f"{f.stem}.embed.html").write_text(f"""<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{html.escape(title)}</title>
+<link rel="alternate" type="application/json+oembed" href="{oembed_url}" title="{html.escape(title)}">
+<meta name="twitter:card" content="player">
+<meta name="twitter:player" content="{deck_url}">
+<meta name="twitter:player:width" content="1280">
+<meta name="twitter:player:height" content="720">
+<meta property="og:type" content="video.other">
+<meta property="og:title" content="{html.escape(title)}">
+<meta property="og:video" content="{deck_url}">
+<meta property="og:video:width" content="1280">
+<meta property="og:video:height" content="720">
+<style>
+  body{{margin:0;background:#ffffff;font:13px/1.5 "Apple SD Gothic Neo",sans-serif}}
+  .frame{{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000;border-radius:8px}}
+  .bar{{display:flex;justify-content:flex-end;padding:6px 2px}}
+  .bar a{{color:#707070;text-decoration:none}}
+  .bar a:hover{{color:#141414}}
+</style>
+</head>
+<body>
+<iframe class="frame" src="{f.name}" allowfullscreen></iframe>
+<div class="bar"><a href="{f.name}" target="_blank" rel="noopener">전체 화면으로 보기 ↗</a></div>
+</body>
+</html>
+""", encoding="utf-8")
+            n += 1
+    return n
 
 
 # Notion 임베드용 16:9 래퍼 — 노션 iframe은 높이를 우리가 못 정하므로,
