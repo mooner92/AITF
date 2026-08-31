@@ -300,11 +300,42 @@ def week_payload(cls, data, cls_dir=None):
                         "text": {"content": "  (서술은 다음 주부터 쌓여요)"},
                         "annotations": {"color": "gray", "italic": True}}])))
 
+    # ⑤ 수업 자료 — /srv/slides/wNN/ 에 올려 둔 발표자료를 임베드.
+    #    실제 열람 가능 여부는 Cloudflare Access 의 /slides Bypass 정책이 결정한다.
+    blocks += slides_blocks(week)
+
     blocks.append(_b("paragraph", rich_text=[{
         "type": "text",
         "text": {"content": "정본은 서버 위키(Gitea)예요 · 계정 ID만 기록해요"},
         "annotations": {"italic": True, "color": "gray"}}]))
     return props, blocks
+
+
+SLIDES_DIR = Path("/srv/slides")
+SLIDES_BASE = os.environ.get("SLIDES_BASE_URL", "https://aitf.excusa.uk/slides")
+SLIDE_LABEL = {"orientation": "이번 주 발표자료", "terminal": "터미널 명령어 정리"}
+
+
+def slides_blocks(week):
+    """주차 발표자료 임베드 블록. 파일이 없으면 빈 리스트 (섹션 자체 생략)."""
+    d = SLIDES_DIR / f"w{week:02d}"
+    if not d.is_dir():
+        return []
+    files = sorted(d.glob("*.html"))
+    if not files:
+        return []
+    out = [_b("heading_2", rich_text=rt("📎 수업 자료"), color="orange"),
+           _b("divider")]
+    for f in files:
+        label = SLIDE_LABEL.get(f.stem, f.stem)
+        url = f"{SLIDES_BASE}/w{week:02d}/{f.name}"
+        out.append(_b("paragraph", rich_text=seg(f"**{label}**")))
+        out.append(_b("embed", url=url))
+    out.append(_b("paragraph", rich_text=[{
+        "type": "text",
+        "text": {"content": "화면이 안 뜨면 카드를 눌러 새 창에서 열어 주세요 · 슬라이드는 ←→ 키로 넘겨요"},
+        "annotations": {"color": "gray", "italic": True}}]))
+    return out
 
 
 def upsert(cfg, dbid, cls, data, dry, cls_dir=None):
@@ -353,15 +384,86 @@ def upsert(cfg, dbid, cls, data, dry, cls_dir=None):
             print(f"  ! notion-links.json 기록 실패(발행은 정상): {e}")
 
 
+WEEKS_JSON = Path("/srv/hub/weeks.json")
+OVERVIEW_TITLE = "🗺️ 12주 커리큘럼"
+
+
+def publish_overview(cfg):
+    """부모 페이지 아래 '12주 커리큘럼' 하위 페이지를 (재)작성한다.
+
+    원장님·학부모가 이 페이지 하나로 수업 전반을 보게 하는 용도 — 주차별
+    제목·만들기 목표·배우는 것을 weeks.json(정본: curriculum/detailed-plan.md)에서
+    결정적으로 옮긴다. 실행할 때마다 본문을 지우고 다시 쓴다(멱등)."""
+    parent = cfg.get("NOTION_PARENT_PAGE")
+    if not parent or not WEEKS_JSON.exists():
+        print("overview 생략 — NOTION_PARENT_PAGE 또는 weeks.json 없음")
+        return
+    weeks = json.loads(WEEKS_JSON.read_text(encoding="utf-8"))["weeks"]
+
+    # 기존 하위 페이지 찾기 (부모의 child_page 블록 중 제목 일치)
+    kids = call(cfg, "GET", f"/blocks/{parent}/children?page_size=100").get("results", [])
+    page_id = next((k["id"] for k in kids
+                    if k["type"] == "child_page"
+                    and k["child_page"]["title"] == OVERVIEW_TITLE), None)
+    if not page_id:
+        page = call(cfg, "POST", "/pages", {
+            "parent": {"page_id": parent},
+            "icon": {"type": "emoji", "emoji": "🗺️"},
+            "properties": {"title": {"title": rt(OVERVIEW_TITLE)}}})
+        page_id = page["id"]
+        print(f"커리큘럼 페이지 생성: {page_id}")
+    else:
+        old = call(cfg, "GET", f"/blocks/{page_id}/children?page_size=100").get("results", [])
+        for k in old:
+            call(cfg, "DELETE", f"/blocks/{k['id']}")
+
+    blocks = [
+        _callout(seg("**12주 동안 이렇게 갑니다** — 매주 결과물이 하나씩 나오는 실습 중심 수업이에요. "
+                     "두 반(Class 1·Class 2)은 같은 내용·같은 진도로 진행합니다."),
+                 "🎯", "blue_background"),
+        _b("paragraph", rich_text=[]),
+    ]
+    for w in weeks:
+        title = re.sub(r"\s*\(.*진행 기록\)\s*", "", w["title"])   # 1주차 실측 꼬리표 제거
+        inner = []
+        if w.get("goal"):
+            inner.append(_b("paragraph", rich_text=seg(f"**만드는 것** — {w['goal']}")))
+        if w.get("skill"):
+            inner.append(_b("paragraph", rich_text=seg(f"**배우는 것** — {w['skill']}")))
+        if w.get("tech"):
+            inner.append(_b("paragraph", rich_text=[
+                {"type": "text", "text": {"content": f"도구 — {w['tech']}"},
+                 "annotations": {"color": "gray"}}]))
+        blocks.append(_b("toggle",
+                         rich_text=seg(f"**{w['week']}주 — {title}**"),
+                         color="green" if w.get("tag") else "default",
+                         children=inner))
+    blocks.append(_b("paragraph", rich_text=[{
+        "type": "text",
+        "text": {"content": "주차별 실제 수업 내용은 아래 'AITF 주간 수업 기록'에서 매주 볼 수 있어요"},
+        "annotations": {"italic": True, "color": "gray"}}]))
+
+    # Notion 은 한 번에 100블록 제한 — 나눠 붙인다
+    for i in range(0, len(blocks), 90):
+        call(cfg, "PATCH", f"/blocks/{page_id}/children", {"children": blocks[i:i+90]})
+    print(f"커리큘럼 개요 발행 — {len(weeks)}주 / 블록 {len(blocks)}개")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--week", type=int)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--overview", action="store_true",
+                    help="부모 페이지에 12주 커리큘럼 개요 페이지를 (재)작성")
     a = ap.parse_args()
 
     cfg = load_env()
     if not a.dry_run and not cfg.get("NOTION_TOKEN"):
         print(f"NOTION_TOKEN 미설정({ENV}) — 발행 생략. 위키는 서버에 그대로 있다.")
+        return 0
+
+    if a.overview:
+        publish_overview(cfg)
         return 0
 
     # 주차 결정 (build-wiki 와 동일 규칙 — scripts/term_calendar.py)
