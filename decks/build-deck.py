@@ -313,6 +313,36 @@ SHELL = """<!doctype html>
 """
 
 
+
+# ── 브랜드 라인 — 표지(첫 장)·마지막 장에 AITF·JR 락업(다크 변형) 주입 ──
+# 자기완결 원칙(외부 요청 0)에 따라 base64 임베드. 에셋이 없으면 조용히 생략.
+BRAND_AITF = HERE.parent / "web" / "brand" / "aitf" / "aitf-lockup-240-dark.svg"
+BRAND_JR = HERE.parent / "web" / "brand" / "jr" / "jr-lockup-240-dark.png"
+
+
+def _b64(p, mime):
+    return f"data:{mime};base64," + base64.b64encode(p.read_bytes()).decode()
+
+
+def inject_brandline(slides_html):
+    if not (BRAND_AITF.exists() and BRAND_JR.exists()):
+        return slides_html
+    line = ('<div class="brandline" aria-hidden="true">'
+            f'<img src="{_b64(BRAND_AITF, "image/svg+xml")}" alt="">'
+            '<span class="bsep"></span>'
+            f'<img src="{_b64(BRAND_JR, "image/png")}" alt=""></div>')
+    ends = [m.start() for m in re.finditer(r"</section>", slides_html)]
+    if not ends:
+        return slides_html
+    targets = {ends[0], ends[-1]}      # 첫 장과 마지막 장
+    out, prev = [], 0
+    for i in sorted(targets):
+        out.append(slides_html[prev:i] + line)
+        prev = i
+    out.append(slides_html[prev:])
+    return "".join(out)
+
+
 def build(src_path, out_path, cfg_path):
     raw = Path(src_path).read_text(encoding="utf-8")
     cfg = load_config(cfg_path)
@@ -325,6 +355,7 @@ def build(src_path, out_path, cfg_path):
     blocks = [b for b in re.split(r"^---\s*$", raw, flags=re.M) if b.strip()]
     slides = "\n".join(render_slide(b) for b in blocks)
     slides = inline_images(slides, Path(src_path).parent)
+    slides = inject_brandline(slides)
 
     css = (HERE / "engine.css").read_text(encoding="utf-8")
     js = (HERE / "engine.js").read_text(encoding="utf-8")

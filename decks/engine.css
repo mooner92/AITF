@@ -306,3 +306,11 @@ html[data-dir="back"]::view-transition-new(slide){animation-name:vt-in-back}
   .slide.on .bar .track i,.bar .track i{animation:none!important;transform:none!important}
   .slide.on > *,.slide > *{animation:none!important}
 }
+
+/* ── 브랜드 라인 — 표지·마지막 장 하단 (build-deck.py 가 주입) ──
+   내용과 경쟁하지 않게 작고 낮은 대비로. 페이지 번호(#num, 우하단)와
+   겹치지 않도록 좌하단 콘텐츠 여백선에 맞춘다 */
+.brandline{position:absolute;left:9vmin;bottom:5vmin;display:flex;align-items:center;
+  gap:2.4vmin;z-index:2;opacity:.85}
+.brandline img{height:3.4vmin;width:auto;display:block}
+.brandline .bsep{width:1px;height:2.8vmin;background:rgba(255,255,255,.22)}
