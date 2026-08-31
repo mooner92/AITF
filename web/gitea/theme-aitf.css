@@ -1,117 +1,119 @@
-/* AITF 테마 — Gitea 를 관제탑과 같은 디자인 언어로 (web/hub/DESIGN.md)
+/* AITF 테마 — Gitea 를 랜딩·관제탑과 같은 라이트 디자인 언어로
+ * (Mobbin 분석 기반, web/hub/DESIGN.md 2026-08-31 라이트 전환 항목)
  *
  * 배치: /var/lib/gitea/custom/public/assets/css/theme-aitf.css
  * 등록: app.ini [ui] THEMES 에 aitf 포함, DEFAULT_THEME = aitf
  *
- * Gitea 기본 초록(#4caf50 계열)을 걷어내고 근흑 캔버스 + 흰 잉크로 맞춘다.
- * 색은 상태·데이터에만 쓰고, UI 강조는 흰색이 맡는다.
+ * 갤러리-화이트 캔버스(#ffffff) + 잉크(#141414), 위계는 틴트 사다리
+ * (#f3f3f3 / #f0f0f0 / #e0e0e0)로만. 그림자 금지. 파랑 #0066ff 은
+ * 링크·주요 동작 한 곳에만 쓴다.
  */
 :root {
-  --is-dark-theme: true;
+  --is-dark-theme: false;
 
   /* ── 캔버스 ── */
-  --color-body: #0a0a0a;
-  --color-box-body: #0f0f0f;
-  --color-box-body-highlight: #141414;
-  --color-box-header: #0f0f0f;
-  --color-navbar: #0a0a0a;
-  --color-header-wrapper: #0a0a0a;
-  --color-footer: #0a0a0a;
-  --color-menu: #121212;
-  --color-card: #191919;
-  --color-markup-code-block: #141414;
-  --color-code-bg: #0f0f0f;
+  --color-body: #ffffff;
+  --color-box-body: #ffffff;
+  --color-box-body-highlight: #f3f3f3;
+  --color-box-header: #f3f3f3;
+  --color-navbar: #ffffff;
+  --color-header-wrapper: #ffffff;
+  --color-footer: #ffffff;
+  --color-menu: #ffffff;
+  --color-card: #ffffff;
+  --color-markup-code-block: #f3f3f3;
+  --color-code-bg: #f3f3f3;
   --color-shadow: transparent;          /* 그림자 금지 */
-  --color-secondary-bg: #1a1c20;
+  --color-secondary-bg: #f3f3f3;
 
-  /* ── 경계선 — hairline 하나로 통일 ── */
-  --color-secondary: #212327;
-  --color-secondary-dark-1: #2a2d31;
-  --color-secondary-dark-2: #33363b;
-  --color-secondary-light-1: #1c1e22;
-  --color-light-border: #212327;
-  --color-input-border: #2a2d31;
-  --color-input-border-hover: #3a3d42;
+  /* ── 경계선 — hairline 사다리 ── */
+  --color-secondary: #e0e0e0;
+  --color-secondary-dark-1: #d0d0d0;
+  --color-secondary-dark-2: #c0c0c0;
+  --color-secondary-light-1: #f0f0f0;
+  --color-light-border: #e0e0e0;
+  --color-input-border: #d0d0d0;
+  --color-input-border-hover: #141414;
 
   /* ── 글자 ── */
-  --color-text: #dadbdf;
-  --color-text-dark: #ffffff;
-  --color-text-light: #b9bbc0;
-  --color-text-light-1: #9a9ca1;
-  --color-text-light-2: #7d8187;
-  --color-text-light-3: #6a6e74;
-  --color-input-text: #dadbdf;
-  --color-input-background: #141414;
-  --color-placeholder-text: #7d8187;
+  --color-text: #262626;
+  --color-text-dark: #141414;
+  --color-text-light: #4a4a4a;
+  --color-text-light-1: #5c5c5c;
+  --color-text-light-2: #707070;
+  --color-text-light-3: #8a8a8a;
+  --color-input-text: #141414;
+  --color-input-background: #f0f0f0;
+  --color-placeholder-text: #adadad;
 
-  /* ── 링크·주요 동작: 초록 대신 흰색 ── */
-  --color-primary: #ffffff;
-  --color-primary-contrast: #0a0a0a;
-  --color-primary-dark-1: #f2f2f2;
-  --color-primary-dark-2: #e6e6e6;
-  --color-primary-dark-3: #d9d9d9;
-  --color-primary-dark-4: #cccccc;
-  --color-primary-light-1: #ffffff;
-  --color-primary-light-2: #ffffff;
-  --color-primary-light-3: #2a2d31;
-  --color-primary-light-4: #212327;
-  --color-primary-light-5: #1a1c20;
-  --color-primary-light-6: #141414;
-  --color-primary-light-7: #101010;
-  --color-primary-alpha-20: rgba(255,255,255,.10);
-  --color-primary-alpha-30: rgba(255,255,255,.14);
-  --color-primary-alpha-40: rgba(255,255,255,.18);
-  --color-primary-alpha-50: rgba(255,255,255,.22);
-  --color-primary-alpha-60: rgba(255,255,255,.28);
-  --color-primary-alpha-70: rgba(255,255,255,.34);
-  --color-primary-alpha-80: rgba(255,255,255,.42);
-  --color-primary-alpha-90: rgba(255,255,255,.55);
-  --color-primary-hover: #f2f2f2;
-  --color-primary-active: #e6e6e6;
+  /* ── 링크·주요 동작: 잉크 필 + 파랑 링크 ── */
+  --color-primary: #141414;
+  --color-primary-contrast: #ffffff;
+  --color-primary-dark-1: #262626;
+  --color-primary-dark-2: #333333;
+  --color-primary-dark-3: #404040;
+  --color-primary-dark-4: #4d4d4d;
+  --color-primary-light-1: #262626;
+  --color-primary-light-2: #333333;
+  --color-primary-light-3: #e0e0e0;
+  --color-primary-light-4: #f0f0f0;
+  --color-primary-light-5: #f3f3f3;
+  --color-primary-light-6: #f7f7f7;
+  --color-primary-light-7: #fafafa;
+  --color-primary-alpha-20: rgba(20,20,20,.08);
+  --color-primary-alpha-30: rgba(20,20,20,.12);
+  --color-primary-alpha-40: rgba(20,20,20,.16);
+  --color-primary-alpha-50: rgba(20,20,20,.22);
+  --color-primary-alpha-60: rgba(20,20,20,.28);
+  --color-primary-alpha-70: rgba(20,20,20,.34);
+  --color-primary-alpha-80: rgba(20,20,20,.42);
+  --color-primary-alpha-90: rgba(20,20,20,.55);
+  --color-primary-hover: #262626;
+  --color-primary-active: #333333;
 
-  /* ── 시맨틱: 상태에만 색을 쓴다 (DESIGN.md 예외 2색 + 차트 팔레트) ── */
-  --color-red: #ff453a;
-  --color-red-light: #ff6a61;
-  --color-red-dark-1: #e63c32;
-  --color-red-dark-2: #cc352c;
-  --color-orange: #ff7a17;
-  --color-orange-light: #ffa057;
-  --color-orange-dark-1: #e66d14;
-  --color-yellow: #ff7a17;
-  --color-gold: #ff7a17;
-  --color-green: #a0c3ec;              /* 초록 자리를 차트2(breeze)로 */
-  --color-green-light: #bcd4f1;
-  --color-green-dark-1: #8fb2db;
-  --color-green-dark-2: #7fa0c9;
-  --color-teal: #a0c3ec;
-  --color-blue: #a0c3ec;
-  --color-blue-light: #bcd4f1;
-  --color-blue-dark-1: #8fb2db;
-  --color-violet: #c4b5fd;
+  /* ── 시맨틱: 상태에만 색 (흰 바탕 가독 보정값) ── */
+  --color-red: #d93025;
+  --color-red-light: #e0554b;
+  --color-red-dark-1: #c22a20;
+  --color-red-dark-2: #a8241c;
+  --color-orange: #d9640a;
+  --color-orange-light: #e07f33;
+  --color-orange-dark-1: #c25909;
+  --color-yellow: #d9640a;
+  --color-gold: #d9640a;
+  --color-green: #0066ff;              /* Gitea 초록 자리를 액센트 블루로 */
+  --color-green-light: #3385ff;
+  --color-green-dark-1: #0052cc;
+  --color-green-dark-2: #0047b3;
+  --color-teal: #0066ff;
+  --color-blue: #0066ff;
+  --color-blue-light: #3385ff;
+  --color-blue-dark-1: #0052cc;
+  --color-violet: #7c3aed;
   --color-purple: #7c3aed;
-  --color-pink: #c4b5fd;
-  --color-brown: #7d8187;
-  --color-black: #0a0a0a;
+  --color-pink: #7c3aed;
+  --color-brown: #707070;
+  --color-black: #141414;
 
   /* 상태 배지 */
-  --color-success-bg: #14261a;
-  --color-success-border: #2a4a33;
-  --color-success-text: #a0c3ec;
-  --color-warning-bg: #2a1a0c;
-  --color-warning-border: #5c3a18;
-  --color-warning-text: #ff7a17;
-  --color-error-bg: #2a1414;
-  --color-error-border: #5c2626;
-  --color-error-text: #ff453a;
-  --color-info-bg: #12181f;
-  --color-info-border: #24303d;
-  --color-info-text: #a0c3ec;
+  --color-success-bg: #eef4ff;
+  --color-success-border: #c7dbff;
+  --color-success-text: #0052cc;
+  --color-warning-bg: #fdf3ea;
+  --color-warning-border: #f0d4b8;
+  --color-warning-text: #c25909;
+  --color-error-bg: #fceceb;
+  --color-error-border: #f2c4c0;
+  --color-error-text: #c22a20;
+  --color-info-bg: #f3f3f3;
+  --color-info-border: #e0e0e0;
+  --color-info-text: #262626;
 
-  /* git 그래프·diff */
-  --color-diff-added-row-bg: #131f16;
-  --color-diff-added-word-bg: #1e3a24;
-  --color-diff-removed-row-bg: #1f1313;
-  --color-diff-removed-word-bg: #3a1e1e;
+  /* git 그래프·diff — 라이트 관례색 */
+  --color-diff-added-row-bg: #e6ffec;
+  --color-diff-added-word-bg: #abf2bc;
+  --color-diff-removed-row-bg: #ffebe9;
+  --color-diff-removed-word-bg: #ffc0bc;
 
   /* ── 글꼴: 관제탑과 같은 Paperlogy ── */
   --fonts-proportional: Paperlogy, Inter, system-ui, -apple-system, sans-serif;
@@ -133,20 +135,20 @@
   box-shadow: none !important;
 }
 
-/* 버튼: 아웃라인 필 */
+/* 버튼: 필(스타디움) */
 .ui.button {
   border-radius: 9999px;
   font-weight: 400;
 }
 .ui.basic.button, .ui.basic.buttons .button {
-  box-shadow: inset 0 0 0 1px var(--color-secondary-dark-1) !important;
+  box-shadow: inset 0 0 0 1px var(--color-secondary) !important;
 }
 .ui.primary.button {
-  background: #ffffff;
-  color: #0a0a0a;
+  background: #141414;
+  color: #ffffff;
   border-radius: 9999px;
 }
-.ui.primary.button:hover { background: #f2f2f2; color: #0a0a0a; }
+.ui.primary.button:hover { background: #262626; color: #ffffff; }
 
 /* 카드·박스 반경 통일 */
 .ui.card, .ui.segment, .ui.attached.segment, .repository .ui.segment { border-radius: 8px; }
@@ -154,6 +156,6 @@
 /* 상단 네비 — 캔버스에 hairline 하단선 */
 #navbar, .ui.top.menu {
   background: var(--color-navbar) !important;
-  border-bottom: 1px solid var(--color-secondary) !important;
+  border-bottom: 1px solid var(--color-secondary-light-1) !important;
   box-shadow: none !important;
 }

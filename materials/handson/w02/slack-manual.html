@@ -5,26 +5,27 @@
 <title>Slack 사용법</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+  /* 라이트 기본 (Mobbin 토큰, 2026-08-31 전환) — 다크는 선택 변형 */
   :root{
+    --canvas:#ffffff; --card:#ffffff; --elevated:#f3f3f3;
+    --ink:#141414; --body:rgba(20,20,20,.84); --mute:#707070; --faint:#adadad;
+    --hair:#f0f0f0; --hair-strong:#e0e0e0;
+    --accent:#0066ff; --blue:#0066ff; --amber:#a2650a; --violet:#7d5a92;
+    --font-body:"Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    --font-mono:ui-monospace,"D2Coding","Cascadia Code",SFMono-Regular,Consolas,"Liberation Mono",monospace;
+  }
+  :root[data-theme="dark"]{
     --canvas:#0a0b0d; --card:#111318; --elevated:#171a20;
     --ink:#f4f6f8; --body:rgba(244,246,248,.86); --mute:#9aa1ab; --faint:rgba(244,246,248,.5);
     --hair:rgba(255,255,255,.09); --hair-strong:rgba(255,255,255,.18);
     --accent:#3ddc97; --blue:#5b9dff; --amber:#ffb84d; --violet:#b48ead;
-    --font-body:"Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
-    --font-mono:ui-monospace,"D2Coding","Cascadia Code",SFMono-Regular,Consolas,"Liberation Mono",monospace;
   }
-  :root[data-theme="light"]{
-    --canvas:#f7f7f5; --card:#ffffff; --elevated:#ffffff;
-    --ink:#16181c; --body:rgba(22,24,28,.82); --mute:#5b616b; --faint:rgba(22,24,28,.5);
-    --hair:rgba(0,0,0,.1); --hair-strong:rgba(0,0,0,.18);
-    --accent:#0e9463; --blue:#2568d6; --amber:#a2650a; --violet:#7d5a92;
-  }
-  @media (prefers-color-scheme: light){
-    :root:not([data-theme="dark"]){
-      --canvas:#f7f7f5; --card:#ffffff; --elevated:#ffffff;
-      --ink:#16181c; --body:rgba(22,24,28,.82); --mute:#5b616b; --faint:rgba(22,24,28,.5);
-      --hair:rgba(0,0,0,.1); --hair-strong:rgba(0,0,0,.18);
-      --accent:#0e9463; --blue:#2568d6; --amber:#a2650a; --violet:#7d5a92;
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --canvas:#0a0b0d; --card:#111318; --elevated:#171a20;
+      --ink:#f4f6f8; --body:rgba(244,246,248,.86); --mute:#9aa1ab; --faint:rgba(244,246,248,.5);
+      --hair:rgba(255,255,255,.09); --hair-strong:rgba(255,255,255,.18);
+      --accent:#3ddc97; --blue:#5b9dff; --amber:#ffb84d; --violet:#b48ead;
     }
   }
   *{box-sizing:border-box}

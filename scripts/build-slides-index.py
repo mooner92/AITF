@@ -57,7 +57,9 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AITF 발표자료</title>
 <style>
-  :root{{--bg:#0a0a0a;--card:#161618;--line:#26282c;--ink:#f5f6f8;--mute:#9aa0a8;--accent:#3b9eff}}
+  /* Mobbin 라이트 — 랜딩(web/landing)과 같은 토큰 (2026-08-31 라이트 전환) */
+  :root{{--bg:#ffffff;--card:#ffffff;--soft:#f3f3f3;--line:#e0e0e0;--line-soft:#f0f0f0;
+    --ink:#141414;--mute:#707070;--accent:#0066ff}}
   *{{margin:0;padding:0;box-sizing:border-box}}
   body{{background:var(--bg);color:var(--ink);
     font:400 16px/1.6 "Apple SD Gothic Neo","Malgun Gothic",-apple-system,sans-serif;
@@ -65,16 +67,16 @@ def main():
   main{{max-width:680px;margin:0 auto}}
   h1{{font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.02em;margin-bottom:6px}}
   .lede{{color:var(--mute);margin-bottom:40px;font-size:15px}}
-  article{{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  article{{background:var(--card);border:1px solid var(--line-soft);border-radius:24px;
     padding:22px 24px;margin-bottom:14px}}
   header{{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}}
   .wk{{color:var(--accent);font-weight:700;font-size:14px;white-space:nowrap}}
   h2{{font-size:18px;font-weight:700}}
   nav{{display:flex;flex-direction:column;gap:8px}}
   nav a{{display:flex;justify-content:space-between;align-items:center;
-    padding:12px 16px;border:1px solid var(--line);border-radius:10px;
+    padding:12px 16px;background:var(--soft);border:1px solid transparent;border-radius:9999px;
     color:var(--ink);text-decoration:none;font-size:15px;transition:border-color .15s}}
-  nav a:hover{{border-color:var(--accent)}}
+  nav a:hover{{border-color:var(--ink)}}
   nav a span{{color:var(--mute)}}
   .empty{{color:var(--mute)}}
   footer{{margin-top:44px;color:var(--mute);font-size:13px}}
