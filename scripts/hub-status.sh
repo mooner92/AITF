@@ -99,7 +99,7 @@ snapshot_last=$(newest /srv/snapshots)
 rehearsal_last=$(newest /opt/scripts/rehearsal-logs)
 # 자동 위키: 구축 여부가 아니라 "마지막으로 언제 돌았나"를 본다 (specs/180)
 wiki_built=false
-[ -x /opt/scripts/build-wiki.sh ] && wiki_built=true
+[ -e /opt/scripts/build-wiki.py ] && wiki_built=true
 wiki_last=$(newest /srv/wiki)
 
 mkdir -p /srv/hub
