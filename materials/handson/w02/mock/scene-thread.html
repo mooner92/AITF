@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+.wrap{display:flex;height:100%}
+.left{flex:1;display:flex;flex-direction:column;min-width:0}
+.panel{width:0;border-left:1px solid #2c2f33;display:flex;flex-direction:column;
+  transition:width .4s ease;overflow:hidden;background:#1e2126}
+.panel.open{width:270px}
+.panel .head{font-size:13.5px}
+.hoverbar{position:absolute;top:-10px;right:6px;background:#26292e;border:1px solid #3a3e44;
+  border-radius:7px;padding:3px 8px;font-size:14px;display:none;gap:8px}
+.hoverbar.show{display:flex}
+.hoverbar .hl{outline:2px solid #5b9dff;border-radius:4px;padding:0 2px}
+.cursor{position:absolute;width:18px;height:18px;z-index:9;transition:all .8s ease;
+  font-size:16px;pointer-events:none}
+.replycount{color:#5b9dff;font-size:12px;margin-top:4px;display:none}
+.replycount.show{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="left">
+    <div class="head"># class1</div>
+    <div class="feed">
+      <div class="msg" id="target">
+        <div class="avatar a1">SM</div>
+        <div class="body"><div class="who">osm0511 <span class="time">오후 4:20</span></div>
+          <div class="text">nano에서 저장이 안 돼요, Ctrl+S 눌렀는데…</div>
+          <div class="replycount" id="rc">↳ 답글 1개</div></div>
+        <div class="hoverbar" id="hb"><span class="hl">답글</span> <span>반응</span> <span>저장</span></div>
+      </div>
+      <div class="msg">
+        <div class="avatar a2">TK</div>
+        <div class="body"><div class="who">donggritk <span class="time">오후 4:21</span></div>
+          <div class="text">저는 오늘 것 벌써 올렸어요!</div></div>
+      </div>
+    </div>
+    <div class="inputbar" style="opacity:.45">메시지 보내기…</div>
+  </div>
+  <div class="panel" id="panel">
+    <div class="head">스레드</div>
+    <div class="feed">
+      <div class="msg">
+        <div class="avatar a1">SM</div>
+        <div class="body"><div class="who">osm0511</div>
+          <div class="text">nano에서 저장이 안 돼요…</div></div>
+      </div>
+      <div class="msg hidden" id="reply">
+        <div class="avatar a2">나</div>
+        <div class="body"><div class="who">나</div>
+          <div class="text">Ctrl+O 누르고 Enter예요! (O는 저장)</div></div>
+      </div>
+    </div>
+    <div class="inputbar" style="margin:0 10px 10px"><span id="typed"></span><span class="caret"></span></div>
+  </div>
+</div>
+<div class="cursor" id="cur" style="left:600px;top:360px"><svg width="16" height="20" viewBox="0 0 16 20"><path d="M1 1 L1 15 L5 11.5 L8 18 L10.5 17 L7.5 10.5 L13 10 Z" fill="#fff" stroke="#000" stroke-width="1"/></svg></div>
+<script>
+const cur = document.getElementById("cur");
+setTimeout(() => { cur.style.left = "420px"; cur.style.top = "108px"; }, 600);      // 메시지 위로
+setTimeout(() => { document.getElementById("hb").classList.add("show"); }, 1500);   // 호버바 등장
+setTimeout(() => { cur.style.left = "446px"; cur.style.top = "88px"; }, 1700);      // 💬 위로
+setTimeout(() => { document.getElementById("panel").classList.add("open"); }, 2700); // 스레드 열림
+const REPLY = "Ctrl+O 누르고 Enter예요!";
+let i = 0;
+function type(){
+  const t = document.getElementById("typed");
+  if (i < REPLY.length){ t.textContent += REPLY[i++]; setTimeout(type, 75); }
+  else setTimeout(() => {
+    t.textContent = "";
+    const r = document.getElementById("reply");
+    r.classList.remove("hidden"); r.classList.add("fadein");
+    document.getElementById("rc").classList.add("show");
+    document.getElementById("hb").classList.remove("show");
+  }, 500);
+}
+setTimeout(type, 3600);
+</script>
+</body>
+</html>

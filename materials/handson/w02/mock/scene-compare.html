@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<div class="chrome">
+  <div class="head"># class1</div>
+  <div class="feed">
+    <div class="msg">
+      <div class="avatar a1">TY</div>
+      <div class="body"><div class="who">taeyuntwo <span class="time">오후 4:12</span></div>
+        <div class="text">AI마다 답이 다르다는 게 진짜예요?</div></div>
+    </div>
+    <div class="msg hidden" id="me">
+      <div class="avatar a2">나</div>
+      <div class="body"><div class="who">나 <span class="time">오후 4:13</span></div>
+        <div class="text">/compare 가을에 대한 시 한 편 써줘</div></div>
+    </div>
+    <div class="msg hidden" id="bot">
+      <div class="avatar abot">AI</div>
+      <div class="body"><div class="who">AITF Compare <span class="time">오후 4:13</span></div>
+        <div class="text" id="botText">생각 중…</div>
+        <div id="cards" class="hidden">
+          <div class="card"><span class="tag tagA">A</span><b>가을 하늘이 높다는 말은…</b><br>낙엽 한 장이 먼저 알고 내려온다 — 3.1초</div>
+          <div class="card" style="margin-top:6px"><span class="tag tagB">B</span><b>노을이 길어지는 계절,</b><br>바람은 조금 느리게 분다 — 8.7초</div>
+        </div></div>
+    </div>
+  </div>
+  <div class="inputbar"><span id="typed"></span><span class="caret"></span></div>
+</div>
+<script>
+const CMD = "/compare 가을에 대한 시 한 편 써줘";
+const typed = document.getElementById("typed");
+let i = 0;
+function type(){
+  if (i < CMD.length){ typed.textContent += CMD[i++]; setTimeout(type, 70); }
+  else setTimeout(send, 600);
+}
+function send(){
+  typed.textContent = "";
+  document.getElementById("me").classList.remove("hidden");
+  document.getElementById("me").classList.add("fadein");
+  setTimeout(() => {
+    const b = document.getElementById("bot");
+    b.classList.remove("hidden"); b.classList.add("fadein");
+  }, 700);
+  setTimeout(() => {
+    document.getElementById("botText").textContent = "어느 쪽이 더 마음에 드나요?";
+    const c = document.getElementById("cards");
+    c.classList.remove("hidden"); c.classList.add("fadein");
+  }, 2600);
+}
+setTimeout(type, 800);
+</script>
+</body>
+</html>

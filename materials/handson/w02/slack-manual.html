@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Slack 사용법</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --canvas:#0a0b0d; --card:#111318; --elevated:#171a20;
+    --ink:#f4f6f8; --body:rgba(244,246,248,.86); --mute:#9aa1ab; --faint:rgba(244,246,248,.5);
+    --hair:rgba(255,255,255,.09); --hair-strong:rgba(255,255,255,.18);
+    --accent:#3ddc97; --blue:#5b9dff; --amber:#ffb84d; --violet:#b48ead;
+    --font-body:"Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    --font-mono:ui-monospace,"D2Coding","Cascadia Code",SFMono-Regular,Consolas,"Liberation Mono",monospace;
+  }
+  :root[data-theme="light"]{
+    --canvas:#f7f7f5; --card:#ffffff; --elevated:#ffffff;
+    --ink:#16181c; --body:rgba(22,24,28,.82); --mute:#5b616b; --faint:rgba(22,24,28,.5);
+    --hair:rgba(0,0,0,.1); --hair-strong:rgba(0,0,0,.18);
+    --accent:#0e9463; --blue:#2568d6; --amber:#a2650a; --violet:#7d5a92;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --canvas:#f7f7f5; --card:#ffffff; --elevated:#ffffff;
+      --ink:#16181c; --body:rgba(22,24,28,.82); --mute:#5b616b; --faint:rgba(22,24,28,.5);
+      --hair:rgba(0,0,0,.1); --hair-strong:rgba(0,0,0,.18);
+      --accent:#0e9463; --blue:#2568d6; --amber:#a2650a; --violet:#7d5a92;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--canvas); color:var(--body);
+    font-family:var(--font-body); line-height:1.6;
+    padding:clamp(20px,5vw,56px) 0 80px;
+  }
+  main{max-width:720px; margin:0 auto; padding:0 20px}
+  header{margin-bottom:32px}
+  .eyebrow{
+    font-size:12.5px; color:var(--accent); font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; margin:0 0 10px;
+  }
+  h1{
+    font-size:clamp(26px,4.4vw,34px); font-weight:800; color:var(--ink);
+    margin:0 0 8px; letter-spacing:-.01em; text-wrap:balance;
+  }
+  .sub{color:var(--mute); font-size:15px; margin:0}
+  h2{
+    font-size:13px; font-weight:700; color:var(--mute); letter-spacing:.08em;
+    text-transform:uppercase; margin:40px 0 14px; padding-bottom:8px;
+    border-bottom:1px solid var(--hair);
+  }
+  .card{
+    background:var(--card); border:1px solid var(--hair); border-radius:12px;
+    padding:16px 18px; margin-bottom:10px;
+  }
+  .card h3{margin:0 0 6px; font-size:15.5px; color:var(--ink)}
+  .card p{margin:0; font-size:14px}
+  .kbd{
+    font-family:var(--font-mono); font-size:13px; color:var(--accent);
+    background:color-mix(in srgb, var(--accent) 14%, transparent);
+    padding:2px 8px; border-radius:6px; white-space:nowrap;
+  }
+  .chan{
+    font-family:var(--font-mono); font-size:13px; color:var(--blue);
+    background:color-mix(in srgb, var(--blue) 12%, transparent);
+    padding:2px 8px; border-radius:6px; white-space:nowrap;
+  }
+  table{width:100%; border-collapse:collapse; font-size:14px}
+  th{
+    text-align:left; font-size:12px; color:var(--mute); font-weight:700;
+    padding:0 12px 8px 0; border-bottom:1px solid var(--hair);
+  }
+  td{padding:9px 12px 9px 0; border-bottom:1px solid var(--hair); vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  .demo{
+    border:1px solid var(--hair-strong); border-radius:12px; overflow:hidden;
+    margin:12px 0 4px; background:#1a1d21;
+  }
+  .demo img{display:block; width:100%; max-width:100%; height:auto}
+  .cap{font-size:12.5px; color:var(--faint); margin:6px 0 0}
+  .tip{
+    background:var(--card); border:1px solid var(--hair);
+    border-left:3px solid var(--amber); border-radius:10px;
+    padding:13px 16px; font-size:14px; margin-top:8px;
+  }
+  footer{
+    margin-top:48px; padding-top:20px; border-top:1px solid var(--hair);
+    color:var(--faint); font-size:12.5px;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">2주차 · 우리 반 메신저</p>
+    <h1>Slack 사용법</h1>
+    <p class="sub">우리 수업의 소통 공간이에요. 디스코드를 써봤다면 5분이면 익숙해져요.</p>
+  </header>
+
+  <section>
+    <h2>디스코드와 뭐가 같고 뭐가 다른가</h2>
+    <div class="card">
+      <table>
+        <tr><th>디스코드에서</th><th>Slack에서는</th></tr>
+        <tr><td>서버</td><td><b>워크스페이스</b> — 우리는 AITF 하나</td></tr>
+        <tr><td>채널 (#)</td><td>채널 (#) — 똑같아요</td></tr>
+        <tr><td>DM</td><td>DM — 똑같아요</td></tr>
+        <tr><td>답장이 채널에 그대로 쌓임</td><td><b>스레드</b>로 접어서 답해요 — 채널이 깨끗하게 유지</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>우리 워크스페이스 지도</h2>
+    <div class="card">
+      <table>
+        <tr><th>공간</th><th>용도</th></tr>
+        <tr><td><span class="chan">#aitf-전체</span></td><td>공지 — 선생님이 올려요. 읽기 위주</td></tr>
+        <tr><td><span class="chan">#class1</span> / <span class="chan">#class2</span></td><td><b>자기 반 채널</b> — 질문·작품 자랑·잡담 전부 여기. 일요일 저녁 주간 정리 알림도 여기로 와요</td></tr>
+        <tr><td>DM</td><td>개인적인 일만 (비밀번호 문제 등)</td></tr>
+      </table>
+    </div>
+    <div class="tip">질문은 DM보다 <b>자기 반 채널</b>에 올려 주세요 — 같은 게 궁금했던 친구도 답을 같이 봐요.</div>
+  </section>
+
+  <section>
+    <h2>기본기 네 가지</h2>
+    <div class="card"><h3>1. 스레드로 답하기</h3>
+      <p>메시지에 마우스를 올리면 뜨는 <b>답글</b> 버튼으로 대화를 접어요. 채널은 새 주제만 남아 깔끔해져요.</p>
+      <div class="demo"><img src="gif/thread.gif" alt="메시지에 마우스를 올려 답글 버튼을 누르고 스레드 창에서 답을 다는 과정" loading="lazy"></div>
+      <p class="cap">답글이 달리면 원래 메시지 밑에 "답글 1개"로 접혀 보여요.</p>
+    </div>
+    <div class="card"><h3>2. 이모지 반응</h3>
+      <p>"저도요", "고마워요"는 글자 대신 메시지에 마우스 올려 이모지 하나로. 채널이 훨씬 조용해져요.</p>
+    </div>
+    <div class="card"><h3>3. 멘션(@)</h3>
+      <p><b>@이름</b>을 붙이면 그 사람에게 알림이 가요. 급할 때만 — 알림 폭탄은 예의가 아니에요.</p>
+    </div>
+    <div class="card"><h3>4. 파일 올리기</h3>
+      <p>입력창의 <b>+</b> 버튼이나 끌어다 놓기. 스크린샷 질문은 말보다 빠를 때가 많아요.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>우리 반 전용 명령어</h2>
+    <div class="card"><h3><span class="kbd">/compare 질문</span></h3>
+      <p>같은 질문을 <b>서로 다른 두 AI</b>에게 동시에 던지고, 누가 쓴 건지 가린 채 A/B로 받아요.
+      어느 쪽이 나은지 먼저 고른 뒤에 정답을 공개하는 게 재미 포인트.</p>
+      <div class="demo"><img src="gif/compare.gif" alt="/compare 명령을 입력하면 봇이 A와 B 두 개의 답 카드를 보여주는 과정" loading="lazy"></div>
+      <p class="cap">A/B 뒤의 초 수는 걸린 시간이에요. 한쪽(사내 GPU 모델)은 일요일 수업 시간에만 응답해요.</p>
+    </div>
+    <div class="card"><h3><span class="kbd">/thisweek</span></h3>
+      <p>이번 주 수업 정리(Notion) 링크를 받아요. 답은 <b>나에게만 보여서</b> 채널을 어지럽히지 않아요.</p>
+      <div class="demo"><img src="gif/thisweek.gif" alt="/thisweek 명령을 입력하면 나에게만 표시되는 Notion 링크가 오는 과정" loading="lazy"></div>
+    </div>
+    <div class="card"><h3>일요일 저녁 자동 알림</h3>
+      <p>매주 일요일 저녁, 반 채널에 그 주의 요약(배운 것·활동)과 Notion·위키 버튼이 자동으로 올라와요.
+      자기 전에 한 번 훑으면 복습 끝.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>딱 하나만 기억한다면</h2>
+    <p class="tip" style="border-left-color:var(--accent)">
+      <b>질문은 부끄러운 게 아니라 기여예요.</b> 반 채널에 올린 질문 하나가
+      같은 곳에서 막힌 친구 셋을 구해요. 오늘 수업에서 막히면 바로 올리세요.
+    </p>
+  </section>
+
+  <footer>AITF 2주차 · 화면은 설명용 재현 화면입니다 (실제 Slack 화면과 배치가 조금 다를 수 있어요)</footer>
+</main>
+</body>
+</html>

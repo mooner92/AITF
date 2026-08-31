@@ -18,7 +18,8 @@ from pathlib import Path
 
 SLIDES = Path("/srv/slides")
 WEEKS_JSON = Path("/srv/hub/weeks.json")
-LABEL = {"orientation": "수업 발표자료", "terminal": "터미널 명령어 정리"}
+LABEL = {"orientation": "수업 발표자료", "terminal": "터미널 명령어 정리",
+         "slack-manual": "Slack 사용법"}
 
 
 def week_titles():

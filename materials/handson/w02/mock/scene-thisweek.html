@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<div class="chrome">
+  <div class="head"># class2</div>
+  <div class="feed">
+    <div class="msg">
+      <div class="avatar a1">NS</div>
+      <div class="body"><div class="who">noonsongi1000 <span class="time">오후 5:02</span></div>
+        <div class="text">지난주에 뭐 했는지 어디서 봐요?</div></div>
+    </div>
+    <div class="msg hidden" id="eph">
+      <div class="avatar abot">AI</div>
+      <div class="body ephemeral">
+        <div class="note">나에게만 표시됩니다</div>
+        <div class="who">AITF Compare</div>
+        <div class="text"><b>Class 2 1주차 정리</b> — 이번 주 배운 것·활동 기록</div>
+        <div class="btn">Notion에서 열기 →</div>
+      </div>
+    </div>
+  </div>
+  <div class="inputbar"><span id="typed"></span><span class="caret"></span></div>
+</div>
+<script>
+const CMD = "/thisweek";
+const typed = document.getElementById("typed");
+let i = 0;
+function type(){
+  if (i < CMD.length){ typed.textContent += CMD[i++]; setTimeout(type, 110); }
+  else setTimeout(send, 700);
+}
+function send(){
+  typed.textContent = "";
+  const e = document.getElementById("eph");
+  e.classList.remove("hidden"); e.classList.add("fadein");
+}
+setTimeout(type, 900);
+</script>
+</body>
+</html>
