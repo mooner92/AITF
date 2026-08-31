@@ -1,5 +1,6 @@
 <!-- 빌드 전 준비: GIF 에셋은 gitignore 대상(decks/assets/img/*)이라 복사 필요
      cp materials/handson/w02/gif/*.gif decks/assets/img/   (원본·재생성: materials/handson/w02/mock/record.py) -->
+
 <!-- class: cover -->
 ^ 2주차 · 쉬는 시간 끝나고
 # Slack <em>사용법</em>
