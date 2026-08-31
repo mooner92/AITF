@@ -36,7 +36,7 @@
 | Google AI Pro 활용 검토 | [140](../specs/140-gemini-pro.md) |
 | 모델별 Slack 봇 설계 | [150](../specs/150-model-bots.md) |
 | SSH 접속 설계 | [160](../specs/160-ssh-access.md) |
-| 12주 커리큘럼 (v8.5) | [`curriculum/detailed-plan.md`](../curriculum/detailed-plan.md) |
+| 12주 커리큘럼 (v8.6) | [`curriculum/detailed-plan.md`](../curriculum/detailed-plan.md) |
 | 학부모·학생 배포 문서 | `curriculum/parent-guide.html` · `student-guide.html` |
 
 **남은 것은 전부 "명단·키·IP를 받으면 실행"** 단계까지 와 있습니다.

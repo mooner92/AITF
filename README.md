@@ -1,6 +1,7 @@
 <div align="center">
 
-# AITF
+<img src="web/brand/aitf/aitf-lockup-stacked-400.svg" alt="AITF" width="200">
+
 
 **중고등학생 12주 AI 코딩 특강 — 인프라와 수업 기록 전부**
 
@@ -8,7 +9,7 @@
 그 수업을 굴리는 서버가 어떻게 만들어졌는지까지 공개합니다.
 
 ![스펙](https://img.shields.io/badge/specs-21%20문서-white?style=flat-square&labelColor=0a0a0a)
-![커리큘럼](https://img.shields.io/badge/커리큘럼-v8.5-ff7a17?style=flat-square&labelColor=0a0a0a)
+![커리큘럼](https://img.shields.io/badge/커리큘럼-v8.6-ff7a17?style=flat-square&labelColor=0a0a0a)
 ![방식](https://img.shields.io/badge/방식-Spec--Driven-a0c3ec?style=flat-square&labelColor=0a0a0a)
 ![서버](https://img.shields.io/badge/서버-Oracle%20A1%20aarch64-white?style=flat-square&labelColor=0a0a0a)
 ![라이선스](https://img.shields.io/badge/문서-CC%20BY--NC-7c3aed?style=flat-square&labelColor=0a0a0a)
@@ -49,7 +50,7 @@
 
 | 궁금한 것 | 볼 곳 |
 |---|---|
-| **12주에 뭘 하나** | [`curriculum/detailed-plan.html`](curriculum/detailed-plan.html) — 주차별 상세 (v8.5) |
+| **12주에 뭘 하나** | [`curriculum/detailed-plan.html`](curriculum/detailed-plan.html) — 주차별 상세 (v8.6) |
 | **서버가 어떻게 생겼나** | [`docs/architecture.html`](docs/architecture.html) — 5개 층 해부도 |
 | **지금 어디까지 됐나** | [`docs/server-readiness-report.md`](docs/server-readiness-report.md) |
 | **첫 수업은 어떻게 굴리나** | [`docs/day1-runbook.md`](docs/day1-runbook.md) — 분 단위 시간표·사고 대응 |
@@ -73,7 +74,7 @@ decks/       주차별 발표자료 — 원고(.md)를 쓰면 자립 HTML 한 �
 docs/        구조 해부도 · 운영 매뉴얼 · 검증 원칙
 scripts/     서버 운영 — 계정·포트·스킬·위키·백업 (민감 값은 자리표시자)
 materials/   학생 배포물 — 스킬 3종 · 규칙 문서 · 치트시트
-web/         강사 관제탑 · 랜딩 페이지 · Gitea 테마
+web/         강사 관제탑 · 랜딩 페이지 · Gitea 테마 · 브랜드 에셋(AITF·JR 로고)
 classlog/    수업 기록 (주차별)
 ```
 
@@ -132,3 +133,13 @@ git config core.hooksPath .githooks   # 민감정보 커밋 차단 훅
 
 무엇을 올리지 않는지는 [`SECURITY.md`](SECURITY.md)에 있습니다 —
 실제 IP·키·학생 개인정보는 서버에만 두고 저장소에는 자리표시자만 둡니다.
+
+---
+
+<div align="center">
+
+<sub>함께하는</sub>
+
+<img src="web/brand/aitf/aitf-lockup-240.svg" alt="AITF" height="34">&nbsp;&nbsp;&nbsp;<img src="web/brand/jr/jr-lockup-240.png" alt="JR 코딩영재원" height="34">
+
+</div>
