@@ -7,113 +7,148 @@
 <meta name="robots" content="noindex, nofollow">
 <style>
 __FONT__
+/* ── Mobbin 분석 기반 갤러리-화이트 모노크롬 (DESIGNmobbin.md) ──
+   잉크 #141414 on 캔버스 #fff · 그림자 없음(틴트 사다리 + 헤어라인) ·
+   상호작용 요소는 전부 스타디움 필 · 파랑 #0066ff 은 진행 배지 한 곳만 */
 :root{
-  --canvas:#0a0a0a; --soft:#1a1c20; --card:#141414; --line:#212327; --line2:#2e3237;
-  --ink:#fff; --body:#dadbdf; --mute:#7d8187; --c1:#ff7a17;
-  --pill:9999px; --r:8px;
-  --sans:Paperlogy,Inter,system-ui,-apple-system,sans-serif;
+  --ink:#141414; --ink-soft:#262626; --muted:#707070; --faint:#adadad;
+  --canvas:#ffffff; --canvas-soft:#f3f3f3; --field:#f0f0f0;
+  --hair-soft:#f0f0f0; --hair:#e0e0e0; --accent:#0066ff; --on-ink:#ffffff;
+  --r-sm:16px; --r-md:24px; --pill:9999px;
+  --sans:Inter,Paperlogy,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--canvas);color:var(--body);font:400 16px/1.6 var(--sans);
-  min-height:100vh;display:flex;flex-direction:column}
+body{background:var(--canvas);color:var(--ink);
+  font:450 16px/1.38 var(--sans);min-height:100vh;display:flex;flex-direction:column}
 .num{font-variant-numeric:tabular-nums}
-.wrap{width:100%;max-width:960px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
-.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.wrap{width:100%;max-width:980px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
 
-/* 히어로 */
-header{padding:clamp(56px,11vh,110px) 0 0}
-h1{font-size:clamp(44px,9vw,76px);line-height:1;letter-spacing:-.04em;font-weight:400;
-  color:var(--ink);margin:18px 0 0}
-h1 .sub{display:block;font-size:clamp(15px,2.4vw,19px);letter-spacing:-.01em;
-  color:var(--mute);margin-top:18px;line-height:1.55;max-width:34em}
+/* ── 플로팅 내비 필 ── */
+nav{position:sticky;top:16px;z-index:10;display:flex;justify-content:center;
+  padding:0 16px;margin-top:16px}
+.nav-pill{display:flex;align-items:center;gap:4px;background:var(--canvas-soft);
+  border-radius:var(--pill);padding:8px 8px 8px 20px;max-width:100%}
+.nav-pill .brand{font-weight:650;font-size:15px;margin-right:10px;white-space:nowrap}
+.nav-pill a{font-weight:600;font-size:14px;text-decoration:none;color:var(--ink);
+  padding:8px 14px;border-radius:var(--pill);white-space:nowrap}
+.nav-pill a:hover{background:var(--field)}
+.nav-pill a.cta{background:var(--ink);color:var(--on-ink)}
+.nav-pill a.cta:hover{background:var(--ink-soft)}
+@media(max-width:560px){.nav-pill a.hide-sm{display:none}}
 
-/* 진행 막대 */
-.progress{margin:44px 0 0}
-.seg{display:flex;gap:3px}
-.seg i{flex:1;height:5px;border-radius:3px;background:var(--soft)}
-.seg i.f{background:var(--ink)} .seg i.now{background:var(--c1)}
-.pmeta{display:flex;justify-content:space-between;align-items:baseline;gap:16px;
-  margin-top:12px;font-size:13px;color:var(--mute)}
-.pmeta b{font-weight:400;color:var(--ink)}
+/* ── 히어로 ── */
+header{padding:clamp(56px,10vh,104px) 0 0;text-align:center}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--muted)}
+h1{font-size:clamp(52px,9vw,80px);line-height:1;font-weight:650;
+  letter-spacing:0;margin:16px 0 0}
+.lead{font-size:clamp(17px,2.4vw,20px);font-weight:300;line-height:1.38;
+  color:var(--ink-soft);max-width:34em;margin:20px auto 0}
 
-/* 지표 */
-.facts{display:grid;gap:1px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  background:var(--line);border:1px solid var(--line);border-radius:var(--r);
-  overflow:hidden;margin:44px 0 0}
-.fact{background:var(--canvas);padding:20px 22px}
-.fact .k{font-size:27px;line-height:1.15;letter-spacing:-.02em;color:var(--ink)}
-.fact .d{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:7px}
+/* ── 진행 상태 ── */
+.progress{max-width:640px;margin:44px auto 0}
+.seg{display:flex;gap:4px}
+.seg i{flex:1;height:6px;border-radius:var(--pill);background:var(--field)}
+.seg i.f{background:var(--ink)}
+.seg i.next{background:var(--accent)}
+.pmeta{display:flex;justify-content:center;align-items:center;gap:10px;
+  margin-top:14px;font-size:14px;color:var(--muted);flex-wrap:wrap}
+.badge{display:inline-block;background:var(--accent);color:var(--on-ink);
+  font-size:12px;font-weight:600;line-height:1.33;padding:4px 12px;
+  border-radius:var(--pill);white-space:nowrap}
 
-/* 링크 그룹 */
-section{margin:52px 0 0}
+/* ── 지표 ── */
+.facts{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  margin:56px 0 0}
+.fact{background:var(--canvas);border:1px solid var(--hair-soft);
+  border-radius:var(--r-md);padding:22px 24px;text-align:left}
+.fact .k{font-size:28px;line-height:1.13;font-weight:650}
+.fact .d{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.43}
+
+/* ── 링크 그룹 ── */
+section{margin:80px 0 0}
 .gtitle{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
-.gtitle .note{font-size:12px;color:var(--mute)}
-.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-a.tile{display:block;background:var(--card);border:1px solid var(--line);
-  border-radius:var(--r);padding:17px 20px;color:var(--ink);text-decoration:none;
+.gtitle h2{font-size:20px;font-weight:650;line-height:1.25}
+.gtitle .note{font-size:13px;color:var(--faint)}
+.tiles{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+a.tile{display:block;background:var(--canvas);border:1px solid var(--hair-soft);
+  border-radius:var(--r-md);padding:20px 22px;text-decoration:none;
   transition:border-color .15s}
-a.tile:hover,a.tile:focus-visible{border-color:var(--ink);outline:none}
-a.tile b{display:block;font-weight:400;font-size:15px}
-a.tile small{display:block;color:var(--mute);font-size:12px;margin-top:4px}
+a.tile:hover{border-color:var(--ink)}
+a.tile b{display:block;font-weight:650;font-size:16px;line-height:1.25}
+a.tile small{display:block;color:var(--muted);font-size:13px;margin-top:5px;line-height:1.43}
+a.tile.soft{background:var(--canvas-soft);border-color:transparent}
 
-/* 주차 목록 */
-.weeks{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);
-  border-radius:var(--r);overflow:hidden}
-.wk{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;
-  background:var(--canvas);padding:12px 20px;font-size:14px}
-.wk.done{color:var(--mute)}
-.wk.now{background:#121212}
-.wk .n{font-size:12px;color:var(--mute);letter-spacing:.06em}
-.wk.now .n{color:var(--c1)}
-.wk .t{color:var(--body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.wk.now .t{color:var(--ink)}
-.wk .g{font-size:12px;color:var(--mute);text-align:right;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:38vw}
+/* ── 12주 흐름 ── */
+.weeks{border:1px solid var(--hair-soft);border-radius:var(--r-md);overflow:hidden}
+.wk{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;
+  padding:13px 22px;font-size:14px;border-top:1px solid var(--canvas-soft)}
+.wk:first-child{border-top:0}
+.wk .n{font-size:12px;font-weight:600;color:var(--faint)}
+.wk .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:450}
+.wk .g{font-size:13px;color:var(--muted);text-align:right;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:36vw}
+.wk.done .t,.wk.done .g{color:var(--faint)}
+.wk.now{background:var(--canvas-soft)}
+.wk.now .n{color:var(--accent)}
+.wk.now .t{font-weight:650}
 @media(max-width:640px){.wk{grid-template-columns:44px 1fr}.wk .g{display:none}}
 
-footer{margin-top:auto;padding:56px 0 40px;color:var(--mute);font-size:12px}
-footer .line{border-top:1px solid var(--line);padding-top:18px;
-  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+/* ── 잉크 푸터 ── */
+footer{margin-top:120px;background:var(--ink);color:var(--on-ink);
+  border-radius:var(--r-md) var(--r-md) 0 0;padding:56px 0 44px}
+footer .fwrap{max-width:980px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+footer .wordmark{font-size:clamp(36px,6vw,56px);font-weight:650;line-height:1}
+footer .tag{color:var(--faint);font-size:14px;font-weight:300;margin-top:12px}
+footer .line{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:40px;font-size:12px;color:var(--faint)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 
+<nav aria-label="주요 링크">
+  <div class="nav-pill">
+    <span class="brand">AITF</span>
+    <a href="/slides/" target="_blank" rel="noopener">발표자료</a>
+    <a class="hide-sm" href="/git/" target="_blank" rel="noopener">Gitea</a>
+    <a class="cta" href="/hub/" target="_blank" rel="noopener">관제탑</a>
+  </div>
+</nav>
+
 <header class="wrap">
   <div class="eyebrow">AITF · AI Task Force</div>
-  <h1>AI 특강
-    <span class="sub">터미널에서 AI 에이전트에게 일을 시키고, 결과를 검증하고,
-      기록으로 남기는 12주. 실무 개발자가 매일 쓰는 환경을 그대로 씁니다.</span>
-  </h1>
+  <h1>AI 특강.</h1>
+  <p class="lead">터미널에서 AI 에이전트에게 일을 시키고, 결과를 검증하고,
+    기록으로 남기는 12주예요. 실무 개발자가 매일 쓰는 환경을 그대로 씁니다.</p>
 
   <div class="progress">
-    <div class="seg" id="seg"></div>
-    <div class="pmeta">
-      <span id="pnow">불러오는 중</span>
-      <span id="pstart"></span>
-    </div>
+    <div class="seg" id="seg" role="img" aria-label="12주 진행 상황"></div>
+    <div class="pmeta"><span id="pbadge"></span><span id="pnow">불러오는 중</span></div>
   </div>
 
   <div class="facts">
-    <div class="fact"><div class="k num">12</div><div class="d">주 과정</div></div>
-    <div class="fact"><div class="k num">2</div><div class="d">시간 / 주</div></div>
-    <div class="fact"><div class="k">일요일</div><div class="d">중등 14시 · 고등 16시</div></div>
-    <div class="fact"><div class="k num">1</div><div class="d">준비물 — 구글 계정</div></div>
+    <div class="fact"><div class="k num">12주</div><div class="d">일요일마다 2시간</div></div>
+    <div class="fact"><div class="k">Class 1</div><div class="d">일요일 13:30 – 15:30</div></div>
+    <div class="fact"><div class="k">Class 2</div><div class="d">일요일 16:00 – 18:00</div></div>
+    <div class="fact"><div class="k num">1개</div><div class="d">준비물 — 구글 계정</div></div>
   </div>
 </header>
 
 <main class="wrap">
   <section>
-    <div class="gtitle"><span class="eyebrow">학생용</span>
-      <span class="note">수업에서 안내받은 주소로 들어가세요</span></div>
+    <div class="gtitle"><h2>학생용.</h2>
+      <span class="note">수업에서 안내받은 계정으로 들어가요</span></div>
     <div class="tiles">
+      <a class="tile soft" href="/slides/" target="_blank" rel="noopener"><b>발표자료 모음</b><small>매주 수업 슬라이드 — 공개 페이지라 학부모님도 볼 수 있어요</small></a>
       <a class="tile" href="/git/" target="_blank" rel="noopener"><b>Gitea</b><small>내 저장소 · 우리 반 위키</small></a>
       <a class="tile" href="/git/explore/repos" target="_blank" rel="noopener"><b>둘러보기</b><small>공개된 저장소</small></a>
     </div>
   </section>
 
   <section>
-    <div class="gtitle"><span class="eyebrow">강사용</span></div>
+    <div class="gtitle"><h2>강사용.</h2></div>
     <div class="tiles">
       <a class="tile" href="/hub/" target="_blank" rel="noopener"><b>관제탑</b><small>운영 현황 · 주차별 준비</small></a>
       <a class="tile" href="/git/-/admin" target="_blank" rel="noopener"><b>Gitea 관리자</b><small>계정 · 저장소</small></a>
@@ -122,59 +157,92 @@ footer .line{border-top:1px solid var(--line);padding-top:18px;
   </section>
 
   <section>
-    <div class="gtitle"><span class="eyebrow">12주 흐름</span>
+    <div class="gtitle"><h2>12주 흐름.</h2>
       <span class="note" id="curver"></span></div>
     <div class="weeks" id="weeks"></div>
   </section>
 </main>
 
-<footer class="wrap">
-  <div class="line">
-    <span>AI 특강 · 내부 운영 페이지</span>
-    <span id="ver"></span>
+<footer>
+  <div class="fwrap">
+    <div class="wordmark">AITF</div>
+    <div class="tag">AI 에이전트와 함께 만드는 12주.</div>
+    <div class="line">
+      <span>AI 특강 · 내부 운영 페이지</span>
+      <span id="ver"></span>
+    </div>
   </div>
 </footer>
 
 <script>
 "use strict";
 const COURSE_START = "__COURSE_START__";
+const CLASS_DATES = __CLASS_DATES__;   // 빌드 시 term-calendar.json 에서 주입
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = iso => { const d = new Date(iso + "T00:00:00");
+  return `${d.getMonth()+1}월 ${d.getDate()}일 (일)`; };
 
-function weekNow(){
+/* 상태 계산 — 수업일 목록 기준. 목록이 없으면 옛 방식(연속 나눗셈) 폴백.
+   반환: {done: 끝난 주 수, next: 다음 주차 번호|null, today: 오늘이 수업일인 주차|null} */
+function status(){
+  const now = new Date(); now.setHours(0,0,0,0);
+  if (Array.isArray(CLASS_DATES) && CLASS_DATES.length){
+    let done = 0, today = null, next = null, nextDate = null;
+    for (let i = 0; i < CLASS_DATES.length; i++){
+      const d = new Date(CLASS_DATES[i] + "T00:00:00");
+      if (d < now) done = i + 1;
+      else if (d.getTime() === now.getTime()) { today = i + 1; done = i + 1; }
+      else if (next === null) { next = i + 1; nextDate = CLASS_DATES[i]; }
+    }
+    return {done, today, next, nextDate, total: CLASS_DATES.length};
+  }
   if (!COURSE_START || COURSE_START.startsWith("__")) return null;
-  const d0 = new Date(COURSE_START + "T00:00:00");
-  return Math.floor((Date.now() - d0) / (7*86400e3)) + 1;
+  const wk = Math.floor((now - new Date(COURSE_START + "T00:00:00")) / (7*86400e3)) + 1;
+  return {done: Math.max(0, Math.min(12, wk - 1)), today: null,
+          next: wk >= 1 && wk <= 12 ? wk : (wk < 1 ? 1 : null),
+          nextDate: null, total: 12};
 }
 
-const wk = weekNow();
+const st = status();
 document.getElementById("seg").innerHTML =
-  Array.from({length:12}, (_,i) => {
-    const n = i+1;
-    if (wk == null) return "<i></i>";
-    return `<i class="${n<wk?"f":n===wk?"now":""}"></i>`;
+  Array.from({length: st ? st.total : 12}, (_, i) => {
+    if (!st) return "<i></i>";
+    const n = i + 1;
+    return `<i class="${n <= st.done ? "f" : n === st.next ? "next" : ""}"></i>`;
   }).join("");
 
-const pn = document.getElementById("pnow"), ps = document.getElementById("pstart");
-if (wk == null)      { pn.textContent = "개강일 준비 중"; }
-else if (wk < 1)     { pn.innerHTML = `개강 <b>${1-wk}주 전</b>`; ps.textContent = COURSE_START + " 시작"; }
-else if (wk <= 12)   { pn.innerHTML = `<b>${wk}주차</b> 진행 중`; ps.textContent = COURSE_START + " 시작"; }
-else                 { pn.textContent = "과정 종료"; ps.textContent = COURSE_START + " ~ "; }
+const pb = document.getElementById("pbadge"), pn = document.getElementById("pnow");
+if (!st) { pn.textContent = "개강일 준비 중"; }
+else if (st.today) {
+  pb.outerHTML = `<span class="badge">${st.today}주차 수업일</span>`;
+  pn.textContent = "오늘 수업이 있어요";
+} else if (st.next && st.done === 0) {
+  pb.outerHTML = `<span class="badge">개강 전</span>`;
+  pn.textContent = `첫 수업 ${st.nextDate ? fmt(st.nextDate) : COURSE_START}`;
+} else if (st.next) {
+  pb.outerHTML = `<span class="badge">다음 수업 ${st.next}주차</span>`;
+  pn.textContent = (st.nextDate ? fmt(st.nextDate) + " · " : "") + `${st.done}주차까지 진행했어요`;
+} else {
+  pn.textContent = "12주 과정을 마쳤어요";
+}
 
-// 주차 목록 — 커리큘럼에서 뽑은 공개 안전 요약
+/* 주차 목록 — 커리큘럼에서 뽑은 공개 안전 요약 */
 fetch("weeks-public.json", {cache:"no-store"})
   .then(r => r.json())
   .then(d => {
     document.getElementById("curver").textContent = d.version ? "커리큘럼 " + d.version : "";
     document.getElementById("ver").textContent = d.version || "";
     document.getElementById("weeks").innerHTML = (d.weeks||[]).map(w => {
-      const cls = wk == null ? "" : (w.week < wk ? "done" : w.week === wk ? "now" : "");
-      return `<div class="wk ${cls}"><span class="n">${w.week}주</span>` +
+      const cls = !st ? "" :
+        (st.today === w.week || st.next === w.week) ? "now" :
+        (w.week <= st.done ? "done" : "");
+      return `<div class="wk ${cls}"><span class="n num">${w.week}주</span>` +
              `<span class="t">${esc(w.title)}</span>` +
              `<span class="g">${esc(w.goal||"")}</span></div>`;
     }).join("");
   })
   .catch(() => { document.getElementById("weeks").innerHTML =
-    `<div class="wk"><span class="n">—</span><span class="t">주차 정보를 불러오지 못했습니다</span></div>`; });
+    `<div class="wk"><span class="n">—</span><span class="t">주차 정보를 불러오지 못했어요</span></div>`; });
 </script>
 </body>
 </html>
