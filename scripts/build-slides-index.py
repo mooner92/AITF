@@ -93,7 +93,48 @@ def main():
 </html>
 """
     (SLIDES / "index.html").write_text(out, encoding="utf-8")
-    print(f"index.html 생성 — {len(cards)}주차")
+    (SLIDES / "embed.html").write_text(EMBED, encoding="utf-8")
+    print(f"index.html 생성 — {len(cards)}주차 (+embed.html)")
+
+
+# Notion 임베드용 16:9 래퍼 — 노션 iframe은 높이를 우리가 못 정하므로,
+# 래퍼가 자기 폭 기준 16:9 안쪽 iframe에 덱을 담고 남는 공간은 흰색으로 둔다.
+# 덱은 설계된 비율 그대로 렌더되고(엔진 무수정), 여백이 노션 흰 바탕과 이어진다.
+EMBED = """<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자료</title>
+<style>
+  body{margin:0;background:#ffffff;font:13px/1.5 "Apple SD Gothic Neo",sans-serif}
+  .frame{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000;border-radius:8px}
+  .bar{display:flex;justify-content:flex-end;padding:6px 2px}
+  .bar a{color:#707070;text-decoration:none}
+  .bar a:hover{color:#141414}
+  .err{color:#707070;padding:24px;text-align:center}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function(){
+  var src = new URLSearchParams(location.search).get("src") || "";
+  var root = document.getElementById("root");
+  // 같은 폴더 구조(wNN/파일.html)만 허용 — 외부 URL 임베드 통로가 되지 않게
+  if (!/^w\\d{2}\\/[A-Za-z0-9._-]+\\.html$/.test(src)) {
+    root.innerHTML = '<p class="err">잘못된 주소예요.</p>';
+    return;
+  }
+  var full = "./" + src;
+  root.innerHTML =
+    '<iframe class="frame" src="' + full + '" allowfullscreen></iframe>' +
+    '<div class="bar"><a href="' + full + '" target="_blank" rel="noopener">전체 화면으로 보기 ↗</a></div>';
+})();
+</script>
+</body>
+</html>
+"""
 
 
 if __name__ == "__main__":
