@@ -60,13 +60,18 @@ def main():
 <style>
   /* Mobbin 라이트 — 랜딩(web/landing)과 같은 토큰 (2026-08-31 라이트 전환) */
   :root{{--bg:#ffffff;--card:#ffffff;--soft:#f3f3f3;--line:#e0e0e0;--line-soft:#f0f0f0;
-    --ink:#141414;--mute:#707070;--accent:#0066ff}}
+    --ink:#141414;--mute:#707070;--accent:#0075ff}}
   *{{margin:0;padding:0;box-sizing:border-box}}
   body{{background:var(--bg);color:var(--ink);
     font:400 16px/1.6 "Apple SD Gothic Neo","Malgun Gothic",-apple-system,sans-serif;
     padding:clamp(24px,6vw,72px) 20px}}
   main{{max-width:680px;margin:0 auto}}
-  h1{{font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.02em;margin-bottom:6px}}
+  h1{{font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.02em;margin-bottom:6px;
+    display:flex;align-items:center;gap:12px}}
+  h1 .mark{{display:block}}
+  .brandfoot{{display:flex;align-items:center;gap:20px;margin-top:18px}}
+  .brandfoot img{{display:block;height:28px;width:auto}}
+  .brandfoot .sep{{width:1px;height:22px;background:var(--line)}}
   .lede{{color:var(--mute);margin-bottom:40px;font-size:15px}}
   article{{background:var(--card);border:1px solid var(--line-soft);border-radius:24px;
     padding:22px 24px;margin-bottom:14px}}
@@ -85,10 +90,16 @@ def main():
 </head>
 <body>
 <main>
-  <h1>AITF 발표자료</h1>
+  <h1><img class="mark" src="brand/aitf-mark-64.svg" alt="" width="34" height="34">AITF 발표자료</h1>
   <p class="lede">매주 수업에서 쓴 슬라이드를 모아두는 곳이에요. 슬라이드는 ← → 키로 넘겨요.</p>
   {body}
-  <footer>AITF · AI 코딩 특강 — 매주 수업 후 업데이트됩니다</footer>
+  <footer>AITF · AI 코딩 특강 — 매주 수업 후 업데이트됩니다
+    <div class="brandfoot">
+      <img src="brand/aitf-lockup-240.svg" alt="AITF">
+      <span class="sep" aria-hidden="true"></span>
+      <img src="brand/jr-lockup-240.png" alt="JR 아카데미">
+    </div>
+  </footer>
 </main>
 </body>
 </html>

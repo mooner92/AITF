@@ -5,7 +5,7 @@
  * 등록: app.ini [ui] THEMES 에 aitf 포함, DEFAULT_THEME = aitf
  *
  * 갤러리-화이트 캔버스(#ffffff) + 잉크(#141414), 위계는 틴트 사다리
- * (#f3f3f3 / #f0f0f0 / #e0e0e0)로만. 그림자 금지. 파랑 #0066ff 은
+ * (#f3f3f3 / #f0f0f0 / #e0e0e0)로만. 그림자 금지. 파랑 #0075ff 은
  * 링크·주요 동작 한 곳에만 쓴다.
  */
 :root {
@@ -81,12 +81,12 @@
   --color-orange-dark-1: #c25909;
   --color-yellow: #d9640a;
   --color-gold: #d9640a;
-  --color-green: #0066ff;              /* Gitea 초록 자리를 액센트 블루로 */
+  --color-green: #0075ff;              /* Gitea 초록 자리를 액센트 블루로 */
   --color-green-light: #3385ff;
   --color-green-dark-1: #0052cc;
   --color-green-dark-2: #0047b3;
-  --color-teal: #0066ff;
-  --color-blue: #0066ff;
+  --color-teal: #0075ff;
+  --color-blue: #0075ff;
   --color-blue-light: #3385ff;
   --color-blue-dark-1: #0052cc;
   --color-violet: #7c3aed;

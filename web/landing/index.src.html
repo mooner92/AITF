@@ -9,11 +9,11 @@
 __FONT__
 /* ── Mobbin 분석 기반 갤러리-화이트 모노크롬 (DESIGNmobbin.md) ──
    잉크 #141414 on 캔버스 #fff · 그림자 없음(틴트 사다리 + 헤어라인) ·
-   상호작용 요소는 전부 스타디움 필 · 파랑 #0066ff 은 진행 배지 한 곳만 */
+   상호작용 요소는 전부 스타디움 필 · 파랑 #0075ff(AITF 브랜드 블루) 은 진행 배지 한 곳만 */
 :root{
   --ink:#141414; --ink-soft:#262626; --muted:#707070; --faint:#adadad;
   --canvas:#ffffff; --canvas-soft:#f3f3f3; --field:#f0f0f0;
-  --hair-soft:#f0f0f0; --hair:#e0e0e0; --accent:#0066ff; --on-ink:#ffffff;
+  --hair-soft:#f0f0f0; --hair:#e0e0e0; --accent:#0075ff; --on-ink:#ffffff;
   --r-sm:16px; --r-md:24px; --pill:9999px;
   --sans:Inter,Paperlogy,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
 }
@@ -101,6 +101,12 @@ footer{margin-top:120px;background:var(--ink);color:var(--on-ink);
 footer .fwrap{max-width:980px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
 footer .wordmark{font-size:clamp(36px,6vw,56px);font-weight:650;line-height:1}
 footer .tag{color:var(--faint);font-size:14px;font-weight:300;margin-top:12px}
+.brand{display:inline-flex;align-items:center;gap:8px}
+.brand .mark{display:block}
+footer .logos{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:36px}
+footer .logos img{display:block;height:34px;width:auto}
+footer .logos .sep{width:1px;height:28px;background:rgba(255,255,255,.18)}
+footer .with{color:var(--faint);font-size:12px;letter-spacing:.04em;margin-bottom:10px}
 footer .line{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   margin-top:40px;font-size:12px;color:var(--faint)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -110,7 +116,7 @@ footer .line{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
 <nav aria-label="주요 링크">
   <div class="nav-pill">
-    <span class="brand">AITF</span>
+    <span class="brand"><img class="mark" src="/slides/brand/aitf-mark-32.svg" alt="" width="20" height="20">AITF</span>
     <a href="/slides/" target="_blank" rel="noopener">발표자료</a>
     <a class="hide-sm" href="/git/" target="_blank" rel="noopener">Gitea</a>
     <a class="cta" href="/hub/" target="_blank" rel="noopener">관제탑</a>
@@ -167,6 +173,12 @@ footer .line{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   <div class="fwrap">
     <div class="wordmark">AITF</div>
     <div class="tag">AI 에이전트와 함께 만드는 12주.</div>
+    <div class="with">함께하는</div>
+    <div class="logos">
+      <img src="/slides/brand/aitf-lockup-240-dark.svg" alt="AITF">
+      <span class="sep" aria-hidden="true"></span>
+      <img src="/slides/brand/jr-lockup-240-dark.png" alt="JR 아카데미">
+    </div>
     <div class="line">
       <span>AI 특강 · 내부 운영 페이지</span>
       <span id="ver"></span>
