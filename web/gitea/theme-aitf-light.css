@@ -1,0 +1,161 @@
+/* AITF 테마 — Gitea 를 랜딩·관제탑과 같은 라이트 디자인 언어로
+ * (Mobbin 분석 기반, web/hub/DESIGN.md 2026-08-31 라이트 전환 항목)
+ *
+ * 배치: /var/lib/gitea/custom/public/assets/css/theme-aitf.css
+ * 등록: app.ini [ui] THEMES 에 aitf 포함, DEFAULT_THEME = aitf
+ *
+ * 갤러리-화이트 캔버스(#ffffff) + 잉크(#141414), 위계는 틴트 사다리
+ * (#f3f3f3 / #f0f0f0 / #e0e0e0)로만. 그림자 금지. 파랑 #0066ff 은
+ * 링크·주요 동작 한 곳에만 쓴다.
+ */
+:root {
+  --is-dark-theme: false;
+
+  /* ── 캔버스 ── */
+  --color-body: #ffffff;
+  --color-box-body: #ffffff;
+  --color-box-body-highlight: #f3f3f3;
+  --color-box-header: #f3f3f3;
+  --color-navbar: #ffffff;
+  --color-header-wrapper: #ffffff;
+  --color-footer: #ffffff;
+  --color-menu: #ffffff;
+  --color-card: #ffffff;
+  --color-markup-code-block: #f3f3f3;
+  --color-code-bg: #f3f3f3;
+  --color-shadow: transparent;          /* 그림자 금지 */
+  --color-secondary-bg: #f3f3f3;
+
+  /* ── 경계선 — hairline 사다리 ── */
+  --color-secondary: #e0e0e0;
+  --color-secondary-dark-1: #d0d0d0;
+  --color-secondary-dark-2: #c0c0c0;
+  --color-secondary-light-1: #f0f0f0;
+  --color-light-border: #e0e0e0;
+  --color-input-border: #d0d0d0;
+  --color-input-border-hover: #141414;
+
+  /* ── 글자 ── */
+  --color-text: #262626;
+  --color-text-dark: #141414;
+  --color-text-light: #4a4a4a;
+  --color-text-light-1: #5c5c5c;
+  --color-text-light-2: #707070;
+  --color-text-light-3: #8a8a8a;
+  --color-input-text: #141414;
+  --color-input-background: #f0f0f0;
+  --color-placeholder-text: #adadad;
+
+  /* ── 링크·주요 동작: 잉크 필 + 파랑 링크 ── */
+  --color-primary: #141414;
+  --color-primary-contrast: #ffffff;
+  --color-primary-dark-1: #262626;
+  --color-primary-dark-2: #333333;
+  --color-primary-dark-3: #404040;
+  --color-primary-dark-4: #4d4d4d;
+  --color-primary-light-1: #262626;
+  --color-primary-light-2: #333333;
+  --color-primary-light-3: #e0e0e0;
+  --color-primary-light-4: #f0f0f0;
+  --color-primary-light-5: #f3f3f3;
+  --color-primary-light-6: #f7f7f7;
+  --color-primary-light-7: #fafafa;
+  --color-primary-alpha-20: rgba(20,20,20,.08);
+  --color-primary-alpha-30: rgba(20,20,20,.12);
+  --color-primary-alpha-40: rgba(20,20,20,.16);
+  --color-primary-alpha-50: rgba(20,20,20,.22);
+  --color-primary-alpha-60: rgba(20,20,20,.28);
+  --color-primary-alpha-70: rgba(20,20,20,.34);
+  --color-primary-alpha-80: rgba(20,20,20,.42);
+  --color-primary-alpha-90: rgba(20,20,20,.55);
+  --color-primary-hover: #262626;
+  --color-primary-active: #333333;
+
+  /* ── 시맨틱: 상태에만 색 (흰 바탕 가독 보정값) ── */
+  --color-red: #d93025;
+  --color-red-light: #e0554b;
+  --color-red-dark-1: #c22a20;
+  --color-red-dark-2: #a8241c;
+  --color-orange: #d9640a;
+  --color-orange-light: #e07f33;
+  --color-orange-dark-1: #c25909;
+  --color-yellow: #d9640a;
+  --color-gold: #d9640a;
+  --color-green: #0066ff;              /* Gitea 초록 자리를 액센트 블루로 */
+  --color-green-light: #3385ff;
+  --color-green-dark-1: #0052cc;
+  --color-green-dark-2: #0047b3;
+  --color-teal: #0066ff;
+  --color-blue: #0066ff;
+  --color-blue-light: #3385ff;
+  --color-blue-dark-1: #0052cc;
+  --color-violet: #7c3aed;
+  --color-purple: #7c3aed;
+  --color-pink: #7c3aed;
+  --color-brown: #707070;
+  --color-black: #141414;
+
+  /* 상태 배지 */
+  --color-success-bg: #eef4ff;
+  --color-success-border: #c7dbff;
+  --color-success-text: #0052cc;
+  --color-warning-bg: #fdf3ea;
+  --color-warning-border: #f0d4b8;
+  --color-warning-text: #c25909;
+  --color-error-bg: #fceceb;
+  --color-error-border: #f2c4c0;
+  --color-error-text: #c22a20;
+  --color-info-bg: #f3f3f3;
+  --color-info-border: #e0e0e0;
+  --color-info-text: #262626;
+
+  /* git 그래프·diff — 라이트 관례색 */
+  --color-diff-added-row-bg: #e6ffec;
+  --color-diff-added-word-bg: #abf2bc;
+  --color-diff-removed-row-bg: #ffebe9;
+  --color-diff-removed-word-bg: #ffc0bc;
+
+  /* ── 글꼴: 관제탑과 같은 Paperlogy ── */
+  --fonts-proportional: Paperlogy, Inter, system-ui, -apple-system, sans-serif;
+  --fonts-monospace: ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+}
+
+/* 한글 글꼴 — 관제탑과 동일 (자산 경로는 배치 스크립트가 넣는다) */
+@font-face {
+  font-family: Paperlogy;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/git/assets/css/aitf-paperlogy.woff2") format("woff2");
+}
+
+/* 그림자 제거 — hairline 이 고도를 맡는다 (DESIGN.md) */
+.ui.card, .ui.segment, .ui.menu, .ui.modal, .ui.dropdown .menu, .ui.popup,
+.repository .ui.attached.segment, .ui.attached.header {
+  box-shadow: none !important;
+}
+
+/* 버튼: 필(스타디움) */
+.ui.button {
+  border-radius: 9999px;
+  font-weight: 400;
+}
+.ui.basic.button, .ui.basic.buttons .button {
+  box-shadow: inset 0 0 0 1px var(--color-secondary) !important;
+}
+.ui.primary.button {
+  background: #141414;
+  color: #ffffff;
+  border-radius: 9999px;
+}
+.ui.primary.button:hover { background: #262626; color: #ffffff; }
+
+/* 카드·박스 반경 통일 */
+.ui.card, .ui.segment, .ui.attached.segment, .repository .ui.segment { border-radius: 8px; }
+
+/* 상단 네비 — 캔버스에 hairline 하단선 */
+#navbar, .ui.top.menu {
+  background: var(--color-navbar) !important;
+  border-bottom: 1px solid var(--color-secondary-light-1) !important;
+  box-shadow: none !important;
+}
