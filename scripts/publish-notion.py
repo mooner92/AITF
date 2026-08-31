@@ -36,10 +36,13 @@ API = "https://api.notion.com/v1"
 NOTION_VERSION = "2022-06-28"   # 구버전이지만 안정 지원 — 2025-09 data source 개편과 무관하게 동작
 TERM = os.environ.get("TERM_NAME", "2026-fall")
 CLASS_LABEL = {"class1": "Class 1", "class2": "Class 2"}
-# 주차 페이지 아이콘 — 반 select 색(보라/파랑)과 맞춘다. 로고가 생기면
-# {"type":"external","external":{"url":"https://aitf.excusa.uk/slides/brand/…png"}}
-# 형태의 커스텀 이미지 아이콘으로 교체 가능.
-CLASS_ICON = {"class1": "🟣", "class2": "🔵"}
+# 주차 페이지 아이콘 — AITF 브랜드 마크 (공개 호스팅 PNG).
+# 반 구분은 select 태그 색(보라/파랑)이 담당한다.
+BRAND_MARK = "https://aitf.excusa.uk/slides/brand/aitf-mark-512.png"
+CLASS_ICON = {
+    "class1": {"type": "external", "external": {"url": BRAND_MARK}},
+    "class2": {"type": "external", "external": {"url": BRAND_MARK}},
+}
 
 
 def load_env():
@@ -363,7 +366,7 @@ def upsert(cfg, dbid, cls, data, dry, cls_dir=None):
         ]}})
     hits = q.get("results", [])
 
-    icon = {"type": "emoji", "emoji": CLASS_ICON.get(cls, "📝")}
+    icon = CLASS_ICON.get(cls, {"type": "emoji", "emoji": "📝"})
     if hits:
         page = hits[0]["id"]
         page_url = hits[0].get("url", "")
