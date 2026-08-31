@@ -1,206 +1,758 @@
-<!-- DRAFT: 1주차 수업 후 학생 수준을 보고 조정한다. 확정 전까지 인쇄·배포하지 않는다. -->
 <!-- class: cover -->
 ^ 2주차
-# Codex는 <em>챗봇이 아니에요</em>
+# 오늘, <em>바퀴</em>가 사라져요
 
-같은 질문을 웹 챗봇과 터미널에 던져보고, 뭐가 다른지 직접 봅니다.
+지난주에 돌린 그 바퀴 — 복사, 저장, 새로고침 — 를 대신 돌려주는 도구를 만나요.
 
-- 오늘 만드는 것: 우리 반 모델 가이드
-- 오늘부터 위키가 열려요
-
-??? 시작 전 확인: ChatGPT 웹 계정 로그인 상태, /compare 봇 가동, 모델 실측 자료 준비, 위키 초기 구조.
-
-??? 여기서 2분. 지난주 프로필 카드를 한 번 띄워주고 시작하면 온도가 올라간다.
+??? 시작 전 확인: 학생 서버 계정 로그인 가능(faillock 주의), codex 동작 확인(강사 계정에서 1회 실행), 발표자료 모음 페이지 열어두기, 예시 주제 자료 2종 준비, Class 1용 Gitea 5단계 표. 여기서 2분.
 
 ---
-## 지난주에 <b>이걸 만들었어요</b>
+## 지난주에 <b>이걸 했어요</b>
 
 <div class="flow">
-<span>터미널 접속</span><i>→</i>
-<span>tmux 3키</span><i>→</i>
-<span class="hi">내 프로필 카드</span>
+<span>프로필 카드</span><i>→</i>
+<span>서버 접속</span><i>→</i>
+<span>명령어 여섯 개</span><i>→</i>
+<span class="hi">저장소에 올리기</span>
 </div>
 
 ^^^
-> AI가 인터넷에서 나를 찾아왔죠. 그런데 검색 없이 물었을 때는 엉뚱한 소리를 했고요.
+> 마지막 칸은 오늘 전원이 채워요 — 지난주에 못 올린 사람도 오늘 같이 올려요.
 
-??? 여기서 3분. 지난주 할루시네이션 시연을 상기시킨다. "왜 그랬을까"는 오늘 답이 나온다고만 예고.
-
----
-<!-- class: chapter g-violet -->
-^ 첫 번째
-# 같은 걸 시켜보면 <em>다르게 움직여요</em>
-
-??? 여기서 30분 블록의 시작. 학생 각자 노트북에서 따라 하게 한다.
+??? 여기서 3분. Class 1은 마지막 칸이 아직 비어 있다는 걸 자연스럽게 말한다("오늘 같이 채워요"). 지난주 결석생도 이 장에서 흐름을 잡는다.
 
 ---
-## 같은 요청을 <b>두 곳에</b> 던져봐요
-
-> "숫자 맞히기 게임을 만들어줘"
-
-<div class="grid c2">
-<div class="card"><div class="k">ChatGPT 웹</div><div class="v">코드를 보여줘요</div><p>복사 → 붙여넣기 → 저장은 내 몫</p></div>
-<div class="card strong"><div class="k">Codex CLI</div><div class="v">파일을 만들어요</div><p>이미 저장돼 있어요</p></div>
-</div>
-
-??? 여기서 10분. 학생이 직접 두 곳에 같은 문장을 넣게 한다. 강사가 먼저 하지 말고, 학생 화면에서 차이가 나타나게 두는 게 중요하다.
-
----
-## 차이는 <b>세 가지예요</b>
-
-<div class="grid c3">
-<div class="card"><div class="k">결과</div><div class="v">코드 vs 파일</div></div>
-<div class="card"><div class="k">다음 할 일</div><div class="v">복사 vs 없음</div></div>
-<div class="card strong"><div class="k">내 파일</div><div class="v">모름 vs 읽고 써요</div></div>
-</div>
+## 기록이 <b>쌓이고 있어요</b>
 
 ^^^
-> 챗봇은 **말해주는 상대**고, Codex는 **일하는 도구**예요.
+- 노션 **수업 기록** 페이지에 매주 일요일 저녁, 그 주 정리가 자동으로 올라와요
+- Slack에서 `/thisweek` 를 치면 이번 주 정리 링크가 나에게만 와요
 
-??? 여기서 10분. 세 번째가 핵심이다 — "내 폴더를 안다"는 것. ls 로 실제 파일이 생긴 걸 확인시킨다.
+^^^
+> 오늘 수업도 저녁이면 자동으로 정리돼 있을 거예요. 누가 정리하는지는 나중에 알려드릴게요.
+
+??? 여기서 3분. 프로젝터로 노션 1주차 페이지를 30초만 보여준다. "누가 정리하냐"는 7주차 위키 공개의 떡밥 — 답하지 않는다.
 
 ---
-## 그래서 <b>이런 게 가능해요</b>
+<!-- class: g-orange -->
+## 그 바퀴, <b>기억나요?</b>
 
-```
-내 프로필 카드에 색을 넣어줘
-```
+<figure class="media" style="border:none;background:none">
+<svg viewBox="0 0 640 400" role="img" aria-label="바꿔달라고 할 때마다 사람이 복사하고 저장하고 새로고침하는 바퀴를 돌렸다"
+     style="width:100%;max-height:42vmin;color:#fcfdff">
+  <defs>
+    <marker id="w2arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff801f"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="#ff801f" stroke-width="2.5">
+    <path class="march" pathLength="1" marker-end="url(#w2arw)" d="M 155,150 A 168,168 0 0,1 262,44"/>
+    <path class="march" pathLength="1" marker-end="url(#w2arw)" d="M 378,44 A 168,168 0 0,1 485,150"/>
+    <path class="march" pathLength="1" marker-end="url(#w2arw)" d="M 485,250 A 168,168 0 0,1 378,356"/>
+    <path class="march" pathLength="1" marker-end="url(#w2arw)" d="M 262,356 A 168,168 0 0,1 155,250"/>
+  </g>
+  <g font-size="19" fill="currentColor" text-anchor="middle" font-family="inherit">
+    <text class="pop" x="150" y="207">"바꿔줘"</text>
+    <text class="pop" style="--d:.15s" x="320" y="40">코드 다시 받기</text>
+    <text class="pop" style="--d:.3s" x="492" y="207">다운로드</text>
+    <text class="pop" style="--d:.45s" x="320" y="382">새로고침</text>
+  </g>
+  <g class="pop" style="--d:.7s" font-family="inherit" text-anchor="middle">
+    <text x="320" y="192" font-size="18" fill="#ff801f">한 번 고칠 때마다</text>
+    <text x="320" y="218" font-size="18" fill="#ff801f">사람이 세 칸을 돌았어요</text>
+  </g>
+</svg>
+<figcaption>지난주, 색 하나 바꾸는 데 우리가 한 일이에요</figcaption>
+</figure>
+
+??? 여기서 2분. 지난주 마지막 그림 재등장 — "이거 계속 해야 돼요?"라는 질문이 있었다면 그 학생을 호명해 공을 돌린다.
+
+---
+## 오늘 만나는 도구는 <b>이 바퀴를 자기가 돌려요</b>
 
 ^^^
-챗봇이라면? **어느 파일인지 모르니까** 처음부터 다시 만들어야 해요.
+> 이름은 **Codex**예요. 앞으로 10주 동안 우리 옆에 있을 도구예요.
 
-^^^
-> 지난주에 만든 걸 이어서 고칠 수 있다는 것 — 이게 12주 내내 쌓이는 이유예요.
-
-??? 여기서 10분. 실제로 지난주 프로필 카드를 고쳐보게 한다. 이 실습이 "누적"을 몸으로 알게 하는 자리다.
+??? 한 문장 슬라이드. 여기서 1분 — 이름을 처음 말하는 순간이라 또박또박.
 
 ---
 <!-- class: chapter g-orange -->
-^ 두 번째
-# 어느 <em>AI</em>를 쓸까요
+<span class="n">1</span>
 
-??? 여기서 40분 블록. 오늘의 백미. 시간이 부족하면 3라운드를 2라운드로 줄인다.
+## Codex가 뭐예요
 
----
-## AI는 <b>하나가 아니에요</b>
-
-<div class="flow">
-<span>GPT</span>
-<span>Gemini</span>
-<span class="hi">우리 서버 모델</span>
-</div>
-
-^^^
-같은 질문에 **다르게 답해요**. 속도도, 비용도 달라요.
-
-??? 여기서 3분. 학생 대부분 GPT만 써봤다. "무료로 쓰는 것도 누군가는 돈을 낸다"를 여기서 심는다.
+??? 간지. 여기서부터 도구 설명 블록 — 총 30분 안에 22장(6~22)을 지난다. 시연 2회 포함이라 슬라이드당 오래 머물지 않는다.
 
 ---
-## 누가 누군지 <b>가리고 맞혀봐요</b>
-
-```
-/compare 김치찌개 레시피를 세 줄로
-```
+## ChatGPT 만든 회사가 만든 <b>일 시키는 도구</b>예요
 
 <div class="grid c3">
-<div class="card"><div class="k">A</div><div class="v">?</div></div>
-<div class="card"><div class="k">B</div><div class="v">?</div></div>
-<div class="card"><div class="k">C</div><div class="v">?</div></div>
-</div>
-
-??? 여기서 5분. 봇을 처음 쓰는 자리다. 슬랙 반별 채널에서 돌린다 — 다른 반이 보면 정답이 새므로 반드시 반 채널에서.
-
----
-## <b>세 번</b> 겨뤄요
-
-<div class="flow">
-<span>1라운드 요약</span><i>→</i>
-<span>2라운드 창작</span><i>→</i>
-<span class="hi">3라운드 코드</span>
+<div class="card"><div class="k">만든 곳</div><div class="v">OpenAI</div><p>ChatGPT랑 같은 회사예요</p></div>
+<div class="card"><div class="k">쓰는 곳</div><div class="v">터미널</div><p>지난주 배운 그 검은 화면이요</p></div>
+<div class="card strong"><div class="k">하는 일</div><div class="v">일을 대신 해요</div><p>답만 하는 게 아니라 파일을 만들고 고쳐요</p></div>
 </div>
 
 ^^^
-매 라운드 각자 답을 적어요. 정답은 마지막에 한 번에 공개해요.
+> 대화하는 건 ChatGPT랑 똑같아요. 다른 건 **대화가 끝난 뒤에 하는 일**이에요.
 
-??? 여기서 25분(라운드당 8분). 학생이 이유를 말하게 한다 — "이게 왜 GPT 같아?" 가 관찰력을 만든다.
+??? 여기서 2분. "챗봇과 뭐가 다른가"를 3축으로 나눠 다음 장부터 그림으로 하나씩 본다.
 
 ---
-## 정답을 <b>공개해요</b>
+<!-- class: g-none -->
+## 다름 하나. 채팅은 <b>지나가요</b>
+
+<figure class="media" style="border:none;background:none">
+<svg viewBox="0 0 720 300" role="img" aria-label="채팅창의 대화는 창을 닫으면 옆에 없고, 길어지면 앞부분을 잊는다"
+     style="width:100%;max-height:40vmin;color:#fcfdff">
+  <g font-family="inherit">
+    <rect class="draw" pathLength="1" x="30" y="30" width="300" height="240" rx="14" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+    <text class="pop" style="--d:.1s" x="180" y="66" font-size="17" fill="currentColor" fill-opacity=".7" text-anchor="middle">어제의 대화</text>
+    <g class="pop" style="--d:.2s">
+      <rect x="55" y="88" width="170" height="34" rx="12" fill="currentColor" fill-opacity=".12"/>
+      <text x="70" y="110" font-size="14" fill="currentColor" fill-opacity=".8">카드 만들어줘</text>
+    </g>
+    <g class="pop" style="--d:.35s">
+      <rect x="120" y="132" width="185" height="34" rx="12" fill="#3b9eff" fill-opacity=".16"/>
+      <text x="135" y="154" font-size="14" fill="currentColor" fill-opacity=".8">네, 만들었어요</text>
+    </g>
+    <g class="pop" style="--d:.5s">
+      <rect x="55" y="176" width="150" height="34" rx="12" fill="currentColor" fill-opacity=".12"/>
+      <text x="70" y="198" font-size="14" fill="currentColor" fill-opacity=".8">파랗게 바꿔줘</text>
+    </g>
+    <text class="pop" style="--d:.65s" x="180" y="248" font-size="14" fill="currentColor" fill-opacity=".5" text-anchor="middle">…이 흐름은 이 창 안에만 있어요</text>
+    <path class="draw" style="--d:.8s" pathLength="1" d="M 350,150 L 400,150" stroke="currentColor" stroke-opacity=".5" stroke-width="2" fill="none"/>
+    <rect class="draw" style="--d:.9s" pathLength="1" x="420" y="30" width="270" height="240" rx="14" fill="none" stroke="#ff801f" stroke-opacity=".55" stroke-dasharray="7 5"/>
+    <text class="pop" style="--d:1.1s" x="555" y="140" font-size="18" fill="#ff801f" text-anchor="middle">오늘 새 창을 열면</text>
+    <text class="pop" style="--d:1.2s" x="555" y="168" font-size="18" fill="#ff801f" text-anchor="middle">처음부터 다시 설명해요</text>
+  </g>
+</svg>
+<figcaption>대화가 길어지면 앞부분부터 잊기도 해요</figcaption>
+</figure>
+
+??? 여기서 2분. 학생 경험에 연결 — "ChatGPT로 코드 만들다가 다음 날 이어서 하려면 어땠어요?" 한 명에게 물으면 "다시 설명했어요"가 나온다.
+
+---
+## 파일도 <b>매번 줘야 해요</b>
 
 <div class="grid c3">
-<div class="card"><div class="k">요약</div><div class="v">로컬 모델</div><p>빠르고 공짜</p></div>
-<div class="card"><div class="k">창작</div><div class="v">GPT</div><p>느리고 유료</p></div>
-<div class="card strong"><div class="k">코드</div><div class="v">그때그때</div><p>직접 확인</p></div>
+<div class="card"><div class="k">채팅에서는</div><div class="v">파일을 첨부해요</div><p>보여주고 싶은 파일을 매번 올려요</p></div>
+<div class="card"><div class="k">파일이 많아지면</div><div class="v">다 못 올려요</div><p>어제 것, 지난주 것… 어디 갔죠?</p></div>
+<div class="card strong"><div class="k">결과물도</div><div class="v">복사해서 옮겨요</div><p>받은 코드를 내가 저장해야 해요</p></div>
+</div>
+
+??? 여기서 2분. 학생 다수가 이미 ChatGPT 복붙 개발을 해봤다 — "해본 사람?" 손들게 하면 공감대가 만들어진다.
+
+---
+<!-- class: g-green -->
+## Codex는 <b>폴더 안에서 일해요</b>
+
+<figure class="media" style="border:none;background:none">
+<svg viewBox="0 0 720 310" role="img" aria-label="Codex는 project 폴더 안에서 파일을 직접 읽고, 만든 것도 파일로 남는다"
+     style="width:100%;max-height:40vmin;color:#fcfdff">
+  <g font-family="inherit">
+    <path class="draw" pathLength="1" d="M 140,60 h120 l22,22 h218 a14,14 0 0 1 14,14 v160 a14,14 0 0 1 -14,14 H 140 a14,14 0 0 1 -14,-14 V 74 a14,14 0 0 1 14,-14 z" fill="none" stroke="#11ff99" stroke-opacity=".6" stroke-width="2"/>
+    <text class="pop" style="--d:.2s" x="150" y="112" font-size="17" fill="#11ff99">~/project</text>
+    <g class="pop" style="--d:.4s" font-size="15" fill="currentColor" fill-opacity=".85">
+      <text x="170" y="152">📄 me.html</text>
+      <text x="170" y="184">📄 notes.md</text>
+      <text x="170" y="216">📁 w01/</text>
+    </g>
+    <g class="pop" style="--d:.6s">
+      <circle cx="470" cy="150" r="34" fill="#11ff99" fill-opacity=".14" stroke="#11ff99" stroke-opacity=".7"/>
+      <text x="470" y="157" font-size="15" fill="#11ff99" text-anchor="middle">Codex</text>
+    </g>
+    <g stroke="currentColor" stroke-opacity=".5" stroke-width="2" fill="none">
+      <path class="draw" style="--d:.8s" pathLength="1" d="M 436,140 Q 350,120 290,146"/>
+      <path class="draw" style="--d:.95s" pathLength="1" d="M 290,190 Q 350,214 436,166"/>
+    </g>
+    <text class="pop" style="--d:1.1s" x="352" y="110" font-size="14" fill="currentColor" fill-opacity=".65" text-anchor="middle">직접 읽고</text>
+    <text class="pop" style="--d:1.2s" x="352" y="238" font-size="14" fill="currentColor" fill-opacity=".65" text-anchor="middle">직접 써요</text>
+  </g>
+</svg>
+<figcaption>어제 만든 파일이 그대로 있으니, 설명을 다시 할 필요가 없어요</figcaption>
+</figure>
+
+^^^
+> 지난주에 폴더 여섯 개 명령어를 배운 이유가 오늘 나와요 — **Codex의 작업장이 바로 그 폴더**예요.
+
+??? 여기서 2분. "지난주에 왜 터미널부터 배웠나"가 여기서 회수된다 — 이 연결을 놓치지 말 것.
+
+---
+## 다름 둘. 채팅은 보여주고, <b>Codex는 만들어요</b>
+
+<div class="split">
+<div class="lane"><div class="who" style="color:#a1a4a5;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);display:inline-block;padding:.5vmin 2vmin;border-radius:9999px;font-size:2.4vmin">ChatGPT</div>
+<p>코드를 <b>화면에 보여줘요</b></p>
+<p>저장은 내가 해요 — 복사, 붙여넣기, 저장</p>
+</div>
+<div class="lane"><div class="who" style="color:#11ff99;background:rgba(17,255,153,.09);border:1px solid rgba(17,255,153,.26);display:inline-block;padding:.5vmin 2vmin;border-radius:9999px;font-size:2.4vmin">Codex</div>
+<p>파일을 <b>직접 만들어요</b></p>
+<p>고치는 것도 파일에 바로 — 복사가 없어요</p>
+</div>
+</div>
+
+??? 여기서 2분. 왼쪽/오른쪽을 손으로 가리키며 대비. "보여주다"와 "만들다"의 차이가 오늘 실습에서 몸으로 확인된다.
+
+---
+<!-- class: g-green -->
+## 다름 셋. 바퀴를 <b>자기가 돌려요</b>
+
+<figure class="media" style="border:none;background:none">
+<svg viewBox="0 0 640 400" role="img" aria-label="바꿔달라고 말하면 코드 수정, 저장, 확인을 Codex가 돌고 사람은 말만 한다"
+     style="width:100%;max-height:42vmin;color:#fcfdff">
+  <defs>
+    <marker id="w2garw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#11ff99"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="#11ff99" stroke-width="2.5">
+    <path class="march" pathLength="1" marker-end="url(#w2garw)" d="M 155,150 A 168,168 0 0,1 262,44"/>
+    <path class="march" pathLength="1" marker-end="url(#w2garw)" d="M 378,44 A 168,168 0 0,1 485,150"/>
+    <path class="march" pathLength="1" marker-end="url(#w2garw)" d="M 485,250 A 168,168 0 0,1 378,356"/>
+    <path class="march" pathLength="1" marker-end="url(#w2garw)" d="M 262,356 A 168,168 0 0,1 155,250"/>
+  </g>
+  <g font-size="19" fill="currentColor" text-anchor="middle" font-family="inherit">
+    <text class="pop" x="150" y="207">파일 읽기</text>
+    <text class="pop" style="--d:.15s" x="320" y="40">코드 고치기</text>
+    <text class="pop" style="--d:.3s" x="492" y="207">저장하기</text>
+    <text class="pop" style="--d:.45s" x="320" y="382">확인하기</text>
+  </g>
+  <g class="pop" style="--d:.7s">
+    <circle cx="320" cy="200" r="46" fill="#11ff99" fill-opacity=".13" stroke="#11ff99" stroke-opacity=".7"/>
+    <text x="320" y="207" font-size="17" fill="#11ff99" text-anchor="middle" font-family="inherit">Codex</text>
+  </g>
+  <text class="pop" style="--d:.95s" x="320" y="285" font-size="15" fill="currentColor" fill-opacity=".6" text-anchor="middle" font-family="inherit">나는 "바꿔줘"라고 말만 해요</text>
+</svg>
+<figcaption>지난주의 그 바퀴 — 오늘부터 도는 건 내가 아니에요</figcaption>
+</figure>
+
+??? 여기서 2분. 4장(주황 바퀴)과 같은 구도, 색과 중심만 바뀐 그림 — "같은 바퀴인데 도는 사람이 바뀌었다"가 시각적으로 전달된다.
+
+---
+## 세 가지 다름, <b>정리하면</b>
+
+<div class="grid c3">
+<div class="card"><div class="k">기억</div><div class="v">폴더에 남아요</div><p>대화가 아니라 파일로 쌓여요</p></div>
+<div class="card"><div class="k">파일</div><div class="v">직접 만들어요</div><p>복사·붙여넣기가 없어요</p></div>
+<div class="card strong"><div class="k">실행</div><div class="v">바퀴를 돌려요</div><p>고치고 저장하고 확인까지 자기가</p></div>
 </div>
 
 ^^^
-> 승자가 라운드마다 달라요.
+> 이런 식으로 일하는 프로그램을 부르는 이름이 따로 있어요. 그 이름은 **직접 써본 다음에** 알려드릴게요.
 
-??? 여기서 5분. 실제 결과에 맞춰 이 표를 그날 고친다. 미리 정해놓고 읽으면 안 된다 — 학생이 본 것과 달라진다.
+??? 여기서 2분. "에이전트"라는 단어는 여기서도 아직 안 쓴다 — 마지막 문장이 그 자리의 예약이다.
 
 ---
-## 결론은 <b>이거예요</b>
+<!-- class: g-orange -->
+## 진짜인지 <b>지금 확인해봐요</b>
 
-# 일마다 <em>적임자가 달라요</em>
+<div class="foot">강사 화면으로 같이 봐요</div>
+
+같은 부탁을 두 곳에 동시에 시켜볼게요 — "이 카드의 배경을 밤하늘색으로 바꿔줘"
 
 ^^^
-"로컬은 별로다"가 아니라, **짧은 요약엔 로컬이 낫다**는 거예요.
+- 관찰 1 · **저장을 누가 했나요?**
+- 관찰 2 · **복사·붙여넣기를 몇 번 했나요?**
+
+??? 여기서 6분 — 오늘 설명 블록의 핵심 시연. 왼쪽 창 ChatGPT 웹, 오른쪽 창 서버 codex를 나란히 띄우고 같은 문장을 입력한다. ChatGPT 쪽은 코드가 화면에 나오고 강사가 복사→저장→새로고침을 일부러 천천히 한다. Codex 쪽은 파일이 바로 바뀐다. 미리 me.html을 양쪽에 준비해 둘 것.
+
+---
+## 방금 본 것, <b>숫자로 남겨요</b>
+
+| | ChatGPT | Codex |
+|---|---|---|
+| 저장한 사람 | 나 | Codex |
+| 복사·붙여넣기 | 2~3번 | 0번 |
+| 내가 한 일 | 말하고, 나르고, 저장하고 | **말하기만** |
+
+??? 여기서 2분. 시연 결과를 표로 못박는다. 실제 시연에서 숫자가 다르게 나오면 그 숫자로 고쳐 말한다 — 표는 예상값이다.
+
+---
+## 이런 도구, <b>Codex만 있는 게 아니에요</b>
 
 ^^^
-> 앞으로 뭘 시킬 때마다 "이건 누구한테 시킬까"를 생각하게 될 거예요.
+> AI 회사마다 하나씩 만들고 있어요. 지난주 "AI는 하나가 아니에요"의 도구판이에요.
 
-??? 여기서 2분. 오늘의 한 문장. 이 문장이 5주차(이미지 모델 비교)와 10주차(리마인드)에서 다시 나온다.
+??? 여기서 1분. 지형도 2장 진입 예고 — "표가 두 장 나오는데, 외우라는 게 아니라 지도 구경이에요"라고 먼저 말해 부담을 낮춘다.
+
+---
+## 세 도구 지도 <b>① 누가 만들었나</b>
+
+| | Codex | Claude Code | Antigravity |
+|---|---|---|---|
+| 만든 곳 | OpenAI | Anthropic | Google |
+| 형제 챗봇 | ChatGPT | Claude | Gemini |
+| 속 모델 | GPT 계열 | Claude 계열 | Gemini 계열 |
+| 생김새 | 터미널 + 데스크탑 앱 | 터미널 + 데스크탑 앱 | 코드 편집기(에디터) |
+
+??? 여기서 3분. 열을 손으로 짚으며 "지난주 3사 카드의 도구판"으로 연결. 각 사 형제 챗봇을 아는 학생이 있으면 반응이 온다.
+
+---
+## 세 도구 지도 <b>② 무엇이 다른가</b>
+
+| | Codex | Claude Code | Antigravity |
+|---|---|---|---|
+| 쓰는 법 | 구독 또는 API 열쇠 | 구독 또는 API 열쇠 | Google 계정 |
+| 잘하는 것 | 코딩 · 일 위임 | 긴 작업 · 꼼꼼한 계획 | 편집기 안에서 한 번에 |
+| 우리 수업 | **이걸 써요** | 강사가 수업 준비에 써요 | 구경만 해둬요 |
+
+^^^
+> 셋 다 하는 일은 같아요 — **말로 시키면 파일로 해내는 것.** 하나를 제대로 배우면 나머지는 금방이에요.
+
+??? 여기서 3분. "강사가 수업 준비에 Claude Code를 쓴다"는 사실은 학생 호기심 포인트 — 발표자료가 어떻게 만들어지는지는 나중에(스킬 공개 장면) 이어진다. 세부 요금은 말하지 않는다.
+
+---
+## 지금 다 못 외워도 <b>괜찮아요</b>
+
+^^^
+오늘 발표자료는 인터넷에 공개돼 있어요 — 집에서 폰으로도 볼 수 있어요.
+
+```
+aitf.excusa.uk/slides
+```
+
+??? 여기서 1분. 공개 페이지를 실제로 한 번 띄워 보여준다(1주차 자료가 이미 있다). 학부모에게도 보여줄 수 있다는 말은 굳이 안 한다 — 주소만.
+
+---
+## 그래서 우리는 <b>Codex를 써요</b>
+
+<div class="grid c3">
+<div class="card"><div class="k">이미 준비됨</div><div class="v">서버에 설치</div><p>지난주 접속한 그 서버에 있어요</p></div>
+<div class="card"><div class="k">각자 열쇠</div><div class="v">내 API 키</div><p>한 사람씩 따로 발급했어요</p></div>
+<div class="card strong"><div class="k">안심 한도</div><div class="v">쓰는 만큼 과금, 상한 있음</div><p>실수로 많이 써도 멈추게 돼 있어요</p></div>
+</div>
+
+??? 여기서 2분. "API 키 = AI를 쓰는 열쇠, 잃어버리면 다른 사람이 내 몫을 쓴다" 정도만. 금액은 말하지 않는다.
+
+---
+## Codex가 가끔 <b>물어볼 거예요</b>
+
+^^^
+- "이 파일을 지워도 될까요?" — 되돌리기 어려운 일 전에는 **먼저 물어봐요**
+- 그때는 읽고, 맞으면 **y** 를 눌러요
+
+^^^
+> 왜 물어볼까요? 이 질문은 마음에 담아두세요 — 몇 주 뒤에 크게 다뤄요.
+
+??? 여기서 2분. 승인 개념의 첫 노출 — 7주차 승인 경계 실습의 씨앗. "무조건 y"가 아니라 "읽고 y"를 지금부터 습관으로.
+
+---
+## 오늘 <b>이 순서로 가요</b>
+
+<div class="flow">
+<span>손 풀기</span><i>→</i>
+<span>Codex 인사</span><i>→</i>
+<span class="hi">발표자료 1</span><i>→</i>
+<span>내 규칙 만들기</span><i>→</i>
+<span class="hi">발표자료 2</span>
+</div>
+
+^^^
+> 발표자료를 **두 개** 만들어요. 왜 두 개인지는 만들다 보면 알게 돼요.
+
+??? 여기서 1분. 설명 블록 끝 — 시계 확인. 여기까지 약 32분이 정상 페이스. 밀렸으면 실습 1을 8분으로 줄인다.
+
+---
+<!-- class: chapter g-orange -->
+<span class="n">2</span>
+
+## 손 풀기
+
+??? 간지. 실습 블록 시작 — 여기서부터는 학생 손이 움직인다.
+
+---
+## 지난주 실수, <b>복습하고 가요</b>
+
+| 친 것 | 결과 | 바른 것 |
+|---|---|---|
+| `cd..` | 안 됨 | `cd ..` 한 칸 띄우기 |
+| `cd projsct` | No such file | `cd pro` + **Tab 키** |
+| `cat Agent.md` | 안 됨 | 대소문자 정확히 |
+
+^^^
+> 오늘의 무기는 **Tab** — 이름을 반쯤 치고 Tab을 누르면 나머지를 완성해줘요.
+
+??? 여기서 3분. 지난주 실제 사례라고 말해주되 누가 했는지는 말하지 않는다. Tab 완성은 오늘 전원이 실제로 써보게 한다.
+
+---
+## 미션. <b>서버에 들어가서 확인해요</b>
+
+```
+ssh 내아이디@서버주소
+cd project
+ls
+```
+
+^^^
+- 체크포인트 · 폴더 목록이 보이면 성공
+- 심화 · `ls -a` 로 숨은 파일 이름 세 개 적어보기
+
+??? 여기서 8분. 계정 카드 배부 확인. 접속 주소는 카드에 있다. 막히는 학생 순회 — 대부분 비밀번호 입력(화면에 안 보임)에서 멈춘다.
+
+---
+## 비밀번호를 다섯 번 틀리면 <b>3분 쉬어야 해요</b>
+
+^^^
+- 서버가 잠깐 문을 잠가요 — 지난주에 실제로 있었던 일이에요
+- 그럴 땐 당황하지 말고 **3분 기다렸다가** 다시 하면 돼요
+
+^^^
+> 다섯 번 틀리기 전에 손을 드는 게 더 빨라요.
+
+??? 여기서 1분. faillock 3분 정책. 잠긴 학생이 나오면 이 장을 다시 띄우고 시간을 재준다 — 강사가 서버에서 즉시 풀 수도 있다(faillock --user 계정 --reset).
+
+---
+## Class 1은 <b>지난주 카드부터 올려요</b>
+
+| 단계 | 무엇을 |
+|:--:|---|
+| 1 | `aitf.excusa.uk/git/` 접속 |
+| 2 | 계정 카드의 아이디·비밀번호로 로그인 |
+| 3 | `project` 저장소 열기 |
+| 4 | **Upload file** 에 `me.html` 끌어다 놓기 |
+| 5 | **Commit Changes** 누르기 |
+
+^^^
+> Class 2는 지난주에 했어요 — 옆에서 도와주면 두 배로 배워요.
+
+??? 여기서 7분(Class 1만, Class 2는 2분 확인 후 다음으로). me.html이 집 컴퓨터에 있는 학생은 ChatGPT 대화 목록에서 다시 다운로드 — 지난주 "대화는 사라지지 않아요"의 실전 회수.
 
 ---
 <!-- class: chapter g-green -->
-^ 세 번째
-# 오늘 배운 걸 <em>남겨요</em>
+<span class="n">3</span>
 
-??? 여기서 20분 블록. 위키를 처음 여는 자리다.
+## Codex 첫 만남
+
+??? 간지. 여기서부터 약 15분.
 
 ---
-## 우리 반 <b>위키가 열려요</b>
+## 켜는 법은 <b>한 단어예요</b>
 
-<div class="flow">
-<span>내가 쓴 기록</span><i>+</i>
-<span class="hi">AI가 쌓는 기록</span>
-</div>
+```
+codex
+```
 
 ^^^
-오늘부터 12주 동안 여기 쌓여요. 막히면 **먼저 찾아보는 곳**이 될 거예요.
+- 체크포인트 · 대화 입력창이 뜨면 성공
+- 나가고 싶을 땐 `/quit` 라고 치면 돼요
 
-??? 여기서 5분. 자동 위키는 아직 밝히지 않는다 — 7주차 공개 장면이다. "AI가 쌓는 기록"이라고만 흘린다.
-
----
-## 첫 문서를 <b>같이 써요</b>
-
-> **우리 반 모델 가이드**
-> - 어떤 모델이 있나요
-> - 뭘 시킬 때 뭐가 나았나요
-> - 오늘 알게 된 것
-
-??? 여기서 10분. 오늘 블라인드 테스트 결과를 그대로 옮기게 한다. 완벽할 필요 없다 — 12주 동안 고쳐 쓸 문서다.
+??? 여기서 3분. project 폴더 안에서 실행하게 한다(cd project 먼저). 처음 실행 시 안내 문구가 나올 수 있다 — 화면이 다르게 보여도 입력창만 뜨면 성공이라고 말해준다.
 
 ---
-## 인터넷에 <b>올리면 안 되는 것</b>
+## 첫 인사를 <b>해보세요</b>
+
+```
+안녕? 너는 뭘 할 수 있어?
+```
+
+^^^
+- 관찰 · ChatGPT랑 말투가 비슷한가요, 다른가요?
+- 심화 · "지금 이 폴더에 뭐가 있어?" 라고 물어보기
+
+??? 여기서 3분. 심화 질문이 포인트 — Codex가 ls를 직접 돌려 답하는 걸 처음 목격하는 순간. 빠른 학생이 이걸 발견하면 전체에 공유시킨다.
+
+---
+## 첫 위임. <b>지난주 파일을 정리시켜요</b>
+
+```
+지난주에 올린 파일들을 w01 폴더로 정리해줘
+```
+
+^^^
+- 지켜보세요 · Codex가 **뭘 하는지 화면에 다 보여줘요**
+- 물어보면 · 읽고, 맞으면 **y**
+
+??? 여기서 5분. 첫 실전 위임 — 파일 이동을 마우스가 아니라 말로 한다. Codex가 폴더 생성·이동 계획을 보여주고 승인을 구하는 흐름을 관찰시킨다. 파일이 없는 학생(지난주 미제출)은 "빈 w01 폴더만 만들어줘"로 대체.
+
+---
+## 진짜 됐는지 <b>내 눈으로 확인해요</b>
+
+```
+ls
+ls w01
+```
+
+^^^
+- 체크포인트 · `w01` 폴더가 생기고, 그 안에 파일이 들어가 있으면 성공
+- 심화 · `cat w01/me.html` 로 내용이 그대로인지 보기
+
+^^^
+> AI가 "했어요"라고 말해도 **확인은 내가 해요** — 1주차 세 번째 습관, 여기서도 그대로예요.
+
+??? 여기서 3분. 검증 습관을 도구 위임에도 적용하는 첫 장면. "AI 말을 그대로 믿지 않는다"가 명령어 두 개로 실행된다.
+
+---
+## 방금, 마우스 없이 <b>파일이 움직였어요</b>
+
+<div class="grid c3">
+<div class="card"><div class="k">지난주</div><div class="v">마우스로 끌었어요</div><p>브라우저에서 한 파일씩</p></div>
+<div class="card strong"><div class="k">방금</div><div class="v">말 한 문장</div><p>폴더 만들고 옮기는 걸 통째로</p></div>
+<div class="card"><div class="k">그리고</div><div class="v">확인은 내가</div><p>ls 두 번이면 끝</p></div>
+</div>
+
+??? 여기서 1분. 조용히 대비만 보여주고 넘어간다 — 감탄사는 학생 몫.
+
+---
+## 그런데 Codex는 <b>w01을 어떻게 알았을까요</b>
+
+```
+cat AGENTS.md
+```
+
+^^^
+- project 폴더 안에 **지시서 파일**이 있어요 — Codex는 일 시작 전에 이걸 읽어요
+- "주차 폴더에 정리한다"는 규칙이 여기 적혀 있어요
+
+^^^
+> 누가 썼는지, 왜 이렇게 쓰는지는 **몇 주 뒤에** 우리가 직접 다뤄요.
+
+??? 여기서 3분. AGENTS.md 첫 관찰 — 읽기만 하고 설명은 아낀다(4주차 해부의 예고편). "하네스" 단어는 쓰지 않는다.
+
+---
+<!-- class: chapter g-violet -->
+<span class="n">4</span>
+
+## 첫 발표자료
+
+??? 간지. 휴식 8분을 이 앞뒤 중 자연스러운 타이밍에 넣는다 — 권장은 이 간지 직전.
+
+---
+## 주제를 <b>꺼내세요</b>
+
+^^^
+- 준비해 온 발표 주제 **1번**을 꺼내요
+- 안 가져왔어도 괜찮아요 — 예시 주제 두 가지 중에 골라요
 
 <div class="grid c2">
-<div class="card"><div class="k">넣지 않아요</div><div class="v">실명 · 학교</div></div>
-<div class="card"><div class="k">넣지 않아요</div><div class="v">연락처 · 얼굴</div></div>
+<div class="card"><div class="k">예시 A</div><div class="v">강사가 준비한 주제</div><p>수업 때 나눠드려요</p></div>
+<div class="card"><div class="k">예시 B</div><div class="v">강사가 준비한 주제</div><p>수업 때 나눠드려요</p></div>
+</div>
+
+??? 여기서 2분. 예시 자료 2종은 강사가 별도 제작 예정 — 이 카드 두 장은 확정되면 제목으로 바꾼다. 주제 1개만 가져온 학생은 두 번째를 예시에서 고르게 한다(뒤에서 2번이 필요해진다).
+
+---
+## 만들어달라고 <b>해보세요</b>
+
+```
+"OOO" 주제로 발표자료를 HTML 한 파일로 만들어줘.
+w02 폴더에 저장해줘.
+```
+
+^^^
+- 체크포인트 · `ls w02` 에 파일이 생기면 성공
+- 심화 · "슬라이드를 5장 구성으로 해줘" 처럼 장수도 정해보기
+
+??? 여기서 5분. OOO에 자기 주제를 넣는다. 파일 이름은 Codex가 정해도 된다. 생성이 오래 걸리는 학생은 그 사이 옆 학생 화면을 구경시킨다.
+
+---
+## 눈으로 <b>봐야죠</b>
+
+```
+방금 만든 발표자료를 public 폴더에도 복사해줘
+```
+
+^^^
+- 그 다음, 브라우저에서 **내 작품관 주소**를 열어요 (화면에 띄워드려요)
+- 체크포인트 · 내 발표자료가 브라우저에 뜨면 성공
+
+??? 여기서 4분. 작품관 주소는 aitf.excusa.uk/pages/계정/파일명 — 프로젝터에 패턴을 띄워준다. 사전에 학원에서 /pages 접속이 되는지 반드시 확인해 둘 것(인증 정책). 안 되면 대체 경로: Gitea에 올리고 다운로드해 열기.
+
+---
+## 이제 <b>바꿔달라고 하는 시간이에요</b>
+
+<div class="grid c4">
+<div class="card"><div class="k">1번</div><div class="v">색</div><p>"배경을 어두운 남색으로"</p></div>
+<div class="card"><div class="k">2번</div><div class="v">글꼴</div><p>"제목을 더 크고 굵게"</p></div>
+<div class="card"><div class="k">3번</div><div class="v">배치</div><p>"제목을 왼쪽 정렬로"</p></div>
+<div class="card"><div class="k">4번</div><div class="v">구성</div><p>"목차 장을 앞에 추가해줘"</p></div>
 </div>
 
 ^^^
-> **다음 주부터 만든 게 진짜 인터넷에 올라가요.** 그전에 한 번 못 박고 갈게요.
+> **최소 네 번** 바꿔요. 바꿀 때마다 작품관을 새로고침해서 확인해요.
 
-??? 여기서 5분. 이 장은 건너뛰지 않는다. 3주차에 실제 공개가 시작되므로 지금이 마지막 기회다.
+??? 여기서 10분 — 오늘 가장 긴 자유 실습. 네 방향은 예시일 뿐, 자기 취향대로 시키게 한다. 순회하며 "지난주엔 이거 한 번에 바퀴 한 바퀴였다"를 개별적으로 상기시킨다.
+
+---
+## 더 바꿀 게 <b>생각 안 나면</b>
+
+^^^
+- "말투를 초등학생도 알아듣게 바꿔줘"
+- "각 장에 어울리는 이모티콘을 하나씩 넣어줘"
+- "마지막 장에 퀴즈를 하나 넣어줘"
+
+^^^
+> 이상하게 나와도 괜찮아요 — "방금 건 취소하고 원래대로 해줘"도 말로 돼요.
+
+??? 여기서 2분(앞 10분 안에 포함해도 됨). 되돌리기도 위임이 된다는 걸 슬쩍 심는다.
+
+---
+<!-- class: g-violet -->
+## 잠깐. 지금까지 시킨 게 <b>쌓이고 있어요</b>
+
+<figure class="media" style="border:none;background:none">
+<svg viewBox="0 0 700 300" role="img" aria-label="바꿔달라고 한 요구사항들이 차곡차곡 쌓여 목록이 된다"
+     style="width:100%;max-height:38vmin;color:#fcfdff">
+  <g font-family="inherit" font-size="16">
+    <g class="pop">
+      <rect x="180" y="228" width="340" height="44" rx="10" fill="#a78bfa" fill-opacity=".14" stroke="#a78bfa" stroke-opacity=".5"/>
+      <text x="350" y="256" fill="currentColor" fill-opacity=".9" text-anchor="middle">배경은 어두운 남색</text>
+    </g>
+    <g class="pop" style="--d:.25s">
+      <rect x="180" y="176" width="340" height="44" rx="10" fill="#a78bfa" fill-opacity=".14" stroke="#a78bfa" stroke-opacity=".5"/>
+      <text x="350" y="204" fill="currentColor" fill-opacity=".9" text-anchor="middle">제목은 크고 굵게</text>
+    </g>
+    <g class="pop" style="--d:.5s">
+      <rect x="180" y="124" width="340" height="44" rx="10" fill="#a78bfa" fill-opacity=".14" stroke="#a78bfa" stroke-opacity=".5"/>
+      <text x="350" y="152" fill="currentColor" fill-opacity=".9" text-anchor="middle">제목은 왼쪽 정렬</text>
+    </g>
+    <g class="pop" style="--d:.75s">
+      <rect x="180" y="72" width="340" height="44" rx="10" fill="#a78bfa" fill-opacity=".14" stroke="#a78bfa" stroke-opacity=".5"/>
+      <text x="350" y="100" fill="currentColor" fill-opacity=".9" text-anchor="middle">목차 장은 맨 앞에</text>
+    </g>
+    <text class="pop" style="--d:1s" x="350" y="46" fill="#a78bfa" font-size="18" text-anchor="middle">이게 전부 내 취향이에요</text>
+  </g>
+</svg>
+<figcaption>이 목록, 그냥 흘려보내기 아깝지 않나요?</figcaption>
+</figure>
+
+??? 여기서 2분. 다음 블록으로 넘어가는 다리 — 질문을 던져두고 간지로 넘어간다.
+
+---
+<!-- class: chapter g-violet -->
+<span class="n">5</span>
+
+## 내 규칙 만들기
+
+??? 간지. 여기서부터 오늘의 핵심 20분.
+
+---
+## 정리도 <b>시키면 돼요</b>
+
+```
+지금까지 내가 시킨 수정사항들을
+slide-rule.md 파일로 정리해줘
+```
+
+^^^
+- 매주 마지막에 하던 "오늘 정리해줘"와 **같은 방법**이에요 — 이번엔 내 취향을 정리시키는 거예요
+- 체크포인트 · `ls` 에 slide-rule.md 가 보이면 성공
+
+??? 여기서 4분. 핸드오프 의식과 연결하는 게 포인트 — "우리가 매주 하던 그 마무리, 오늘은 수업 중간에 써먹는다".
+
+---
+## 뭐라고 정리했는지 <b>읽어보세요</b>
+
+```
+cat slide-rule.md
+```
+
+^^^
+- 체크포인트 · 내가 시킨 것들이 문장으로 정리돼 있으면 성공
+- 심화 · 빠진 게 있나 찾아보기 — 있으면 "OO도 추가해줘"
+
+??? 여기서 3분. 학생 한 명의 slide-rule.md를 프로젝터에 띄워 같이 읽으면 좋다(본인 동의 받고). "내가 말한 게 글이 됐다"는 감각.
+
+---
+## 이제 <b>진짜 실험이에요</b>
+
+```
+두 번째 주제 "OOO"로 발표자료를 만들어줘.
+slide-rule.md 를 지키면서 만들어줘.
+w02 폴더에 저장해줘.
+```
+
+^^^
+> 이번엔 바꿔달라는 말을 **한 번도 안 하고** 만들어볼 거예요.
+
+??? 여기서 5분. 두 번째 주제 투입. 첫 발표자료 때와 달리 지시가 단 한 문장이라는 점을 강조해 둔다.
+
+---
+## 판정. <b>한 번에 비슷하게 나왔나요?</b>
+
+<div class="split">
+<div class="lane"><div class="who" style="color:#11ff99;background:rgba(17,255,153,.09);border:1px solid rgba(17,255,153,.26);display:inline-block;padding:.5vmin 2vmin;border-radius:9999px;font-size:2.4vmin">비슷하게 나왔다</div>
+<p><b>성공이에요.</b> 내 취향이 파일 하나로 옮겨진 거예요</p>
+</div>
+<div class="lane"><div class="who" style="color:#ffc53d;background:rgba(255,197,61,.1);border:1px solid rgba(255,197,61,.3);display:inline-block;padding:.5vmin 2vmin;border-radius:9999px;font-size:2.4vmin">어딘가 다르다</div>
+<p><b>더 좋은 일이에요.</b> 규칙에 빠진 걸 방금 찾은 거예요</p>
+</div>
+</div>
+
+??? 여기서 3분. 실패를 실패라고 부르지 않는 게 이 장의 전부 — 오른쪽 결과가 나온 학생이 다음 장의 주인공이 된다.
+
+---
+## 다르면, <b>규칙을 고치고 다시</b>
+
+<div class="flow">
+<span>두 개를 비교</span><i>→</i>
+<span>빠진 규칙 찾기</span><i>→</i>
+<span class="hi">rule에 추가</span><i>→</i>
+<span>다시 만들어줘</span>
+</div>
+
+^^^
+- "slide-rule.md 에 'OO' 규칙을 추가하고, 다시 만들어줘"
+- 체크포인트 · 비슷해질 때까지 — 보통 한두 바퀴면 돼요
+
+??? 여기서 5분. 이 보강 루프가 오늘 가장 배우는 게 많은 구간. 순회하며 "뭐가 빠졌었어요?"라고 물으면 학생이 자기 언어로 규칙을 말하게 된다.
+
+---
+## 심화. <b>하지 말라는 것도 규칙이에요</b>
+
+^^^
+- "slide-rule.md 에 '절대 하지 말 것' 부분을 만들어줘"
+- 예: "3D 효과 금지", "한 장에 글 여덟 줄 넘기지 않기"
+
+^^^
+> 좋은 규칙집엔 **금지 조항**이 꼭 있어요 — 원하는 것만큼, 원하지 않는 것도 분명하게.
+
+??? 빨리 끝낸 학생용. 여기서 2분. 금지 조항은 4주차 지시문 4요소(금지)의 씨앗이기도 하다.
+
+---
+## 오늘 만든 건 <b>파일이 된 내 취향이에요</b>
+
+^^^
+> 다음에 발표자료를 또 만들 때, 이 파일 하나면 **처음부터 내 스타일로** 나와요. 설명을 다시 할 필요가 없어요.
+
+??? 여기서 1분. 한 문장 슬라이드 — 오늘의 결론. "채팅은 지나가고, 파일은 남는다"(8장)와 수미상관.
+
+---
+## 오늘 만든 걸 <b>저장소에 올려요</b>
+
+```
+오늘 만든 발표자료 두 개랑 slide-rule.md 를
+저장소에 올려줘
+```
+
+^^^
+- 체크포인트 · `aitf.excusa.uk/git/` 내 project 저장소에 파일이 보이면 성공
+- 지난주엔 마우스로 끌어서 올렸죠 — **이것도 말로 돼요**
+
+??? 여기서 4분. git이라는 단어는 아직 설명하지 않는다(4주차) — "저장소에 올려줘"로 충분히 동작한다. 브라우저에서 결과 확인까지가 체크포인트.
+
+---
+## 마지막으로 <b>오늘도 정리시켜요</b>
+
+```
+오늘 내가 뭘 만들었는지,
+다음에 이어서 할 수 있게 정리해줘.
+```
+
+^^^
+> 매주 하는 마무리예요. 오늘은 이 정리가 **파일로 남는다**는 게 지난주와 달라요.
+
+??? 여기서 3분. 핸드오프 의식 2회차 — ChatGPT에선 대화에 남았지만 Codex에선 파일로 남는다는 차이를 짚는다.
 
 ---
 <!-- class: cover -->
-# 다음 주엔 <em>발표자료</em>를 만들어요
-
-학교에서 실제로 발표했던 주제 하나를 **기억해 오세요.**
+## 다음 주, <em>진짜 발표</em>를 만들어요
 
 ^^^
-숙제는 아니에요. 기억 안 나면 목록에서 골라도 돼요.
+학교에서 실제 발표했던 주제로 처음부터 끝까지 만들고, **인터넷에 공개**해요.
+오늘 만든 slide-rule.md 가 그대로 무기가 돼요.
 
-??? 여기서 5분. 다음 주 몰입도가 여기서 갈린다 — 주제를 미리 정해오면 3주차에 바로 만들기 시작할 수 있다. 오늘 나온 것 1~2개 소개하고 마친다.
+^^^
+- 오늘 만든 slide-rule.md 같은 파일, 세상 개발자들도 만들어 써요 — **이름이 따로 있는데, 다음에 알려드릴게요**
+- 숙제 없음 · 준비물 없음 — 발표했던 주제 하나만 떠올려 오세요
+
+??? 마무리 3분. 스킬 티저는 여기 한 번만 — 단어는 끝까지 아낀다. 시간 합계: 도입 11 + 설명 32 + 손풀기 19 + 첫만남 15 + 휴식 8 + 발표자료1 23 + 규칙 20 + 마무리 10 ≈ 138분에서 각 블록 여유분을 당겨 120분에 맞춘다 — 밀리면 자르는 순서: 34장(AGENTS.md 관찰) → 26장(faillock, 언급만) → 지형도 2장을 1장으로.
