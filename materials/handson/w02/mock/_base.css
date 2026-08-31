@@ -1,7 +1,14 @@
 /* 모의 메신저 화면 공통 스타일 — GIF 녹화용 (Slack 브랜딩 아님, 일반화한 다크 메신저) */
+/* Paperlogy — 로컬 파일 참조 (녹화 전용이라 CSP 무관, 상대경로는 mock/ 기준) */
+@font-face{font-family:Paperlogy;font-weight:400;
+  src:url("../../../../curriculum/fonts/Paperlogy-4Regular.ttf") format("truetype")}
+@font-face{font-family:Paperlogy;font-weight:700;
+  src:url("../../../../curriculum/fonts/Paperlogy-7Bold.ttf") format("truetype")}
+@font-face{font-family:Paperlogy;font-weight:800;
+  src:url("../../../../curriculum/fonts/Paperlogy-8ExtraBold.ttf") format("truetype")}
 *{margin:0;padding:0;box-sizing:border-box}
 body{width:640px;height:400px;overflow:hidden;background:#1a1d21;
-  font:400 14px/1.5 "Apple SD Gothic Neo","Malgun Gothic",-apple-system,sans-serif;color:#d1d2d3}
+  font:400 14px/1.5 Paperlogy,"Apple SD Gothic Neo","Malgun Gothic",-apple-system,sans-serif;color:#d1d2d3}
 .chrome{display:flex;flex-direction:column;height:100%}
 .head{padding:10px 16px;border-bottom:1px solid #2c2f33;font-weight:700;color:#fff;font-size:15px;
   display:flex;align-items:center;gap:8px}
