@@ -125,6 +125,28 @@ def collect(acct: str, since: str, days: int = 7) -> dict:
     return out
 
 
+def sync_students():
+    """학생 홈의 working copy 를 Gitea 저장소와 맞춘다 (수집 전에 1회).
+
+    브라우저 업로드는 Gitea 베어 저장소에만 들어가고 학생 홈에는 닿지 않는다.
+    학생이 `git pull` 을 잊으면 서버 홈에 자기 파일이 없는 상태가 이어지고,
+    다음 수업의 파일 작업이 헛돌게 된다 (2026-09-01 감사에서 13명 전원 확인).
+    그래서 주간 위키 실행 때 일괄로 내려받아 둔다.
+
+    **학생 작업을 덮어쓰지 않는다** — fast-forward 만 허용(`--ff-only`).
+    학생이 서버에서 따로 커밋해 갈라졌으면 그 계정만 조용히 건너뛴다.
+    """
+    for r in roster():
+        acct = r["account"]
+        proj = Path("/home") / acct / "project"
+        if not (proj / ".git").is_dir():
+            continue
+        out = sh("sudo", "-u", acct, "-H", "git", "-C", str(proj),
+                 "pull", "--ff-only", "origin", "main")
+        state = "동기화" if out and "Already up to date" not in out else "변경 없음"
+        print(f"  {acct}: {state}")
+
+
 def roster(cls=None):
     rows = []
     if not ROSTER.exists():
@@ -412,6 +434,9 @@ def main():
 
     today = date.today().isoformat()
     WORK.mkdir(parents=True, exist_ok=True)
+    if not a.dry_run:
+        print("── 학생 홈 동기화 (git pull --ff-only) ──")
+        sync_students()
     for c in classes():
         if a.cls and c != a.cls:
             continue
