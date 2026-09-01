@@ -325,7 +325,7 @@
 
 | | Codex | Claude Code | Antigravity |
 |---|---|---|---|
-| 쓰는 법 | 구독 또는 API 열쇠 | 구독 또는 API 열쇠 | Google 계정으로 로그인 |
+| 쓰는 법 | 구독 또는 API 키 | 구독 또는 API 키 | Google 계정으로 로그인 |
 | 잘하는 것 | 코딩 · 일 위임 | 긴 작업 · 꼼꼼한 계획 | 편집기 안에서 한 번에 |
 | 우리 수업 | **이걸 써요** | 강사가 수업 준비에 써요 | 구경만 해둬요 |
 
@@ -365,11 +365,11 @@ aitf.excusa.uk/slides
 
 <div class="grid c3">
 <div class="card"><div class="k">이미 준비됨</div><div class="v">서버에 설치</div><p>지난주 접속한 그 서버에 있어요</p></div>
-<div class="card"><div class="k">각자 열쇠</div><div class="v">내 API 키</div><p>한 사람씩 따로 발급했어요</p></div>
+<div class="card"><div class="k">한 사람 하나씩</div><div class="v">내 API 키</div><p>한 사람씩 따로 발급했어요</p></div>
 <div class="card strong"><div class="k">안심 한도</div><div class="v">쓰는 만큼 과금, 상한 있음</div><p>실수로 많이 써도 멈추게 돼 있어요</p></div>
 </div>
 
-??? 여기서 2분. "API 키 = AI를 쓰는 열쇠, 잃어버리면 다른 사람이 내 몫을 쓴다" 정도만. 금액은 말하지 않는다.
+??? 여기서 2분. "API 키는 AI를 쓰는 열쇠 같은 것 — 잃어버리면 다른 사람이 내 몫을 쓴다" 정도만. 용어는 화면 그대로 API 키로 부른다. 금액은 말하지 않는다.
 
 ---
 ## Codex가 가끔 <b>물어볼 거예요</b>
