@@ -304,7 +304,7 @@ def week_payload(cls, data, cls_dir=None):
                         "text": {"content": "  (서술은 다음 주부터 쌓여요)"},
                         "annotations": {"color": "gray", "italic": True}}])))
 
-    # ⑤ 수업 자료 — /srv/slides/wNN/ 에 올려 둔 발표자료를 임베드.
+    # ⑤ 수업 자료 — /srv/slides/wNN/ 에 올려 둔 수업자료를 임베드.
     #    실제 열람 가능 여부는 Cloudflare Access 의 /slides Bypass 정책이 결정한다.
     blocks += slides_blocks(week)
 
@@ -317,11 +317,11 @@ def week_payload(cls, data, cls_dir=None):
 
 SLIDES_DIR = Path("/srv/slides")
 SLIDES_BASE = os.environ.get("SLIDES_BASE_URL", "https://aitf.excusa.uk/slides")
-SLIDE_LABEL = {"orientation": "이번 주 발표자료", "terminal": "터미널 명령어 정리"}
+SLIDE_LABEL = {"orientation": "이번 주 수업자료", "terminal": "터미널 명령어 정리"}
 
 
 def slides_blocks(week):
-    """주차 발표자료 임베드 블록. 파일이 없으면 빈 리스트 (섹션 자체 생략)."""
+    """주차 수업자료 임베드 블록. 파일이 없으면 빈 리스트 (섹션 자체 생략)."""
     d = SLIDES_DIR / f"w{week:02d}"
     if not d.is_dir():
         return []

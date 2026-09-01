@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""발표자료 모음 페이지 생성 — /srv/slides/index.html
+"""수업자료 모음 페이지 생성 — /srv/slides/index.html
 
 /srv/slides/wNN/*.html 을 스캔해 주차별 카드 목차를 만든다.
 주차 제목은 /srv/hub/weeks.json(정본: curriculum/detailed-plan.md)에서 가져온다.
 
 공개 페이지다 (Cloudflare Access /slides Bypass) — 학부모·원장님이 본다.
-학생 개인정보 없음: 발표자료 파일 자체가 PII 없는 수업 자료다.
+학생 개인정보 없음: 수업자료 파일 자체가 PII 없는 수업 자료다.
 
-새 주차 발표자료 배포 절차:
+새 주차 수업자료 배포 절차:
     sudo cp decks/wNN-*.html /srv/slides/wNN/<이름>.html
     sudo scripts/build-slides-index.py
 """
@@ -18,7 +18,7 @@ from pathlib import Path
 
 SLIDES = Path("/srv/slides")
 WEEKS_JSON = Path("/srv/hub/weeks.json")
-LABEL = {"orientation": "수업 발표자료", "terminal": "터미널 명령어 정리",
+LABEL = {"orientation": "수업자료", "terminal": "터미널 명령어 정리",
          "slack-manual": "Slack 사용법 (참고용)", "slack": "Slack 사용법 (슬라이드)"}
 
 
@@ -50,13 +50,13 @@ def main():
             f'<h2>{title or f"{n}주차 수업"}</h2></header>'
             f'<nav>{links}</nav></article>')
 
-    body = "\n".join(cards) if cards else "<p class='empty'>아직 올라온 발표자료가 없어요.</p>"
+    body = "\n".join(cards) if cards else "<p class='empty'>아직 올라온 수업자료가 없어요.</p>"
     out = f"""<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AITF 발표자료</title>
+<title>AITF 수업자료</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iQUlURiI+PHRpdGxlPkFJVEY8L3RpdGxlPgogIDxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHgxPSI4IiB5MT0iNiIgeDI9IjkyIiB5Mj0iOTQiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMzYjllZmYiPjwvc3RvcD48c3RvcCBvZmZzZXQ9Ii41IiBzdG9wLWNvbG9yPSIjMDA3NWZmIj48L3N0b3A+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzEwMTQxOCI+PC9zdG9wPgogICAgPC9saW5lYXJHcmFkaWVudD48L2RlZnM+CiAgPHBhdGggZD0iTTExLjUgNjIgNTAgMTQgODguNSA2MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cpIiBzdHJva2Utd2lkdGg9IjEwIiBzdHJva2UtbGluZWpvaW49Im1pdGVyIiBzdHJva2UtbGluZWNhcD0iYnV0dCI+PC9wYXRoPgogICAgPGxpbmUgeDE9IjUwIiB5MT0iMTQiIHgyPSI1MCIgeTI9Ijg4IiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iMTAiIHN0cm9rZS1saW5lY2FwPSJidXR0Ij48L2xpbmU+CiAgICA8bGluZSB4MT0iMjkuNSIgeTE9IjM4IiB4Mj0iNzAuNSIgeTI9IjM4IiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJidXR0Ij48L2xpbmU+CiAgICA8bGluZSB4MT0iNTAiIHkxPSI2MCIgeDI9IjY2IiB5Mj0iNjAiIHN0cm9rZT0idXJsKCNnKSIgc3Ryb2tlLXdpZHRoPSIxNCIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIzNCIgeTE9Ijg4IiB4Mj0iNjYiIHkyPSI4OCIgc3Ryb2tlPSJ1cmwoI2cpIiBzdHJva2Utd2lkdGg9IjE0IiBzdHJva2UtbGluZWNhcD0iYnV0dCI+PC9saW5lPgo8L3N2Zz4=">
 <style>
   /* Mobbin 라이트 — 랜딩(web/landing)과 같은 토큰 (2026-08-31 라이트 전환) */
@@ -91,7 +91,7 @@ def main():
 </head>
 <body>
 <main>
-  <h1><img class="mark" src="brand/aitf-mark-64.svg" alt="" width="34" height="34">AITF 발표자료</h1>
+  <h1><img class="mark" src="brand/aitf-mark-64.svg" alt="" width="34" height="34">AITF 수업자료</h1>
   <p class="lede">매주 수업에서 쓴 슬라이드를 모아두는 곳이에요. 슬라이드는 ← → 키로 넘겨요.</p>
   {body}
   <footer>AITF · AI 코딩 특강 — 매주 수업 후 업데이트됩니다
@@ -183,7 +183,7 @@ EMBED = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>발표자료</title>
+<title>수업자료</title>
 <style>
   body{margin:0;background:#ffffff;font:13px/1.5 "Apple SD Gothic Neo",sans-serif}
   .frame{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000;border-radius:8px}
