@@ -19,11 +19,18 @@ MODE="${1:-}"
 # 학생 계정 목록 — roster.csv 가 정본이다. 계정명이 학생 메일 앞부분이라
 # 이름 패턴(^(mid|high)[0-9]+$)으로는 더 이상 찾을 수 없다 (2026-08-25).
 ROSTER="${ROSTER_CSV:-/opt/scripts/roster.csv}"
+# roster 는 /opt/scripts(root 700) 안에 있어 일반 사용자는 못 읽는다.
+# 예전에는 그 실패를 "학생 계정이 아직 없습니다"로 잘못 보고해 학생 연결을
+# 조용히 건너뛰었다 (2026-09-01 발견 — 13명이 있는데 0명으로 출력).
+# 읽기는 sudo 로 하고, 정말 못 읽으면 침묵하지 않고 멈춘다.
+# 파이프 대신 프로세스 치환을 쓴다 — `set -e` 아래에서 `... | while read` 는
+# 서브셸이 첫 실패에 통째로 죽어 목록이 조용히 비어 버린다 (2026-09-01 실측).
 students() {
-  [ -f "$ROSTER" ] || return 0
-  awk -F, 'NR>1 && $2!="" {print $2}' "$ROSTER" | while read -r u; do
-    id -u "$u" >/dev/null 2>&1 && echo "$u"
-  done
+  sudo test -r "$ROSTER" || { echo "  ! roster 를 읽을 수 없습니다: $ROSTER" >&2; return 1; }
+  local u
+  while IFS=, read -r _cls u _rest; do
+    if [ -n "$u" ] && id -u "$u" >/dev/null 2>&1; then echo "$u"; fi
+  done < <(sudo tail -n +2 "$ROSTER")
 }
 
 if [ "$MODE" = "--check" ]; then
@@ -33,10 +40,12 @@ if [ "$MODE" = "--check" ]; then
   ls -1 "$STORE" 2>/dev/null | sed 's/^/  /' || echo "  (없음)"
   echo "학생 연결 상태:"
   for u in $(students); do
-    n=$(ls -1 "/home/$u/.codex/skills" 2>/dev/null | wc -l)
+    # 학생 홈은 700 이라 일반 사용자는 못 읽는다. sudo 로 세고, 실패해도
+    # 스크립트가 죽지 않게 한다 (pipefail 아래에서 ls 실패가 전체를 멈춘다).
+    n=$(sudo ls -1 "/home/$u/.codex/skills" 2>/dev/null | wc -l || echo 0)
     echo "  $u: $n개"
   done
-  [ -z "$(students)" ] && echo "  (학생 계정 없음 — 명단 대기)"
+  if [ -z "$(students)" ]; then echo "  (학생 계정 없음 — 명단 대기)"; fi
   exit 0
 fi
 
